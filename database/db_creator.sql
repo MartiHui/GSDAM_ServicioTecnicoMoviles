@@ -20,6 +20,40 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: estado; Type: TABLE; Schema: public; Owner: usuario
+--
+
+CREATE TABLE public.estado (
+    id_estado integer NOT NULL,
+    nombre_estado character varying NOT NULL
+);
+
+
+ALTER TABLE public.estado OWNER TO usuario;
+
+--
+-- Name: estado_id_estado_seq; Type: SEQUENCE; Schema: public; Owner: usuario
+--
+
+CREATE SEQUENCE public.estado_id_estado_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.estado_id_estado_seq OWNER TO usuario;
+
+--
+-- Name: estado_id_estado_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: usuario
+--
+
+ALTER SEQUENCE public.estado_id_estado_seq OWNED BY public.estado.id_estado;
+
+
+--
 -- Name: marcas_telefono; Type: TABLE; Schema: public; Owner: usuario
 --
 
@@ -255,11 +289,35 @@ CREATE TABLE public.ordenes (
     id_orden integer NOT NULL,
     id_modelo_telefono integer NOT NULL,
     id_tienda integer NOT NULL,
-    fecha date NOT NULL
+    fecha date NOT NULL,
+    id_estado integer NOT NULL,
+    id_tecnico integer NOT NULL
 );
 
 
 ALTER TABLE public.ordenes OWNER TO usuario;
+
+--
+-- Name: ordenes_estado_seq; Type: SEQUENCE; Schema: public; Owner: usuario
+--
+
+CREATE SEQUENCE public.ordenes_estado_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.ordenes_estado_seq OWNER TO usuario;
+
+--
+-- Name: ordenes_estado_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: usuario
+--
+
+ALTER SEQUENCE public.ordenes_estado_seq OWNED BY public.ordenes.id_estado;
+
 
 --
 -- Name: ordenes_id_modelo_telefono_seq; Type: SEQUENCE; Schema: public; Owner: usuario
@@ -303,6 +361,28 @@ ALTER TABLE public.ordenes_id_orden_seq OWNER TO usuario;
 --
 
 ALTER SEQUENCE public.ordenes_id_orden_seq OWNED BY public.ordenes.id_orden;
+
+
+--
+-- Name: ordenes_id_tecnico_seq; Type: SEQUENCE; Schema: public; Owner: usuario
+--
+
+CREATE SEQUENCE public.ordenes_id_tecnico_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.ordenes_id_tecnico_seq OWNER TO usuario;
+
+--
+-- Name: ordenes_id_tecnico_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: usuario
+--
+
+ALTER SEQUENCE public.ordenes_id_tecnico_seq OWNED BY public.ordenes.id_tecnico;
 
 
 --
@@ -432,24 +512,17 @@ ALTER SEQUENCE public.tiendas_id_tienda_seq OWNED BY public.tiendas.id_tienda;
 
 
 --
+-- Name: estado id_estado; Type: DEFAULT; Schema: public; Owner: usuario
+--
+
+ALTER TABLE ONLY public.estado ALTER COLUMN id_estado SET DEFAULT nextval('public.estado_id_estado_seq'::regclass);
+
+
+--
 -- Name: marcas_telefono id_marca_telefono; Type: DEFAULT; Schema: public; Owner: usuario
 --
 
 ALTER TABLE ONLY public.marcas_telefono ALTER COLUMN id_marca_telefono SET DEFAULT nextval('public.marcas_telefono_id_marca_telefono_seq'::regclass);
-
-
---
--- Name: modelo_reparacion id_modelo_telefono; Type: DEFAULT; Schema: public; Owner: usuario
---
-
-ALTER TABLE ONLY public.modelo_reparacion ALTER COLUMN id_modelo_telefono SET DEFAULT nextval('public.modelo_reparacion_id_modelo_telefono_seq'::regclass);
-
-
---
--- Name: modelo_reparacion id_reparacion; Type: DEFAULT; Schema: public; Owner: usuario
---
-
-ALTER TABLE ONLY public.modelo_reparacion ALTER COLUMN id_reparacion SET DEFAULT nextval('public.modelo_reparacion_id_reparacion_seq'::regclass);
 
 
 --
@@ -474,38 +547,10 @@ ALTER TABLE ONLY public.modelo_telefono ALTER COLUMN id_marca_modelo_telefono SE
 
 
 --
--- Name: orden_detalles id_orden; Type: DEFAULT; Schema: public; Owner: usuario
---
-
-ALTER TABLE ONLY public.orden_detalles ALTER COLUMN id_orden SET DEFAULT nextval('public.orden_detalles_id_orden_seq'::regclass);
-
-
---
--- Name: orden_detalles id_reparacion_modelo; Type: DEFAULT; Schema: public; Owner: usuario
---
-
-ALTER TABLE ONLY public.orden_detalles ALTER COLUMN id_reparacion_modelo SET DEFAULT nextval('public.orden_detalles_id_reparacion_modelo_seq'::regclass);
-
-
---
 -- Name: ordenes id_orden; Type: DEFAULT; Schema: public; Owner: usuario
 --
 
 ALTER TABLE ONLY public.ordenes ALTER COLUMN id_orden SET DEFAULT nextval('public.ordenes_id_orden_seq'::regclass);
-
-
---
--- Name: ordenes id_modelo_telefono; Type: DEFAULT; Schema: public; Owner: usuario
---
-
-ALTER TABLE ONLY public.ordenes ALTER COLUMN id_modelo_telefono SET DEFAULT nextval('public.ordenes_id_modelo_telefono_seq'::regclass);
-
-
---
--- Name: ordenes id_tienda; Type: DEFAULT; Schema: public; Owner: usuario
---
-
-ALTER TABLE ONLY public.ordenes ALTER COLUMN id_tienda SET DEFAULT nextval('public.ordenes_id_tienda_seq'::regclass);
 
 
 --
@@ -527,6 +572,14 @@ ALTER TABLE ONLY public.tecnicos ALTER COLUMN id_tecnico SET DEFAULT nextval('pu
 --
 
 ALTER TABLE ONLY public.tiendas ALTER COLUMN id_tienda SET DEFAULT nextval('public.tiendas_id_tienda_seq'::regclass);
+
+
+--
+-- Name: estado estado_pkey; Type: CONSTRAINT; Schema: public; Owner: usuario
+--
+
+ALTER TABLE ONLY public.estado
+    ADD CONSTRAINT estado_pkey PRIMARY KEY (id_estado);
 
 
 --
@@ -634,11 +687,27 @@ ALTER TABLE ONLY public.modelo_telefono
 
 
 --
+-- Name: ordenes fk_orden_estado; Type: FK CONSTRAINT; Schema: public; Owner: usuario
+--
+
+ALTER TABLE ONLY public.ordenes
+    ADD CONSTRAINT fk_orden_estado FOREIGN KEY (id_estado) REFERENCES public.estado(id_estado) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
 -- Name: ordenes fk_orden_modelo; Type: FK CONSTRAINT; Schema: public; Owner: usuario
 --
 
 ALTER TABLE ONLY public.ordenes
     ADD CONSTRAINT fk_orden_modelo FOREIGN KEY (id_modelo_telefono) REFERENCES public.modelo_telefono(id_modelo_telefono) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: ordenes fk_orden_tecnico; Type: FK CONSTRAINT; Schema: public; Owner: usuario
+--
+
+ALTER TABLE ONLY public.ordenes
+    ADD CONSTRAINT fk_orden_tecnico FOREIGN KEY (id_tecnico) REFERENCES public.tecnicos(id_tecnico) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
