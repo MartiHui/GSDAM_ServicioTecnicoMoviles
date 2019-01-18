@@ -20,4 +20,8 @@ INCLUDEPATH += ./source \
                ./header
 
 SOURCES += \
-        source/main.cpp
+        source/main.cpp \
+        source/server.cpp
+
+HEADERS += \
+    header/server.h
