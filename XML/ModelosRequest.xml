@@ -2,8 +2,9 @@
 
 <ServicioTecnicoMoviles>
     <head>
-        <action>REQUEST_MARCAS</action>
+        <action>REQUEST_MODELOS</action>
     </head>
     <body>
+    <marca></marca>
     </body>
-</ServicioTecnicoMoviles>
+</ServicioTecnicoMoviles> 
