@@ -24,6 +24,7 @@ signals:
 private slots:
     void socketConnected();
     void socketDisconnected();
+    void processTextMessage(QString message);
 };
 
 #endif // SERVER_H
