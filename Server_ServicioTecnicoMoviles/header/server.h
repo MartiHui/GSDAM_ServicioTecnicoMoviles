@@ -4,8 +4,9 @@
 #include <QObject>
 #include <QList>
 
+
 class QWebSocketServer;
-class QWebSocket;
+class Client;
 
 class Server : public QObject
 {
@@ -14,9 +15,11 @@ public:
     explicit Server(quint16 port);
     ~Server();
 
+    void removeClientSocket(Client *client);
+
 private:
     QWebSocketServer *m_webSocketServer;
-    QList<QWebSocket *> m_clients;
+    QList<Client *> m_clients;
 
 signals:
     void close();

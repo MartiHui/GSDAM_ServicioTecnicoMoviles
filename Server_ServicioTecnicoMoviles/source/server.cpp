@@ -3,10 +3,11 @@
 #include <QDebug>
 
 #include "server.h"
+#include "client.h"
 
 Server::Server(quint16 port) {
-    m_webSocketServer(new QWebSocketServer(QStringLiteral("Servidor Servicio Tecnico de Moviles"),
-                                           QWebSocket::NonSecureMode, this));
+    m_webSocketServer = new QWebSocketServer(QStringLiteral("Servidor Servicio Tecnico de Moviles"),
+                                           QWebSocketServer::NonSecureMode, this);
     if (m_webSocketServer->listen(QHostAddress::Any, port)) {
         qDebug() << "Servidor iniciado. Puerto: " << port;
 
@@ -20,25 +21,29 @@ Server::~Server() {
     qDeleteAll(m_clients.begin(), m_clients.end());
 }
 
+void Server::removeClientSocket(Client *client) {
+    m_clients.removeAll(client);
+    client->deleteLater();
+}
+
 void Server::socketConnected() {
-    QWebSocket *clientSocket = m_webSocketServer->nextPendingConnection();
+    Client *client = new Client(m_webSocketServer->nextPendingConnection());
 
-    qDebug() << "Conexion recibida: " << clientSocket;
+    qDebug() << "Conexion recibida: " << client->getWebSocket();
 
-    connect(clientSocket, &QWebSocket::textMessageReceived, this, &Server::processTextMessage);
-    connect(clientSocket, &QWebSocket::disconnected, this, &Server::socketDisconnected);
+    connect(client->getWebSocket(), &QWebSocket::textMessageReceived, this, &Server::processTextMessage);
+    connect(client->getWebSocket(), &QWebSocket::disconnected, this, &Server::socketDisconnected);
 
-    m_clients << clientSocket;
+    m_clients << client;
 }
 
 void Server::socketDisconnected() {
-    QWebSocket clientSocket = qobject_cast<QWebSocket *>(sender());
+    Client *client = qobject_cast<Client *>(sender());
 
-    qDebug() << "Conexión finalizada: " << clientSocket;
+    qDebug() << "Conexión finalizada: " << client->getWebSocket();
 
-    if (clientSocket) {
-        m_clients.removeAll(clientSocket);
-        clientSocket.deleteLater();
+    if (client) {
+        removeClientSocket(client);
     }
 }
 

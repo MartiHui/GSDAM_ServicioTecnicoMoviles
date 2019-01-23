@@ -21,7 +21,9 @@ INCLUDEPATH += ./source \
 
 SOURCES += \
         source/main.cpp \
-        source/server.cpp
+        source/server.cpp \
+    source/client.cpp
 
 HEADERS += \
-    header/server.h
+    header/server.h \
+    header/client.h
