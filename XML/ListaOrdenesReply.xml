@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE ServicioTecnicoMoviles SYSTEM "ListaOrdenesReply.dtd">
+<ServicioTecnicoMoviles>
+	<head>
+		<action>LISTA_ORDENES_ASK</action>
+	</head>
+	<body>
+		<ordenes>
+			<orden>
+				<id></id>
+				<modelo></modelo>
+				<fecha></fecha>
+				<estado></estado>
+				<reparaciones>
+					<reparacion>
+						<nombre></nombre>
+						<precio></precio>
+					</reparacion>
+				</reparaciones>
+			</orden>
+		</ordenes>
+	</body>
+</ServicioTecnicoMoviles>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE ServicioTecnicoMoviles SYSTEM "ListaOrdenesAsk.dtd">
+<ServicioTecnicoMoviles>
+	<head>
+		<action>LISTA_ORDENES_ASK</action>
+	</head>
+</ServicioTecnicoMoviles>

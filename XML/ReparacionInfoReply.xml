@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE ServicioTecnicoMoviles SYSTEM "ReparacionInfoReply.dtd">
+<ServicioTecnicoMoviles>
+    <head>
+        <action>REPARACION_INFO_REPLY</action>
+    </head>
+    <body>
+    	<reparaciones>
+    		<reparacion id="">
+    			<nombre></nombre>
+    			<tiempo></tiempo>
+    			<coste></coste>
+    		</reparacion>
+    	</reparaciones>
+    </body>
+</ServicioTecnicoMoviles>

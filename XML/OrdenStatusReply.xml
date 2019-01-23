@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE ServicioTecnicoMoviles SYSTEM "OrdenRequestReply.dtd">
+<ServicioTecnicoMoviles>
+    <head>
+        <action>ORDEN_STATUS_REPLY</action>
+    </head>
+    <body>
+    	<respuesta></respuesta>
+    </body>
+</ServicioTecnicoMoviles>

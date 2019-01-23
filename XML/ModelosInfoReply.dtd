@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!ELEMENT ServicioTecnicoMoviles (head)>
+	<!ELEMENT head (action)>
+		<!ELEMENT action (#PCDATA)>
+	<!ELEMENT body (modelos)>
+		<!ELEMENT modelos (modelo*)>
+			<!ELEMENT modelo (#PCDATA)>
+				<!ATTLIST modelo id CDATA #REQUIRED>

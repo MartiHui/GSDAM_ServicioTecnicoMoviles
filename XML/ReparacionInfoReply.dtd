@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!ELEMENT ServicioTecnicoMoviles (head)>
+	<!ELEMENT head (action)>
+		<!ELEMENT action (#PCDATA)>
+	<!ELEMENT body (reparaciones)>
+		<!ELEMENT reparaciones (reparacion*)>
+			<!ELEMENT reparacion (nombre, tiempo, coste)>
+				<!ATTLIST reparacion id CDATA #REQUIRED>
+				<!ELEMENT nombre (#PCDATA)>
+				<!ELEMENT tiempo (#PCDATA)>
+				<!ELEMENT coste (#PCDATA)>

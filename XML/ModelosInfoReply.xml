@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE ServicioTecnicoMoviles SYSTEM "ModelosInfoReply.dtd">
+<ServicioTecnicoMoviles>
+    <head>
+        <action>MODELOS_INFO_REPLY</action>
+    </head>
+    <body>
+    	<modelos>
+    		<modelo id=""></modelo>
+    	</modelos>
+    </body>
+</ServicioTecnicoMoviles>
