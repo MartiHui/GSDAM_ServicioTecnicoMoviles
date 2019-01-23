@@ -6,6 +6,7 @@
         <action>ORDEN_REQUEST_REPLY</action>
     </head>
     <body>
+    	<orden_id></orden_id>
     	<response accepted=""></response>
     </body>
 </ServicioTecnicoMoviles>

@@ -3,7 +3,8 @@
 <!ELEMENT ServicioTecnicoMoviles (head, body)>
 	<!ELEMENT head (action)>
 		<!ELEMENT action (#PCDATA)>
-	<!ELEMENT body (response)>
+	<!ELEMENT body (orden_id, response)>
+		<!ELEMENT orden_id (#PCDATA)>
 		<!ELEMENT response (#PCDATA)>
 			<!ATTLIST responde accepted (true|false) #REQUIRED>
 		
