@@ -83,3 +83,7 @@ QString Action::getReply() {
 
     return reply;
 }
+
+bool Action::isXmlValid(const char *archivoXML) {
+
+}

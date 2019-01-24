@@ -29,6 +29,7 @@ private:
     QXmlStreamReader *m_xmlReader;
 
     void setActionType();
+    bool isXmlValid(const char *archivoXML);
 };
 
 #endif // ACTION_H

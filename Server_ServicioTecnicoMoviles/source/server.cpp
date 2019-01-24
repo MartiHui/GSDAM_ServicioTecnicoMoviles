@@ -55,12 +55,8 @@ void Server::processTextMessage(QString message) {
 
     if (client->isValidated()) {
         Action *action = new Action(&message);
-        if (action->getActionType() == ActionType::INVALID) {
-            reply = QString("Petición inválida");
-        } else {
-            reply = action->getReply();
-        }
+        reply = action->getReply();
     } else {
-
+        removeClientSocket(client);
     }
 }
