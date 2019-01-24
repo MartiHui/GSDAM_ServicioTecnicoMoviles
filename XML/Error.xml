@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE ServicioTecnicoMoviles SYSTEM "Error.dtd">
+<ServicioTecnicoMoviles>
+	<head>
+		<action>ERROR</action>
+	</head>
+	<body>
+		<message></message>
+	</body>
+</ServicioTecnicoMoviles>
