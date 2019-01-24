@@ -4,6 +4,7 @@
 
 #include "server.h"
 #include "client.h"
+#include "action.h"
 
 Server::Server(quint16 port) {
     m_webSocketServer = new QWebSocketServer(QStringLiteral("Servidor Servicio Tecnico de Moviles"),
@@ -39,7 +40,6 @@ void Server::socketConnected() {
 
 void Server::socketDisconnected() {
     Client *client = qobject_cast<Client *>(sender());
-
     qDebug() << "Conexión finalizada: " << client->getWebSocket();
 
     if (client) {
@@ -48,8 +48,19 @@ void Server::socketDisconnected() {
 }
 
 void Server::processTextMessage(QString message) {
-    QWebSocket *clientSocket = qobject_cast<QWebSocket *>(sender());
-    qDebug() << "Mensaje recibido. Remitente: " << clientSocket;
+    Client *client = qobject_cast<Client *>(sender());
+    qDebug() << "Mensaje recibido. Remitente: " << client->getWebSocket();
 
+    QString reply;
 
+    if (client->isValidated()) {
+        Action *action = new Action(&message);
+        if (action->getActionType() == ActionType::INVALID) {
+            reply = QString("Petición inválida");
+        } else {
+            reply = action->getReply();
+        }
+    } else {
+
+    }
 }

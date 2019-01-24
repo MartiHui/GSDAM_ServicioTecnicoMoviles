@@ -9,6 +9,14 @@ Client::Client(QWebSocket * webSocket) {
     m_webSocket = webSocket;
 }
 
+Client::~Client() {
+    delete m_webSocket;
+}
+
 QWebSocket* Client::getWebSocket() {
     return m_webSocket;
+}
+
+bool Client::isValidated() {
+    return m_validated;
 }

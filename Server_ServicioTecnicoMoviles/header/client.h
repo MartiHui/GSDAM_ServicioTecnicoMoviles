@@ -12,6 +12,7 @@ public:
     ~Client();
 
     QWebSocket* getWebSocket();
+    bool isValidated();
 
 private:
     int m_tiendaId; // EL ID que tiene esta tienda en la base de datos
