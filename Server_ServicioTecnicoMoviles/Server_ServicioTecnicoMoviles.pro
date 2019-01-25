@@ -15,6 +15,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 QT += websockets
+QT += sql
 
 INCLUDEPATH += ./source \
                ./header
@@ -23,9 +24,11 @@ SOURCES += \
         source/main.cpp \
         source/server.cpp \
     source/client.cpp \
-    source/action.cpp
+    source/action.cpp \
+    source/dbcontroller.cpp
 
 HEADERS += \
     header/server.h \
     header/client.h \
-    header/action.h
+    header/action.h \
+    header/dbcontroller.h

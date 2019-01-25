@@ -51,12 +51,16 @@ void Server::processTextMessage(QString message) {
     Client *client = qobject_cast<Client *>(sender());
     qDebug() << "Mensaje recibido. Remitente: " << client->getWebSocket();
 
+    Action *action = new Action(&message);
     QString reply;
 
-    if (client->isValidated()) {
-        Action *action = new Action(&message);
+    if (action->getActionType() == ActionType::ESTABLISH_CONNECTION || client->isValidated()) {
         reply = action->getReply();
     } else {
-        removeClientSocket(client);
+        reply = action->clientNotValidated();
     }
+
+    client->getWebSocket()->sendTextMessage(message);
+
+    delete action;
 }
