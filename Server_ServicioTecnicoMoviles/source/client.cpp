@@ -20,3 +20,7 @@ QWebSocket* Client::getWebSocket() {
 bool Client::isValidated() {
     return m_validated;
 }
+
+void Client::validate() {
+    m_validated = true;
+}

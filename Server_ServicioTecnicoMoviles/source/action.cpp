@@ -3,6 +3,8 @@
 #include <QDebug>
 
 #include "action.h"
+#include "dbcontroller.h"
+#include "client.h"
 
 Action::Action(const QString *message) {
     m_xmlReader = new QXmlStreamReader(*message);
@@ -56,12 +58,7 @@ QString Action::getReply() {
     switch (m_actionType) {
     case ActionType::INVALID:
         //reply = QString("INVALID");
-        InvalidXml(&reply);
-        break;
-
-    case ActionType::ESTABLISH_CONNECTION:
-        //reply = QString("ESTABLISH_CONNECTION");
-        EstablishConnection(&reply);
+        Error(&reply, QString("Ha habido un error con tu solicitud."));
         break;
 
     case ActionType::LISTA_ORDENES_ASK:
@@ -101,7 +98,7 @@ bool Action::isXmlValid(const char *archivoXML) {
     return true;
 }
 
-void Action::InvalidXml(QString *reply) {
+void Action::Error(QString *reply, QString message) {
     QXmlStreamWriter writer(reply);
     writer.setAutoFormatting(true);
     writer.writeStartDocument();
@@ -114,16 +111,33 @@ void Action::InvalidXml(QString *reply) {
     writer.writeEndElement(); // Cerrar etiqueta head
 
     writer.writeStartElement("body");
-    writer.writeTextElement("message", "Ha habido un error con tu solicitud.");
+    writer.writeTextElement("message", message);
     writer.writeEndDocument(); // Se cierran todas las etiquetas hasta el final
 }
 
-void Action::EstablishConnection(QString *reply) {
-    QXmlStreamWriter writer(reply);
-    writer.setAutoFormatting(true);
-    writer.writeStartDocument();
-    writer.writeDTD("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"Error.dtd\">");
+void Action::EstablishConnection(QString *reply, Client *client) {
+    QString nombreTienda = getTextElement(QString("tienda"));
 
+    if (DBController::getInstance()->tiendaInDb(nombreTienda)) {
+        client->validate();
+
+        QXmlStreamWriter writer(reply);
+        writer.setAutoFormatting(true);
+        writer.writeStartDocument();
+        writer.writeDTD("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"EstablishConnection.dtd\">");
+
+        writer.writeStartElement("ServicioTecnicoMoviles");
+
+        writer.writeStartElement("head");
+        writer.writeTextElement("action", "ESTABLISH_CONNECTION");
+        writer.writeEndElement(); // Cerrar etiqueta head
+
+        writer.writeStartElement("body");
+        writer.writeTextElement("tienda", "Conectado con la base de datos.");
+        writer.writeEndDocument(); // Se cierran todas las etiquetas hasta el final
+    } else {
+        Error(reply, QString("Tu tienda no está en nuestra base de datos"));
+    }
 }
 
 void Action::ListaOrdenes(QString *reply) {
@@ -152,4 +166,17 @@ void Action::OrdenStatus(QString *reply) {
 
 QString Action::clientNotValidated() {
 
+}
+
+QString Action::getTextElement(QString tagName) {
+    QString value{""};
+    m_xmlReader->skipCurrentElement();
+    while (m_xmlReader->readNextStartElement()) {
+        if (m_xmlReader->name() == tagName) {
+            value = m_xmlReader->readElementText();
+            break;
+        }
+    }
+
+    return value;
 }

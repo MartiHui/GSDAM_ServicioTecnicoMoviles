@@ -54,7 +54,9 @@ void Server::processTextMessage(QString message) {
     Action *action = new Action(&message);
     QString reply;
 
-    if (action->getActionType() == ActionType::ESTABLISH_CONNECTION || client->isValidated()) {
+    if (action->getActionType() == ActionType::ESTABLISH_CONNECTION) {
+        action->EstablishConnection(&reply, client);
+    } else if (client->isValidated()) {
         reply = action->getReply();
     } else {
         reply = action->clientNotValidated();

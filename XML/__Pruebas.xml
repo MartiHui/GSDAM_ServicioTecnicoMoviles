@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<Prueba>
-	<Nombre>HOLA MUNDO</Nombre>
-	<Edad>1234832432</Edad>
-</Prueba>
+<!DOCTYPE ServicioTecnicoMoviles SYSTEM "EstablishConnection.dtd">
+<ServicioTecnicoMoviles>
+    <head>
+        <action>ESTABLISH_CONNECTION</action>
+    </head>
+    <body>
+        <tienda>EDIB</tienda>
+    </body>
+</ServicioTecnicoMoviles>

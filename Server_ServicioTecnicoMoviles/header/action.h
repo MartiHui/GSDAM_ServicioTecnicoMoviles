@@ -4,6 +4,7 @@
 #include <QObject>
 
 class QXmlStreamReader;
+class Client;
 
 enum class ActionType {
     INVALID,
@@ -24,6 +25,7 @@ public:
     ActionType getActionType();
     QString getReply();
     QString clientNotValidated();
+    void EstablishConnection(QString *reply, Client *client);
 
 private:
     ActionType m_actionType{ActionType::INVALID};
@@ -32,14 +34,14 @@ private:
 
     void setActionType();
     bool isXmlValid(const char *archivoXML);
-    void InvalidXml(QString *reply);
-    void EstablishConnection(QString *reply);
+    void Error(QString *reply, QString message);
     void ListaOrdenes(QString *reply);
     void MarcasInfo(QString *reply);
     void ModelosInfo(QString *reply);
     void ReparacionInfo(QString *reply);
     void OrdenRequest(QString *reply);
     void OrdenStatus(QString *reply);
+    QString getTextElement(QString tagName);
 };
 
 #endif // ACTION_H
