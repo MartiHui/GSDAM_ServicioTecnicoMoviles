@@ -4,13 +4,11 @@
 #include <QTextStream>
 #include <QtSql>
 
+#include "server.h"
 #include "action.h"
-
 #include "client.h"
-int main(int argc, char *argv[])
-{
-    QCoreApplication a(argc, argv);
 
+void pruebas() {
     QFile file("../XML/__Pruebas.xml");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "No encuentro el archivo";
@@ -35,8 +33,8 @@ int main(int argc, char *argv[])
             reply.close();
             qDebug() << "Se ha escrito la respuesta en un archivo";
         }
-    }/*
-    QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
+    }
+    /*QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
     db.setHostName("127.0.0.1");
     db.setPort(5432);
     db.setDatabaseName("ServicioTecnicoMoviles");
@@ -47,6 +45,14 @@ int main(int argc, char *argv[])
     } else {
         qDebug() << "Mierda";
     }*/
+}
+
+int main(int argc, char *argv[])
+{
+    QCoreApplication a(argc, argv);
+
+    //pruebas();
+    Server *server = new Server(1234);
 
     return a.exec();
 }

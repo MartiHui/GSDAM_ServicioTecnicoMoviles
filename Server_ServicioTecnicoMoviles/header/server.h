@@ -18,6 +18,7 @@ public:
     void removeClientSocket(Client *client);
 
 private:
+    quint16 m_port;
     QWebSocketServer *m_webSocketServer;
     QList<Client *> m_clients;
 
@@ -28,6 +29,7 @@ private slots:
     void socketConnected();
     void socketDisconnected();
     void processTextMessage(QString message);
+    void startServer();
 };
 
 #endif // SERVER_H

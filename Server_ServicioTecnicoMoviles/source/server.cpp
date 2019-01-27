@@ -1,20 +1,15 @@
 #include <QWebSocketServer>
 #include <QWebSocket>
 #include <QDebug>
+#include <QTimer>
 
 #include "server.h"
 #include "client.h"
 #include "action.h"
 
 Server::Server(quint16 port) {
-    m_webSocketServer = new QWebSocketServer(QStringLiteral("Servidor Servicio Tecnico de Moviles"),
-                                           QWebSocketServer::NonSecureMode, this);
-    if (m_webSocketServer->listen(QHostAddress::Any, port)) {
-        qDebug() << "Servidor iniciado. Puerto: " << port;
-
-        connect(m_webSocketServer, &QWebSocketServer::newConnection, this, &Server::socketConnected);
-        connect(m_webSocketServer, &QWebSocketServer::closed, this, &Server::close);
-    }
+    m_port = port;
+    QTimer::singleShot(0, this, SLOT(startServer()));
 }
 
 Server::~Server() {
@@ -25,6 +20,17 @@ Server::~Server() {
 void Server::removeClientSocket(Client *client) {
     m_clients.removeAll(client);
     client->deleteLater();
+}
+
+void Server::startServer() {
+    m_webSocketServer = new QWebSocketServer(QStringLiteral("Servidor Servicio Tecnico de Moviles"),
+                                           QWebSocketServer::NonSecureMode, this);
+    if (m_webSocketServer->listen(QHostAddress::Any, m_port)) {
+        qDebug() << "Servidor iniciado. Puerto: " << m_port;
+
+        connect(m_webSocketServer, &QWebSocketServer::newConnection, this, &Server::socketConnected);
+        connect(m_webSocketServer, &QWebSocketServer::closed, this, &Server::close);
+    }
 }
 
 void Server::socketConnected() {
