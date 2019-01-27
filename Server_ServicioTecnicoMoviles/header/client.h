@@ -14,6 +14,7 @@ public:
     QWebSocket* getWebSocket();
     bool isValidated();
     void validate(int tiendaId);
+    int getTiendaId();
 
 private:
     int m_tiendaId; // EL ID que tiene esta tienda en la base de datos

@@ -21,6 +21,7 @@ int main(int argc, char *argv[])
 
         Action *action = new Action(&xml);
         Client *client = new Client(nullptr);
+        client->validate(2);
         QString respuesta;
         QFile reply("respuesta.xml");
         if (!reply.open(QIODevice::WriteOnly)) {

@@ -2,6 +2,7 @@
 #define ACTION_H
 
 #include <QObject>
+#include <QVector>
 
 class QXmlStreamReader;
 class Client;
@@ -27,6 +28,13 @@ public:
         float precio;
     };
 
+    struct Orden {
+        int ordenId;
+        int modeloId;
+        int tiendaId;
+        QVector<int> reparacionesId;
+    };
+
     explicit Action(const QString *message);
     ~Action();
     ActionType getActionType();
@@ -45,8 +53,8 @@ private:
     void marcasInfo(QString *reply);
     void modelosInfo(QString *reply);
     void reparacionInfo(QString *reply);
-    void ordenRequest(QString *reply);
-    void ordenStatus(QString *reply);
+    void ordenRequest(QString *reply, Client *client);
+    void ordenStatus(QString *reply, Client *client);
     QString getTextElement(QString tagName);
 };
 

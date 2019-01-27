@@ -81,3 +81,31 @@ void DBController::getReparaciones(int modeloId, QVector<Action::Reparacion> *re
         reparaciones->push_back(reparacion);
     }
 }
+
+void DBController::insertOrden(Action::Orden *orden) {
+    QSqlQuery query;
+    query.exec("INSERT INTO ordenes(id_modelo_telefono, id_tienda) VALUES ("
+               + QString::number(orden->modeloId) + ", " + QString::number(orden->tiendaId) + ")");
+    int ordenId = 0;
+    if (query.lastInsertId().isValid()) {
+        ordenId = query.lastInsertId().toInt();
+        orden->ordenId = ordenId;
+        for (int idx = 0; idx < orden->reparacionesId.count(); idx++) {
+            query.exec("INSERT INTO orden_detalles(id_orden, id_reparacion_modelo) "
+                       "VALUES(" + QString::number(ordenId) + ", " +
+                       QString::number(orden->reparacionesId.at(idx)) + ")");
+        }
+    }
+}
+
+void DBController::getOrdenStatus(int ordenId, QPair<int, QString> *ordenStatus) {
+    QSqlQuery query;
+    query.exec("SELECT id_tienda, nombre_estado FROM public.ordenes JOIN estado "
+               "ON ordenes.id_estado = estado.id_estado WHERE id_orden = \'" +
+               QString::number(ordenId) + "\'");
+
+    if (query.next()) {
+        ordenStatus->first = query.value(0).toInt();
+        ordenStatus->second = query.value(1).toString();
+    }
+}

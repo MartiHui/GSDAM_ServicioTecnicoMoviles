@@ -18,6 +18,8 @@ public:
     void getMarcas(QVector<QPair<int, QString> > *marcas);
     void getModelos(int marcaId, QVector<QPair<int, QString> > *modelos);
     void getReparaciones(int modeloId, QVector<Action::Reparacion> *reparaciones);
+    void insertOrden(Action::Orden *orden);
+    void getOrdenStatus(int ordenId, QPair<int, QString> *ordenStatus);
 
 private:
     explicit DBController();

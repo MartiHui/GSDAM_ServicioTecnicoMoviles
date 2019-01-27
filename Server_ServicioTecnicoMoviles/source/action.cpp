@@ -63,6 +63,7 @@ void Action::getReply(QString *reply, Client *client) {
 
     case ActionType::ESTABLISH_CONNECTION:
         establishConnection(reply, client);
+        break;
 
     case ActionType::LISTA_ORDENES_ASK:
         //reply = QString("LISTA_ORDENES_ASK");
@@ -86,12 +87,12 @@ void Action::getReply(QString *reply, Client *client) {
 
     case ActionType::ORDEN_REQUEST_ASK:
         //reply = QString("ORDEN_REQUEST_ASK");
-        ordenRequest(reply);
+        ordenRequest(reply, client);
         break;
 
     case ActionType::ORDEN_STATUS_ASK:
         //reply = QString("ORDEN_STATUS_ASK");
-        ordenStatus(reply);
+        ordenStatus(reply, client);
         break;
     }
 }
@@ -231,12 +232,59 @@ void Action::reparacionInfo(QString *reply) {
     writer.writeEndDocument(); // Se cierran todas las etiquetas hasta el final
 }
 
-void Action::ordenRequest(QString *reply) {
+void Action::ordenRequest(QString *reply, Client *client) {
+    Orden orden;
+    orden.modeloId = getTextElement("modelo_id").toInt();
+    orden.tiendaId = client->getTiendaId();
+    m_xmlReader->readNextStartElement();
+    while (m_xmlReader->readNextStartElement()) {
+        orden.reparacionesId.push_back(m_xmlReader->readElementText().toInt());
+    }
 
+    DBController::getInstance()->insertOrden(&orden);
+    if (orden.ordenId) {
+        QXmlStreamWriter writer(reply);
+        writer.setAutoFormatting(true);
+        writer.writeStartDocument();
+        writer.writeDTD("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"OrdenRequestReply.dtd\">");
+
+        writer.writeStartElement("ServicioTecnicoMoviles");
+
+        writer.writeStartElement("head");
+        writer.writeTextElement("action", "ORDEN_REQUEST_REPLY");
+        writer.writeEndElement(); // Cerrar etiqueta head
+
+        writer.writeStartElement("body");
+        writer.writeTextElement("orden_id", QString::number(orden.ordenId));
+        writer.writeEndDocument(); // Se cierran todas las etiquetas hasta el final
+    } else {
+        error(reply, "Ha habido un error con tu solicitud");
+    }
 }
 
-void Action::ordenStatus(QString *reply) {
+void Action::ordenStatus(QString *reply, Client *client) {
+    QPair<int, QString> ordenStatus; // El prime valor devolvera el id de la tienda de la orden
+    int ordenId = getTextElement("order_id").toInt();
+    DBController::getInstance()->getOrdenStatus(ordenId, &ordenStatus);
 
+    if (client->getTiendaId() == ordenStatus.first) {
+        QXmlStreamWriter writer(reply);
+        writer.setAutoFormatting(true);
+        writer.writeStartDocument();
+        writer.writeDTD("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"OrdenStatusReply.dtd\">");
+
+        writer.writeStartElement("ServicioTecnicoMoviles");
+
+        writer.writeStartElement("head");
+        writer.writeTextElement("action", "ORDEN_STATUS_REPLY");
+        writer.writeEndElement(); // Cerrar etiqueta head
+
+        writer.writeStartElement("body");
+        writer.writeTextElement("respuesta", ordenStatus.second);
+        writer.writeEndDocument(); // Se cierran todas las etiquetas hasta el final
+    } else {
+        error(reply, "No puedes acceder a este pedido.");
+    }
 }
 
 QString Action::getTextElement(QString tagName) {

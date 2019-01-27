@@ -25,3 +25,7 @@ void Client::validate(int tiendaId) {
     m_tiendaId = tiendaId;
     m_validated = true;
 }
+
+int Client::getTiendaId() {
+    return m_tiendaId;
+}
