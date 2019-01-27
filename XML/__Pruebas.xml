@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!DOCTYPE ServicioTecnicoMoviles SYSTEM "ModelosInfoAsk.dtd">
+<!DOCTYPE ServicioTecnicoMoviles SYSTEM "ReparacionInfoAsk.dtd">
 <ServicioTecnicoMoviles>
-    <head>
-        <action>MODELOS_INFO_ASK</action>
-    </head>
-    <body>
-    	<marca_id>1</marca_id>
-    </body>
-</ServicioTecnicoMoviles> 
+	<head>
+		<action>REPARACION_INFO_ASK</action>
+	</head>
+	<body>
+		<modelo_id>1</modelo_id>
+	</body>
+</ServicioTecnicoMoviles>
+

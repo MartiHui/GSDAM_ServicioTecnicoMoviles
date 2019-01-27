@@ -6,6 +6,7 @@
         <action>REPARACION_INFO_REPLY</action>
     </head>
     <body>
+        <modelo_id></modelo_id>
     	<reparaciones>
     		<reparacion id="">
     			<nombre></nombre>

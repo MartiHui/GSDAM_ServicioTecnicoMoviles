@@ -20,6 +20,13 @@ enum class ActionType {
 class Action : public QObject {
     Q_OBJECT
 public:
+    struct Reparacion {
+        int reparacionId;
+        QString nombre;
+        int tiempoMinutos;
+        float precio;
+    };
+
     explicit Action(const QString *message);
     ~Action();
     ActionType getActionType();

@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QtSql>
 
+#include "action.h"
+
 //class QSqlDatabase;
 
 class DBController : QObject {
@@ -15,6 +17,7 @@ public:
     int tiendaInDb(QString nombreTienda);
     void getMarcas(QVector<QPair<int, QString> > *marcas);
     void getModelos(int marcaId, QVector<QPair<int, QString> > *modelos);
+    void getReparaciones(int modeloId, QVector<Action::Reparacion> *reparaciones);
 
 private:
     explicit DBController();

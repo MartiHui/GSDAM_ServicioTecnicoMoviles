@@ -191,7 +191,7 @@ void Action::modelosInfo(QString *reply) {
 
     writer.writeStartElement("body");
     writer.writeTextElement("marca_id", QString::number(marcaId));
-    writer.writeStartElement("modelos");qDebug() << modelos.count();
+    writer.writeStartElement("modelos");
     for (int i = 0; i < modelos.count(); i++) {
         writer.writeStartElement("modelo");
         writer.writeAttribute("id", QString::number(modelos.at(i).first));
@@ -202,7 +202,33 @@ void Action::modelosInfo(QString *reply) {
 }
 
 void Action::reparacionInfo(QString *reply) {
+    int modeloId = getTextElement("modelo_id").toInt();
+    QVector<Reparacion> reparaciones;
+    DBController::getInstance()->getReparaciones(modeloId, &reparaciones);
 
+    QXmlStreamWriter writer(reply);
+    writer.setAutoFormatting(true);
+    writer.writeStartDocument();
+    writer.writeDTD("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"ReparacionInfoReply.dtd\">");
+
+    writer.writeStartElement("ServicioTecnicoMoviles");
+
+    writer.writeStartElement("head");
+    writer.writeTextElement("action", "REPARACION_INFO_REPLY");
+    writer.writeEndElement(); // Cerrar etiqueta head
+
+    writer.writeStartElement("body");
+    writer.writeTextElement("modelo_id", QString::number(modeloId));
+    writer.writeStartElement("reparaciones");
+    for (int i = 0; i < reparaciones.count(); i++) {
+        writer.writeStartElement("reparacion");
+        writer.writeAttribute("id", QString::number(reparaciones.at(i).reparacionId));
+        writer.writeTextElement("nombre", reparaciones.at(i).nombre);
+        writer.writeTextElement("tiempo", QString::number(reparaciones.at(i).tiempoMinutos));
+        writer.writeTextElement("coste", QString::number(reparaciones.at(i).precio));
+        writer.writeEndElement();
+    }
+    writer.writeEndDocument(); // Se cierran todas las etiquetas hasta el final
 }
 
 void Action::ordenRequest(QString *reply) {

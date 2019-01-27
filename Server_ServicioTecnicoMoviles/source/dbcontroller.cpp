@@ -3,6 +3,7 @@
 #include <QPair>
 
 #include "dbcontroller.h"
+#include "action.h"
 
 DBController *DBController::m_pInstance = NULL;
 
@@ -62,5 +63,21 @@ void DBController::getModelos(int marcaId, QVector<QPair<int, QString> > *modelo
         modelo.first = query.value(0).toInt();
         modelo.second = query.value(1).toString();
         modelos->push_back(modelo);
+    }
+}
+
+void DBController::getReparaciones(int modeloId, QVector<Action::Reparacion> *reparaciones) {
+    QSqlQuery query;
+    query.exec("SELECT id_modelo_reparacion, nombre_reparacion, tiempo_modelo_reparacion, "
+               "coste_modelo_reparacion FROM modelo_reparacion INNER JOIN reparaciones "
+               " ON reparaciones.id_reparacion = modelo_reparacion.id_reparacion "
+               "WHERE \"id_modelo_telefono\" = \'" + QString::number(modeloId) + "\'");
+    while (query.next()) {
+        Action::Reparacion reparacion;
+        reparacion.reparacionId = query.value(0).toInt();
+        reparacion.nombre = query.value(1).toString();
+        reparacion.tiempoMinutos = query.value(2).toInt();
+        reparacion.precio = query.value(3).toFloat();
+        reparaciones->push_back(reparacion);
     }
 }

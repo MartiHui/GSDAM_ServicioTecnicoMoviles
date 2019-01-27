@@ -3,7 +3,8 @@
 <!ELEMENT ServicioTecnicoMoviles (head)>
 	<!ELEMENT head (action)>
 		<!ELEMENT action (#PCDATA)>
-	<!ELEMENT body (reparaciones)>
+	<!ELEMENT body (modelo_id, reparaciones)>
+        <!ELEMENT modelo_id (#PCDATA)>
 		<!ELEMENT reparaciones (reparacion*)>
 			<!ELEMENT reparacion (nombre, tiempo, coste)>
 				<!ATTLIST reparacion id CDATA #REQUIRED>
