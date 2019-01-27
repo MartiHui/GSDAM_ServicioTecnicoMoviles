@@ -303,9 +303,9 @@ CREATE TABLE public.ordenes (
     id_orden integer NOT NULL,
     id_modelo_telefono integer NOT NULL,
     id_tienda integer NOT NULL,
-    fecha date NOT NULL,
-    id_estado integer NOT NULL,
-    id_tecnico integer NOT NULL
+    fecha date DEFAULT now() NOT NULL,
+    id_estado integer DEFAULT 1 NOT NULL,
+    id_tecnico integer DEFAULT 1 NOT NULL
 );
 
 
@@ -587,6 +587,9 @@ ALTER TABLE ONLY public.tiendas ALTER COLUMN id_tienda SET DEFAULT nextval('publ
 --
 
 COPY public.estado (id_estado, nombre_estado) FROM stdin;
+1	TRANSPORTE A INSTALACIONES
+2	REPARANDO
+3	TRANSPORTE A LA TIENDA
 \.
 
 
@@ -681,6 +684,9 @@ COPY public.modelo_telefono (id_modelo_telefono, id_marca_modelo_telefono, nombr
 --
 
 COPY public.orden_detalles (id_orden, id_reparacion_modelo) FROM stdin;
+1	1
+1	4
+2	5
 \.
 
 
@@ -689,6 +695,8 @@ COPY public.orden_detalles (id_orden, id_reparacion_modelo) FROM stdin;
 --
 
 COPY public.ordenes (id_orden, id_modelo_telefono, id_tienda, fecha, id_estado, id_tecnico) FROM stdin;
+2	3	1	2019-01-27	1	1
+1	1	1	2019-01-27	3	1
 \.
 
 
@@ -711,6 +719,8 @@ COPY public.reparaciones (id_reparacion, nombre_reparacion) FROM stdin;
 --
 
 COPY public.tecnicos (id_tecnico, nombre_tecnico) FROM stdin;
+1	Pepe Pablos
+2	Miguel Rubio
 \.
 
 
@@ -727,7 +737,7 @@ COPY public.tiendas (id_tienda, direccion_tienda, ciudad_tienda, pais_tienda, no
 -- Name: estado_id_estado_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
 --
 
-SELECT pg_catalog.setval('public.estado_id_estado_seq', 1, false);
+SELECT pg_catalog.setval('public.estado_id_estado_seq', 3, true);
 
 
 --
@@ -804,7 +814,7 @@ SELECT pg_catalog.setval('public.ordenes_id_modelo_telefono_seq', 1, false);
 -- Name: ordenes_id_orden_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
 --
 
-SELECT pg_catalog.setval('public.ordenes_id_orden_seq', 1, false);
+SELECT pg_catalog.setval('public.ordenes_id_orden_seq', 2, true);
 
 
 --
@@ -832,7 +842,7 @@ SELECT pg_catalog.setval('public.reparaciones_id_reparacion_seq', 6, true);
 -- Name: tecnicos_id_tecnico_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
 --
 
-SELECT pg_catalog.setval('public.tecnicos_id_tecnico_seq', 1, false);
+SELECT pg_catalog.setval('public.tecnicos_id_tecnico_seq', 2, true);
 
 
 --
