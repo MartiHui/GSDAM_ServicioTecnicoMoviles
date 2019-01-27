@@ -6,6 +6,7 @@
         <action>MODELOS_INFO_REPLY</action>
     </head>
     <body>
+        <marca_id></marca_id>
     	<modelos>
     		<modelo id=""></modelo>
     	</modelos>

@@ -3,7 +3,8 @@
 <!ELEMENT ServicioTecnicoMoviles (head)>
 	<!ELEMENT head (action)>
 		<!ELEMENT action (#PCDATA)>
-	<!ELEMENT body (modelos)>
+	<!ELEMENT body (marca_id, modelos)>
+        <!ELEMENT marca_id (#PCDATA)>
 		<!ELEMENT modelos (modelo*)>
 			<!ELEMENT modelo (#PCDATA)>
 				<!ATTLIST modelo id CDATA #REQUIRED>

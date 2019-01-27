@@ -54,15 +54,14 @@ void Server::processTextMessage(QString message) {
     Action *action = new Action(&message);
     QString reply;
 
-    if (action->getActionType() == ActionType::ESTABLISH_CONNECTION) {
-        action->EstablishConnection(&reply, client);
-    } else if (client->isValidated()) {
-        reply = action->getReply();
+    if (action->getActionType() == ActionType::ESTABLISH_CONNECTION || client->isValidated()) {
+        action->getReply(&reply, client);
     } else {
-        reply = action->clientNotValidated();
+        action->error(&reply, "No te has autentificado correctamente");
     }
 
     client->getWebSocket()->sendTextMessage(message);
 
+    delete client;
     delete action;
 }

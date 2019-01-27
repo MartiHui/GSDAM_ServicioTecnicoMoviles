@@ -23,9 +23,8 @@ public:
     explicit Action(const QString *message);
     ~Action();
     ActionType getActionType();
-    QString getReply();
-    QString clientNotValidated();
-    void EstablishConnection(QString *reply, Client *client);
+    void getReply(QString *reply, Client *client);
+    void error(QString *reply, QString message);
 
 private:
     ActionType m_actionType{ActionType::INVALID};
@@ -34,13 +33,13 @@ private:
 
     void setActionType();
     bool isXmlValid(const char *archivoXML);
-    void Error(QString *reply, QString message);
-    void ListaOrdenes(QString *reply);
-    void MarcasInfo(QString *reply);
-    void ModelosInfo(QString *reply);
-    void ReparacionInfo(QString *reply);
-    void OrdenRequest(QString *reply);
-    void OrdenStatus(QString *reply);
+    void establishConnection(QString *reply, Client *client);
+    void listaOrdenes(QString *reply, Client *client);
+    void marcasInfo(QString *reply);
+    void modelosInfo(QString *reply);
+    void reparacionInfo(QString *reply);
+    void ordenRequest(QString *reply);
+    void ordenStatus(QString *reply);
     QString getTextElement(QString tagName);
 };
 

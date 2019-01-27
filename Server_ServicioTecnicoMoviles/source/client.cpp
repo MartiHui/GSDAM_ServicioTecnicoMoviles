@@ -21,6 +21,7 @@ bool Client::isValidated() {
     return m_validated;
 }
 
-void Client::validate() {
+void Client::validate(int tiendaId) {
+    m_tiendaId = tiendaId;
     m_validated = true;
 }

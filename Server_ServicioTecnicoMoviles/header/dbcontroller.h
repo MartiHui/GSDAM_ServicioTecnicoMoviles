@@ -12,7 +12,9 @@ class DBController : QObject {
 public:
     static DBController* getInstance();
     static void deleteInstance();
-    bool tiendaInDb(QString nombreTienda);
+    int tiendaInDb(QString nombreTienda);
+    void getMarcas(QVector<QPair<int, QString> > *marcas);
+    void getModelos(int marcaId, QVector<QPair<int, QString> > *modelos);
 
 private:
     explicit DBController();

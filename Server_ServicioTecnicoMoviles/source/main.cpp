@@ -21,15 +21,16 @@ int main(int argc, char *argv[])
 
         Action *action = new Action(&xml);
         Client *client = new Client(nullptr);
+        QString respuesta;
         QFile reply("respuesta.xml");
         if (!reply.open(QIODevice::WriteOnly)) {
             qDebug() << "No puedo escribir la respuesta";
-            qDebug() << action->getReply();
+            action->getReply(&respuesta, client);
+            qDebug() << respuesta;
         } else {
             QTextStream out(&reply);
-            QString yokse;
-            action->EstablishConnection(&yokse, client);
-            out << yokse;
+            action->getReply(&respuesta, client);
+            out << respuesta;
             reply.close();
             qDebug() << "Se ha escrito la respuesta en un archivo";
         }

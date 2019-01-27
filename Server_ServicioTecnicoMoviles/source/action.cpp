@@ -1,6 +1,8 @@
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 #include <QDebug>
+#include <QVector>
+#include <QPair>
 
 #include "action.h"
 #include "dbcontroller.h"
@@ -52,53 +54,53 @@ void Action::setActionType() {
     m_actionType = type;
 }
 
-QString Action::getReply() {
-    QString reply;
-
+void Action::getReply(QString *reply, Client *client) {
     switch (m_actionType) {
     case ActionType::INVALID:
         //reply = QString("INVALID");
-        Error(&reply, QString("Ha habido un error con tu solicitud."));
+        error(reply, QString("Ha habido un error con tu solicitud."));
         break;
+
+    case ActionType::ESTABLISH_CONNECTION:
+        establishConnection(reply, client);
 
     case ActionType::LISTA_ORDENES_ASK:
         //reply = QString("LISTA_ORDENES_ASK");
-        ListaOrdenes(&reply);
+        listaOrdenes(reply, client);
         break;
 
     case ActionType::MARCAS_INFO_ASK:
         //reply = QString("MARCAS_INFO_ASK");
-        MarcasInfo(&reply);
+        marcasInfo(reply);
         break;
 
     case ActionType::MODELOS_INFO_ASK:
         //reply = QString("MODELOS_INFO_ASK");
-        ModelosInfo(&reply);
+        modelosInfo(reply);
         break;
 
     case ActionType::REPARACION_INFO_ASK:
         //reply = QString("REPARACION_INFO_ASK");
+        reparacionInfo(reply);
         break;
 
     case ActionType::ORDEN_REQUEST_ASK:
         //reply = QString("ORDEN_REQUEST_ASK");
-        OrdenRequest(&reply);
+        ordenRequest(reply);
         break;
 
     case ActionType::ORDEN_STATUS_ASK:
         //reply = QString("ORDEN_STATUS_ASK");
-        OrdenStatus(&reply);
+        ordenStatus(reply);
         break;
     }
-
-    return reply;
 }
 
 bool Action::isXmlValid(const char *archivoXML) {
     return true;
 }
 
-void Action::Error(QString *reply, QString message) {
+void Action::error(QString *reply, QString message) {
     QXmlStreamWriter writer(reply);
     writer.setAutoFormatting(true);
     writer.writeStartDocument();
@@ -115,11 +117,12 @@ void Action::Error(QString *reply, QString message) {
     writer.writeEndDocument(); // Se cierran todas las etiquetas hasta el final
 }
 
-void Action::EstablishConnection(QString *reply, Client *client) {
+void Action::establishConnection(QString *reply, Client *client) {
     QString nombreTienda = getTextElement(QString("tienda"));
 
-    if (DBController::getInstance()->tiendaInDb(nombreTienda)) {
-        client->validate();
+    int id = DBController::getInstance()->tiendaInDb(nombreTienda);
+    if (id) {
+        client->validate(id);
 
         QXmlStreamWriter writer(reply);
         writer.setAutoFormatting(true);
@@ -136,35 +139,77 @@ void Action::EstablishConnection(QString *reply, Client *client) {
         writer.writeTextElement("tienda", "Conectado con la base de datos.");
         writer.writeEndDocument(); // Se cierran todas las etiquetas hasta el final
     } else {
-        Error(reply, QString("Tu tienda no está en nuestra base de datos"));
+        error(reply, QString("Tu tienda no está en nuestra base de datos"));
     }
 }
 
-void Action::ListaOrdenes(QString *reply) {
+void Action::listaOrdenes(QString *reply, Client *client) {
 
 }
 
-void Action::MarcasInfo(QString *reply) {
+void Action::marcasInfo(QString *reply) {
+    QVector<QPair<int, QString> > marcas;
+    DBController::getInstance()->getMarcas(&marcas);
+
+    QXmlStreamWriter writer(reply);
+    writer.setAutoFormatting(true);
+    writer.writeStartDocument();
+    writer.writeDTD("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"MarcasInfoReply.dtd\">");
+
+    writer.writeStartElement("ServicioTecnicoMoviles");
+
+    writer.writeStartElement("head");
+    writer.writeTextElement("action", "MARCAS_INFO_REPLY");
+    writer.writeEndElement(); // Cerrar etiqueta head
+
+    writer.writeStartElement("body");
+    writer.writeStartElement("marcas");
+    for (int i = 0; i < marcas.count(); i++) {
+        writer.writeStartElement("marca");
+        writer.writeAttribute("id", QString::number(marcas.at(i).first));
+        writer.writeCharacters(marcas.at(i).second);
+        writer.writeEndElement();
+    }
+    writer.writeEndDocument(); // Se cierran todas las etiquetas hasta el final
+}
+
+void Action::modelosInfo(QString *reply) {
+    int marcaId = getTextElement("marca_id").toInt();
+    QVector<QPair<int, QString> > modelos;
+    DBController::getInstance()->getModelos(marcaId, &modelos);
+
+    QXmlStreamWriter writer(reply);
+    writer.setAutoFormatting(true);
+    writer.writeStartDocument();
+    writer.writeDTD("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"ModelosInfoReply.dtd\">");
+
+    writer.writeStartElement("ServicioTecnicoMoviles");
+
+    writer.writeStartElement("head");
+    writer.writeTextElement("action", "MODELOS_INFO_REPLY");
+    writer.writeEndElement(); // Cerrar etiqueta head
+
+    writer.writeStartElement("body");
+    writer.writeTextElement("marca_id", QString::number(marcaId));
+    writer.writeStartElement("modelos");qDebug() << modelos.count();
+    for (int i = 0; i < modelos.count(); i++) {
+        writer.writeStartElement("modelo");
+        writer.writeAttribute("id", QString::number(modelos.at(i).first));
+        writer.writeCharacters(modelos.at(i).second);
+        writer.writeEndElement();
+    }
+    writer.writeEndDocument(); // Se cierran todas las etiquetas hasta el final
+}
+
+void Action::reparacionInfo(QString *reply) {
 
 }
 
-void Action::ModelosInfo(QString *reply) {
+void Action::ordenRequest(QString *reply) {
 
 }
 
-void Action::ReparacionInfo(QString *reply) {
-
-}
-
-void Action::OrdenRequest(QString *reply) {
-
-}
-
-void Action::OrdenStatus(QString *reply) {
-
-}
-
-QString Action::clientNotValidated() {
+void Action::ordenStatus(QString *reply) {
 
 }
 
