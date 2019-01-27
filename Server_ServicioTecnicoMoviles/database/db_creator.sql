@@ -15,6 +15,20 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET row_security = off;
 
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -483,7 +497,8 @@ CREATE TABLE public.tiendas (
     id_tienda integer NOT NULL,
     direccion_tienda text NOT NULL,
     ciudad_tienda text NOT NULL,
-    pais_tienda text NOT NULL
+    pais_tienda text NOT NULL,
+    nombre_tienda character varying NOT NULL
 );
 
 
@@ -540,13 +555,6 @@ ALTER TABLE ONLY public.modelo_telefono ALTER COLUMN id_modelo_telefono SET DEFA
 
 
 --
--- Name: modelo_telefono id_marca_modelo_telefono; Type: DEFAULT; Schema: public; Owner: usuario
---
-
-ALTER TABLE ONLY public.modelo_telefono ALTER COLUMN id_marca_modelo_telefono SET DEFAULT nextval('public.modelo_telefono_marca_modelo_telefono_seq'::regclass);
-
-
---
 -- Name: ordenes id_orden; Type: DEFAULT; Schema: public; Owner: usuario
 --
 
@@ -572,6 +580,266 @@ ALTER TABLE ONLY public.tecnicos ALTER COLUMN id_tecnico SET DEFAULT nextval('pu
 --
 
 ALTER TABLE ONLY public.tiendas ALTER COLUMN id_tienda SET DEFAULT nextval('public.tiendas_id_tienda_seq'::regclass);
+
+
+--
+-- Data for Name: estado; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.estado (id_estado, nombre_estado) FROM stdin;
+\.
+
+
+--
+-- Data for Name: marcas_telefono; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.marcas_telefono (id_marca_telefono, nombre_marca_telefono) FROM stdin;
+1	Samsung
+2	Huawei
+3	Apple
+4	Nokia
+5	LG
+6	Sony
+7	HTC
+8	BlackBerry
+\.
+
+
+--
+-- Data for Name: modelo_reparacion; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.modelo_reparacion (id_modelo_telefono, id_reparacion, tiempo_modelo_reparacion, coste_modelo_reparacion, id_modelo_reparacion) FROM stdin;
+1	1	100	12.50	1
+1	4	40	23.56	2
+2	1	35	60.00	3
+2	6	10	70.00	4
+3	1	200	45.00	5
+3	3	45	76.56	6
+4	1	75	2.50	7
+5	5	50	43	8
+10	1	50	20.00	9
+14	3	300	190.00	10
+27	3	45	100.00	11
+\.
+
+
+--
+-- Data for Name: modelo_telefono; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.modelo_telefono (id_modelo_telefono, id_marca_modelo_telefono, nombre_modelo_telefono) FROM stdin;
+1	1	Galaxy A8s
+2	1	Galaxy J4 Core
+3	1	Galaxy A9 2018
+4	1	Galaxy A7
+5	1	Galaxy C9 Pro
+6	2	Y7 Pro
+7	2	Y5 Lite
+8	2	nova 4
+9	2	Mate 20 X
+10	2	Enjoy 9
+11	2	nova 2s
+12	2	Mate 10
+13	3	iPhone 5
+14	3	iPhone 6
+15	3	iPhone 7
+16	3	iPhone 8
+17	3	iPhone 9
+18	3	iPhone X
+19	4	8.1
+20	4	106
+21	4	3.1 Plus
+22	4	7.1
+23	4	6.1
+24	5	Q9
+25	5	V40 ThinQ
+26	5	Candy
+27	5	G7 Fit
+28	5	G7 One
+29	6	Xperia XZ3
+30	6	Xperio XA2 Plus
+31	6	XPeria XZ2 Premium
+32	6	XPeria XZ2
+33	6	XPeria L2
+34	7	Desire 12s
+35	7	Exodus 1
+36	7	U12 Life
+37	7	U12+
+38	7	U11 Eyes
+39	8	KEY2 LE
+40	8	Evolve X
+41	8	Motion
+42	8	Aurora
+43	8	KEyone
+\.
+
+
+--
+-- Data for Name: orden_detalles; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.orden_detalles (id_orden, id_reparacion_modelo) FROM stdin;
+\.
+
+
+--
+-- Data for Name: ordenes; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.ordenes (id_orden, id_modelo_telefono, id_tienda, fecha, id_estado, id_tecnico) FROM stdin;
+\.
+
+
+--
+-- Data for Name: reparaciones; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.reparaciones (id_reparacion, nombre_reparacion) FROM stdin;
+1	Arreglar pantalla
+2	Sustituir batería
+3	Reparar microfono
+4	Reparar altavoz
+5	Limpieza
+6	Liberar telefono
+\.
+
+
+--
+-- Data for Name: tecnicos; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.tecnicos (id_tecnico, nombre_tecnico) FROM stdin;
+\.
+
+
+--
+-- Data for Name: tiendas; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.tiendas (id_tienda, direccion_tienda, ciudad_tienda, pais_tienda, nombre_tienda) FROM stdin;
+1	Av. de Portugal 1A	Palma de Mallorca	España	EDIB
+\.
+
+
+--
+-- Name: estado_id_estado_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.estado_id_estado_seq', 1, false);
+
+
+--
+-- Name: marcas_telefono_id_marca_telefono_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.marcas_telefono_id_marca_telefono_seq', 8, true);
+
+
+--
+-- Name: modelo_reparacion_id_modelo_reparacion_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.modelo_reparacion_id_modelo_reparacion_seq', 11, true);
+
+
+--
+-- Name: modelo_reparacion_id_modelo_telefono_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.modelo_reparacion_id_modelo_telefono_seq', 1, false);
+
+
+--
+-- Name: modelo_reparacion_id_reparacion_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.modelo_reparacion_id_reparacion_seq', 1, false);
+
+
+--
+-- Name: modelo_telefono_id_modelo_telefono_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.modelo_telefono_id_modelo_telefono_seq', 43, true);
+
+
+--
+-- Name: modelo_telefono_marca_modelo_telefono_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.modelo_telefono_marca_modelo_telefono_seq', 1, false);
+
+
+--
+-- Name: orden_detalles_id_orden_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.orden_detalles_id_orden_seq', 1, false);
+
+
+--
+-- Name: orden_detalles_id_reparacion_modelo_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.orden_detalles_id_reparacion_modelo_seq', 1, false);
+
+
+--
+-- Name: ordenes_estado_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.ordenes_estado_seq', 1, false);
+
+
+--
+-- Name: ordenes_id_modelo_telefono_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.ordenes_id_modelo_telefono_seq', 1, false);
+
+
+--
+-- Name: ordenes_id_orden_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.ordenes_id_orden_seq', 1, false);
+
+
+--
+-- Name: ordenes_id_tecnico_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.ordenes_id_tecnico_seq', 1, false);
+
+
+--
+-- Name: ordenes_id_tienda_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.ordenes_id_tienda_seq', 1, false);
+
+
+--
+-- Name: reparaciones_id_reparacion_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.reparaciones_id_reparacion_seq', 6, true);
+
+
+--
+-- Name: tecnicos_id_tecnico_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.tecnicos_id_tecnico_seq', 1, false);
+
+
+--
+-- Name: tiendas_id_tienda_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.tiendas_id_tienda_seq', 1, true);
 
 
 --
