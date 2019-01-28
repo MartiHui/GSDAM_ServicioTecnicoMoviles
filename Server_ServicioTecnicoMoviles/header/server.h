@@ -15,8 +15,6 @@ public:
     explicit Server(quint16 port);
     ~Server();
 
-    void removeClientSocket(Client *client);
-
 private:
     quint16 m_port;
     QWebSocketServer *m_webSocketServer;
@@ -28,7 +26,7 @@ signals:
 private slots:
     void socketConnected();
     void socketDisconnected();
-    void processTextMessage(QString message);
+    void processTextMessage(Client *client, const QString & message);
     void startServer();
 };
 

@@ -29,10 +29,14 @@ INCLUDEPATH += ./source \
 
 SOURCES += \
         source/main.cpp \
-        source/mainwindow.cpp
+        source/mainwindow.cpp \
+    source/serverconnection.cpp \
+    source/action.cpp
 
 HEADERS += \
-        header/mainwindow.h
+        header/mainwindow.h \
+    header/serverconnection.h \
+    header/action.h
 
 FORMS += \
         ui/mainwindow.ui

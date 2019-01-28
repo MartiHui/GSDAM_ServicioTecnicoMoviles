@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+class ServerConnection;
+
 namespace Ui {
 class MainWindow;
 }
@@ -17,6 +19,10 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    ServerConnection *m_serverConnection;
+
+private slots:
+    void pruebas();
 };
 
 #endif // MAINWINDOW_H

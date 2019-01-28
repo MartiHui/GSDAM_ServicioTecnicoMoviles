@@ -5,10 +5,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    //MainWindow w;
-    //w.show();
-    QWebSocket socket;
-    socket.open(QUrl("ws://localhost:1234"));
+    MainWindow w;
+    w.show();
 
     return a.exec();
 }

@@ -17,11 +17,6 @@ Server::~Server() {
     qDeleteAll(m_clients.begin(), m_clients.end());
 }
 
-void Server::removeClientSocket(Client *client) {
-    m_clients.removeAll(client);
-    client->deleteLater();
-}
-
 void Server::startServer() {
     m_webSocketServer = new QWebSocketServer(QStringLiteral("Servidor Servicio Tecnico de Moviles"),
                                            QWebSocketServer::NonSecureMode, this);
@@ -38,7 +33,10 @@ void Server::socketConnected() {
 
     qDebug() << "Conexion recibida: " << client->getWebSocket();
 
-    connect(client->getWebSocket(), &QWebSocket::textMessageReceived, this, &Server::processTextMessage);
+    connect(client->getWebSocket(), SIGNAL(textMessageReceived(const QString &)), this, SLOT(processTextMessage(client, const QString &)));
+
+
+//    connect(client->getWebSocket(), &QWebSocket::textMessageReceived, this, &Server::processTextMessage);
     connect(client->getWebSocket(), &QWebSocket::disconnected, this, &Server::socketDisconnected);
 
     m_clients << client;
@@ -46,15 +44,21 @@ void Server::socketConnected() {
 
 void Server::socketDisconnected() {
     Client *client = qobject_cast<Client *>(sender());
-    qDebug() << "Conexión finalizada: " << client->getWebSocket();
+    // La siguiente lnea crashea el programa
+    //qDebug() << "Conexión finalizada: " << client->getWebSocket();
+    qDebug() << "Un cliente se ha desconectado";
 
     if (client) {
-        removeClientSocket(client);
+        qDebug() << "hola1";
+        m_clients.removeAll(client);
+        qDebug() << "hola2";
+        client->deleteLater();
+        qDebug() << "hola3";
     }
 }
 
-void Server::processTextMessage(QString message) {
-    Client *client = qobject_cast<Client *>(sender());
+void Server::processTextMessage(Client *client, const QString & message) {qDebug() << "mensaje2";
+    //Client *client = qobject_cast<Client *>(sender());
     qDebug() << "Mensaje recibido. Remitente: " << client->getWebSocket();
 
     Action *action = new Action(&message);
@@ -68,6 +72,5 @@ void Server::processTextMessage(QString message) {
 
     client->getWebSocket()->sendTextMessage(message);
 
-    delete client;
     delete action;
 }
