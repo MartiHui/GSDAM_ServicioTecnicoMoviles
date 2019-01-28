@@ -26,7 +26,7 @@ signals:
 private slots:
     void socketConnected();
     void socketDisconnected();
-    void processTextMessage(Client *client, const QString & message);
+    void processTextMessage(const QString & message);
     void startServer();
 };
 

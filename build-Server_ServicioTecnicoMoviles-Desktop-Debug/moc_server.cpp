@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Server_t {
-    QByteArrayData data[10];
-    char stringdata0[103];
+    QByteArrayData data[8];
+    char stringdata0[88];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -37,15 +37,13 @@ QT_MOC_LITERAL(2, 13, 0), // ""
 QT_MOC_LITERAL(3, 14, 15), // "socketConnected"
 QT_MOC_LITERAL(4, 30, 18), // "socketDisconnected"
 QT_MOC_LITERAL(5, 49, 18), // "processTextMessage"
-QT_MOC_LITERAL(6, 68, 7), // "Client*"
-QT_MOC_LITERAL(7, 76, 6), // "client"
-QT_MOC_LITERAL(8, 83, 7), // "message"
-QT_MOC_LITERAL(9, 91, 11) // "startServer"
+QT_MOC_LITERAL(6, 68, 7), // "message"
+QT_MOC_LITERAL(7, 76, 11) // "startServer"
 
     },
     "Server\0close\0\0socketConnected\0"
     "socketDisconnected\0processTextMessage\0"
-    "Client*\0client\0message\0startServer"
+    "message\0startServer"
 };
 #undef QT_MOC_LITERAL
 
@@ -68,8 +66,8 @@ static const uint qt_meta_data_Server[] = {
  // slots: name, argc, parameters, tag, flags
        3,    0,   40,    2, 0x08 /* Private */,
        4,    0,   41,    2, 0x08 /* Private */,
-       5,    2,   42,    2, 0x08 /* Private */,
-       9,    0,   47,    2, 0x08 /* Private */,
+       5,    1,   42,    2, 0x08 /* Private */,
+       7,    0,   45,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void,
@@ -77,7 +75,7 @@ static const uint qt_meta_data_Server[] = {
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 6, QMetaType::QString,    7,    8,
+    QMetaType::Void, QMetaType::QString,    6,
     QMetaType::Void,
 
        0        // eod
@@ -92,7 +90,7 @@ void Server::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         case 0: _t->close(); break;
         case 1: _t->socketConnected(); break;
         case 2: _t->socketDisconnected(); break;
-        case 3: _t->processTextMessage((*reinterpret_cast< Client*(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
+        case 3: _t->processTextMessage((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 4: _t->startServer(); break;
         default: ;
         }

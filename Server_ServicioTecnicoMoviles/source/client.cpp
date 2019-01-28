@@ -7,6 +7,8 @@ Client::Client(QWebSocket * webSocket) {
     m_tiendaId = -1;
     m_validated = false;
     m_webSocket = webSocket;
+    connect(m_webSocket, SIGNAL(textMessageReceived(const QString &)), this, SLOT(onSocketMessageReceived(const QString &)));
+    connect(m_webSocket, SIGNAL(disconnected()), this, SLOT(onSocketDisconnected()));
 }
 
 Client::~Client() {
@@ -28,4 +30,12 @@ void Client::validate(int tiendaId) {
 
 int Client::getTiendaId() {
     return m_tiendaId;
+}
+
+void Client::onSocketMessageReceived(const QString & message) {
+    emit textMessageReceived(message);
+}
+
+void Client::onSocketDisconnected() {
+    emit disconnected();
 }

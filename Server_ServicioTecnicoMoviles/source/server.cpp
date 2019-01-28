@@ -33,11 +33,14 @@ void Server::socketConnected() {
 
     qDebug() << "Conexion recibida: " << client->getWebSocket();
 
-    connect(client->getWebSocket(), SIGNAL(textMessageReceived(const QString &)), this, SLOT(processTextMessage(client, const QString &)));
+    connect(client, SIGNAL(textMessageReceived(const QString &)), this, SLOT(processTextMessage(const QString &)));
+    connect(client, SIGNAL(disconnected()), this, SLOT(socketDisconnected()));
 
+    //connect(client->getWebSocket(), SIGNAL(textMessageReceived(const QString &)), this, SLOT(processTextMessage(const QString &)));
+    //connect(client->getWebSocket(), SIGNAL(disconnected()), this, SLOT(socketDisconnected(client)));
 
-//    connect(client->getWebSocket(), &QWebSocket::textMessageReceived, this, &Server::processTextMessage);
-    connect(client->getWebSocket(), &QWebSocket::disconnected, this, &Server::socketDisconnected);
+    //connect(client->getWebSocket(), &QWebSocket::textMessageReceived, this, &Server::processTextMessage);
+    //connect(client->getWebSocket(), &QWebSocket::disconnected, this, &Server::socketDisconnected);
 
     m_clients << client;
 }
@@ -45,23 +48,20 @@ void Server::socketConnected() {
 void Server::socketDisconnected() {
     Client *client = qobject_cast<Client *>(sender());
     // La siguiente lnea crashea el programa
-    //qDebug() << "Conexión finalizada: " << client->getWebSocket();
-    qDebug() << "Un cliente se ha desconectado";
+    qDebug() << "Conexión finalizada: " << client->getWebSocket();
+    //qDebug() << "Un cliente se ha desconectado";
 
     if (client) {
-        qDebug() << "hola1";
         m_clients.removeAll(client);
-        qDebug() << "hola2";
         client->deleteLater();
-        qDebug() << "hola3";
     }
 }
 
-void Server::processTextMessage(Client *client, const QString & message) {qDebug() << "mensaje2";
-    //Client *client = qobject_cast<Client *>(sender());
+void Server::processTextMessage(const QString & message) {
+    Client *client = qobject_cast<Client *>(sender());
     qDebug() << "Mensaje recibido. Remitente: " << client->getWebSocket();
-
-    Action *action = new Action(&message);
+    qDebug() << message;
+    /*Action *action = new Action(&message);
     QString reply;
 
     if (action->getActionType() == ActionType::ESTABLISH_CONNECTION || client->isValidated()) {
@@ -72,5 +72,5 @@ void Server::processTextMessage(Client *client, const QString & message) {qDebug
 
     client->getWebSocket()->sendTextMessage(message);
 
-    delete action;
+    delete action;*/
 }

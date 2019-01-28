@@ -27,13 +27,9 @@ void ServerConnection::onTextMessageReceived(QString message) {
 }
 
 bool ServerConnection::sendMessage(QString xmlMessage) {
-    qDebug() << "enviando mensaje";
     if (m_conectado) {
-        qDebug() << "hola1";
         m_webSocket->sendTextMessage(xmlMessage);
-        qDebug() << "hola2";
         m_waitingReply = true;
-        qDebug() << "hola3";
         return true;
     } else {
         return false;

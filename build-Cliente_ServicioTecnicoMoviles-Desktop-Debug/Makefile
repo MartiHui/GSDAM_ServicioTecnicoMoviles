@@ -35,7 +35,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = Cliente_ServicioTecnicoMoviles1.0.0
-DISTDIR = /home/admin/Documents/CPP/ServicioTecnicoMoviles/build-Cliente_ServicioTecnicoMoviles-Desktop-Debug/.tmp/Cliente_ServicioTecnicoMoviles1.0.0
+DISTDIR = /home/hui/Documents/C++/ServicioTecnicoMoviles/build-Cliente_ServicioTecnicoMoviles-Desktop-Debug/.tmp/Cliente_ServicioTecnicoMoviles1.0.0
 LINK          = g++
 LFLAGS        = 
 LIBS          = $(SUBLIBS) -lQt5Widgets -L/usr/lib64 -lQt5Gui -lQt5WebSockets -lQt5Network -lQt5Core -lGL -lpthread 
@@ -120,6 +120,8 @@ DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_quickparticles_private.pri \
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_quickwidgets.pri \
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_quickwidgets_private.pri \
+		/usr/lib64/qt5/mkspecs/modules/qt_lib_sensors.pri \
+		/usr/lib64/qt5/mkspecs/modules/qt_lib_sensors_private.pri \
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_service_support_private.pri \
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_sql.pri \
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_sql_private.pri \
@@ -131,6 +133,7 @@ DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_uiplugin.pri \
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_uitools.pri \
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_uitools_private.pri \
+		/usr/lib64/qt5/mkspecs/modules/qt_lib_webkit.pri \
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_websockets.pri \
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_websockets_private.pri \
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_widgets.pri \
@@ -146,6 +149,7 @@ DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib64/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib64/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib64/qt5/mkspecs/features/spec_post.prf \
+		../Cliente_ServicioTecnicoMoviles/.qmake.stash \
 		/usr/lib64/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib64/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib64/qt5/mkspecs/features/default_pre.prf \
@@ -239,6 +243,8 @@ Makefile: ../Cliente_ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles.pro /
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_quickparticles_private.pri \
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_quickwidgets.pri \
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_quickwidgets_private.pri \
+		/usr/lib64/qt5/mkspecs/modules/qt_lib_sensors.pri \
+		/usr/lib64/qt5/mkspecs/modules/qt_lib_sensors_private.pri \
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_service_support_private.pri \
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_sql.pri \
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_sql_private.pri \
@@ -250,6 +256,7 @@ Makefile: ../Cliente_ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles.pro /
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_uiplugin.pri \
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_uitools.pri \
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_uitools_private.pri \
+		/usr/lib64/qt5/mkspecs/modules/qt_lib_webkit.pri \
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_websockets.pri \
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_websockets_private.pri \
 		/usr/lib64/qt5/mkspecs/modules/qt_lib_widgets.pri \
@@ -265,6 +272,7 @@ Makefile: ../Cliente_ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles.pro /
 		/usr/lib64/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib64/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib64/qt5/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib64/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib64/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib64/qt5/mkspecs/features/default_pre.prf \
@@ -348,6 +356,8 @@ Makefile: ../Cliente_ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles.pro /
 /usr/lib64/qt5/mkspecs/modules/qt_lib_quickparticles_private.pri:
 /usr/lib64/qt5/mkspecs/modules/qt_lib_quickwidgets.pri:
 /usr/lib64/qt5/mkspecs/modules/qt_lib_quickwidgets_private.pri:
+/usr/lib64/qt5/mkspecs/modules/qt_lib_sensors.pri:
+/usr/lib64/qt5/mkspecs/modules/qt_lib_sensors_private.pri:
 /usr/lib64/qt5/mkspecs/modules/qt_lib_service_support_private.pri:
 /usr/lib64/qt5/mkspecs/modules/qt_lib_sql.pri:
 /usr/lib64/qt5/mkspecs/modules/qt_lib_sql_private.pri:
@@ -359,6 +369,7 @@ Makefile: ../Cliente_ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles.pro /
 /usr/lib64/qt5/mkspecs/modules/qt_lib_uiplugin.pri:
 /usr/lib64/qt5/mkspecs/modules/qt_lib_uitools.pri:
 /usr/lib64/qt5/mkspecs/modules/qt_lib_uitools_private.pri:
+/usr/lib64/qt5/mkspecs/modules/qt_lib_webkit.pri:
 /usr/lib64/qt5/mkspecs/modules/qt_lib_websockets.pri:
 /usr/lib64/qt5/mkspecs/modules/qt_lib_websockets_private.pri:
 /usr/lib64/qt5/mkspecs/modules/qt_lib_widgets.pri:
@@ -374,6 +385,7 @@ Makefile: ../Cliente_ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles.pro /
 /usr/lib64/qt5/mkspecs/features/qt_config.prf:
 /usr/lib64/qt5/mkspecs/linux-g++/qmake.conf:
 /usr/lib64/qt5/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib64/qt5/mkspecs/features/exclusive_builds.prf:
 /usr/lib64/qt5/mkspecs/features/toolchain.prf:
 /usr/lib64/qt5/mkspecs/features/default_pre.prf:
@@ -454,17 +466,17 @@ compiler_moc_header_clean:
 moc_mainwindow.cpp: ../Cliente_ServicioTecnicoMoviles/header/mainwindow.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/admin/Documents/CPP/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles -I/home/admin/Documents/CPP/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles/source -I/home/admin/Documents/CPP/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles/header -I/home/admin/Documents/CPP/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles/ui -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtWebSockets -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/c++/7/x86_64-suse-linux -I/usr/include/c++/7/backward -I/usr/lib64/gcc/x86_64-suse-linux/7/include -I/usr/local/include -I/usr/lib64/gcc/x86_64-suse-linux/7/include-fixed -I/usr/x86_64-suse-linux/include -I/usr/include ../Cliente_ServicioTecnicoMoviles/header/mainwindow.h -o moc_mainwindow.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/hui/Documents/C++/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles -I/home/hui/Documents/C++/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles/source -I/home/hui/Documents/C++/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles/header -I/home/hui/Documents/C++/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles/ui -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtWebSockets -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/c++/7/x86_64-suse-linux -I/usr/include/c++/7/backward -I/usr/lib64/gcc/x86_64-suse-linux/7/include -I/usr/local/include -I/usr/lib64/gcc/x86_64-suse-linux/7/include-fixed -I/usr/x86_64-suse-linux/include -I/usr/include ../Cliente_ServicioTecnicoMoviles/header/mainwindow.h -o moc_mainwindow.cpp
 
 moc_serverconnection.cpp: ../Cliente_ServicioTecnicoMoviles/header/serverconnection.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/admin/Documents/CPP/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles -I/home/admin/Documents/CPP/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles/source -I/home/admin/Documents/CPP/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles/header -I/home/admin/Documents/CPP/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles/ui -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtWebSockets -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/c++/7/x86_64-suse-linux -I/usr/include/c++/7/backward -I/usr/lib64/gcc/x86_64-suse-linux/7/include -I/usr/local/include -I/usr/lib64/gcc/x86_64-suse-linux/7/include-fixed -I/usr/x86_64-suse-linux/include -I/usr/include ../Cliente_ServicioTecnicoMoviles/header/serverconnection.h -o moc_serverconnection.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/hui/Documents/C++/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles -I/home/hui/Documents/C++/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles/source -I/home/hui/Documents/C++/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles/header -I/home/hui/Documents/C++/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles/ui -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtWebSockets -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/c++/7/x86_64-suse-linux -I/usr/include/c++/7/backward -I/usr/lib64/gcc/x86_64-suse-linux/7/include -I/usr/local/include -I/usr/lib64/gcc/x86_64-suse-linux/7/include-fixed -I/usr/x86_64-suse-linux/include -I/usr/include ../Cliente_ServicioTecnicoMoviles/header/serverconnection.h -o moc_serverconnection.cpp
 
 moc_action.cpp: ../Cliente_ServicioTecnicoMoviles/header/action.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/admin/Documents/CPP/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles -I/home/admin/Documents/CPP/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles/source -I/home/admin/Documents/CPP/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles/header -I/home/admin/Documents/CPP/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles/ui -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtWebSockets -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/c++/7/x86_64-suse-linux -I/usr/include/c++/7/backward -I/usr/lib64/gcc/x86_64-suse-linux/7/include -I/usr/local/include -I/usr/lib64/gcc/x86_64-suse-linux/7/include-fixed -I/usr/x86_64-suse-linux/include -I/usr/include ../Cliente_ServicioTecnicoMoviles/header/action.h -o moc_action.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/hui/Documents/C++/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles -I/home/hui/Documents/C++/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles/source -I/home/hui/Documents/C++/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles/header -I/home/hui/Documents/C++/ServicioTecnicoMoviles/Cliente_ServicioTecnicoMoviles/ui -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtWebSockets -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/c++/7/x86_64-suse-linux -I/usr/include/c++/7/backward -I/usr/lib64/gcc/x86_64-suse-linux/7/include -I/usr/local/include -I/usr/lib64/gcc/x86_64-suse-linux/7/include-fixed -I/usr/x86_64-suse-linux/include -I/usr/include ../Cliente_ServicioTecnicoMoviles/header/action.h -o moc_action.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -490,10 +502,12 @@ main.o: ../Cliente_ServicioTecnicoMoviles/source/main.cpp ../Cliente_ServicioTec
 
 mainwindow.o: ../Cliente_ServicioTecnicoMoviles/source/mainwindow.cpp ../Cliente_ServicioTecnicoMoviles/header/mainwindow.h \
 		ui_mainwindow.h \
-		../Cliente_ServicioTecnicoMoviles/header/serverconnection.h
+		../Cliente_ServicioTecnicoMoviles/header/serverconnection.h \
+		../Cliente_ServicioTecnicoMoviles/header/action.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../Cliente_ServicioTecnicoMoviles/source/mainwindow.cpp
 
-serverconnection.o: ../Cliente_ServicioTecnicoMoviles/source/serverconnection.cpp ../Cliente_ServicioTecnicoMoviles/header/serverconnection.h
+serverconnection.o: ../Cliente_ServicioTecnicoMoviles/source/serverconnection.cpp ../Cliente_ServicioTecnicoMoviles/header/serverconnection.h \
+		../Cliente_ServicioTecnicoMoviles/header/action.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o serverconnection.o ../Cliente_ServicioTecnicoMoviles/source/serverconnection.cpp
 
 action.o: ../Cliente_ServicioTecnicoMoviles/source/action.cpp ../Cliente_ServicioTecnicoMoviles/header/action.h
