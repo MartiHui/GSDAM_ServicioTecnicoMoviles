@@ -17,8 +17,8 @@
    <widget class="QComboBox" name="marcasCmbBox">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>140</y>
+      <x>120</x>
+      <y>110</y>
       <width>83</width>
       <height>32</height>
      </rect>
@@ -27,8 +27,8 @@
    <widget class="QComboBox" name="modelosCmbBox">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>210</y>
+      <x>120</x>
+      <y>180</y>
       <width>83</width>
       <height>32</height>
      </rect>
@@ -37,8 +37,8 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>150</y>
+      <x>40</x>
+      <y>120</y>
       <width>58</width>
       <height>18</height>
      </rect>
@@ -50,8 +50,8 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>220</y>
+      <x>40</x>
+      <y>190</y>
       <width>58</width>
       <height>18</height>
      </rect>
@@ -73,7 +73,7 @@
      <string>Nombre de la tienda:</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="nombreTienda">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -83,7 +83,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="conectarServidor">
     <property name="geometry">
      <rect>
       <x>460</x>
@@ -107,6 +107,88 @@
     </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QListView" name="reparacionesPosibles">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>110</y>
+      <width>201</width>
+      <height>241</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QListView" name="reparacionesElegidas">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>110</y>
+      <width>201</width>
+      <height>241</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="Line" name="line_2">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>380</y>
+      <width>641</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>420</y>
+      <width>58</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Nº orden</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="numOrden">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>410</y>
+      <width>161</width>
+      <height>32</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="ordenEstado">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>410</y>
+      <width>141</width>
+      <height>34</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Comprobar estado</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="ordenRequest">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>270</y>
+      <width>88</width>
+      <height>34</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Hacer orden</string>
     </property>
    </widget>
   </widget>

@@ -60,8 +60,8 @@ void Server::socketDisconnected() {
 void Server::processTextMessage(const QString & message) {
     Client *client = qobject_cast<Client *>(sender());
     qDebug() << "Mensaje recibido. Remitente: " << client->getWebSocket();
-    qDebug() << message;
-    /*Action *action = new Action(&message);
+
+    Action *action = new Action(&message);
     QString reply;
 
     if (action->getActionType() == ActionType::ESTABLISH_CONNECTION || client->isValidated()) {
@@ -72,5 +72,5 @@ void Server::processTextMessage(const QString & message) {
 
     client->getWebSocket()->sendTextMessage(message);
 
-    delete action;*/
+    delete action;
 }

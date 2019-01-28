@@ -23,6 +23,14 @@ private:
 
 private slots:
     void pruebas();
+    void on_pushButton_clicked();
+    void on_marcasCmbBox_currentIndexChanged(int index);
+    void on_conectarServidor_clicked();
+    void on_modelosCmbBox_currentIndexChanged(int index);
+    void on_reparacionesPosibles_doubleClicked(const QModelIndex &index);
+    void on_reparacionesElegidas_doubleClicked(const QModelIndex &index);
+    void on_ordenRequest_clicked();
+    void on_ordenEstado_clicked();
 };
 
 #endif // MAINWINDOW_H
