@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QVector>
+#include <QPair>
 
 class ServerConnection;
 
@@ -14,6 +16,8 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    bool m_isWaitingReply;
+
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
@@ -21,9 +25,10 @@ private:
     Ui::MainWindow *ui;
     ServerConnection *m_serverConnection;
 
+    void fillMarcasCmbBox(QVector<QPair<QString, int> > marcas);
+
 private slots:
-    void pruebas();
-    void on_pushButton_clicked();
+    void replyReceived(QString message);
     void on_marcasCmbBox_currentIndexChanged(int index);
     void on_conectarServidor_clicked();
     void on_modelosCmbBox_currentIndexChanged(int index);

@@ -16,23 +16,18 @@ ServerConnection::~ServerConnection() {
 }
 
 void ServerConnection::onConnected() {
-    m_conectado = true;
     connect(m_webSocket, &QWebSocket::textMessageReceived, this, &ServerConnection::onTextMessageReceived);
-    sendMessage(Action::establishConnection("EDIB"));
 }
 
 void ServerConnection::onTextMessageReceived(QString message) {
-    m_xmlReply = message;
     m_waitingReply = false;
+    qDebug() << message;
+    emit messageReceived(message);
 }
 
 bool ServerConnection::sendMessage(QString xmlMessage) {
-    if (m_conectado) {
-        m_webSocket->sendTextMessage(xmlMessage);
-        m_waitingReply = true;
-        return true;
-    } else {
-        return false;
-    }
+    qDebug() << "mensaje";
+    m_webSocket->sendTextMessage(xmlMessage);
+    m_waitingReply = true;
 }
 

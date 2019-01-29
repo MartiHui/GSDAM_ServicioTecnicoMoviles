@@ -8,9 +8,8 @@ class QWebSocket;
 class ServerConnection : public QObject {
     Q_OBJECT
 public:
-    bool m_conectado{false};
-    QString m_xmlReply;
     QWebSocket *m_webSocket;
+    bool m_conectado{false};
 
     explicit ServerConnection(QString url);
     ~ServerConnection();
@@ -22,6 +21,9 @@ private:
 private slots:
     void onConnected();
     void onTextMessageReceived(QString message);
+
+signals:
+    void messageReceived(QString message);
 };
 
 #endif // SERVERCONNECTION_H
