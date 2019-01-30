@@ -5,6 +5,7 @@
 
 class QWebSocket;
 
+// Clase que gestionará la información de las conexiones a nuestro servidor
 class Client : public QObject {
     Q_OBJECT
 public:
@@ -12,8 +13,8 @@ public:
     ~Client();
 
     QWebSocket* getWebSocket();
-    bool isValidated();
-    void validate(int tiendaId);
+    bool isValidated(); // true si el cliente se ha identificado
+    void validate(int tiendaId); // marca el cliente como identificado y le asigna su id de la base de datos
     int getTiendaId();
 
 private:

@@ -8,6 +8,7 @@
 class QWebSocketServer;
 class Client;
 
+// La clase principal que gestionará el servidor
 class Server : public QObject
 {
     Q_OBJECT
@@ -16,9 +17,9 @@ public:
     ~Server();
 
 private:
-    quint16 m_port;
+    quint16 m_port; // El puerto al que se conecta
     QWebSocketServer *m_webSocketServer;
-    QList<Client *> m_clients;
+    QList<Client *> m_clients; // La lista de clientes conectados al servidor
 
 signals:
     void close();

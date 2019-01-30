@@ -16,7 +16,7 @@ DBController* DBController::getInstance() {
 }
 
 void DBController::deleteInstance() {
-    delete m_pInstance;
+    m_pInstance = nullptr;
 }
 
 DBController::DBController() {
@@ -27,10 +27,6 @@ DBController::DBController() {
     database.setUserName("usuario");
     database.setPassword("usuario");
     database.open();
-}
-
-DBController::~DBController() {
-
 }
 
 int DBController::tiendaInDb(QString nombreTienda) {

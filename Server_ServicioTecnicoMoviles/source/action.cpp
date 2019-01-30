@@ -67,7 +67,7 @@ void Action::getReply(QString *reply, Client *client) {
 
     case ActionType::LISTA_ORDENES_ASK:
         //reply = QString("LISTA_ORDENES_ASK");
-        listaOrdenes(reply, client);
+        //listaOrdenes(reply, client);
         break;
 
     case ActionType::MARCAS_INFO_ASK:
@@ -101,17 +101,21 @@ bool Action::isXmlValid(const char *archivoXML) {
     return true;
 }
 
-void Action::error(QString *reply, QString message) {
-    QXmlStreamWriter writer(reply);
+void Action::writeXmlStart(QXmlStreamWriter &writer, const QString &dtdName, const QString &action) {
     writer.setAutoFormatting(true);
     writer.writeStartDocument();
-    writer.writeDTD(QString(DTD_DECLARATION).arg("Error.dtd"));
+    writer.writeDTD(QString("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"" + dtdName + ".dtd\">"));
 
     writer.writeStartElement("ServicioTecnicoMoviles");
 
     writer.writeStartElement("head");
-    writer.writeTextElement("action", "ERROR");
+    writer.writeTextElement("action", action);
     writer.writeEndElement(); // Cerrar etiqueta head
+}
+
+void Action::error(QString *reply, QString message) {
+    QXmlStreamWriter writer(reply);
+    writeXmlStart(writer, "Error", "ERROR");
 
     writer.writeStartElement("body");
     writer.writeTextElement("message", message);
@@ -123,18 +127,10 @@ void Action::establishConnection(QString *reply, Client *client) {
 
     int id = DBController::getInstance()->tiendaInDb(nombreTienda);
     if (id) {
-        client->validate(id);
+        client->validate(id); // Se marca el cliente como validado para que pueda hacer solicitudes
 
         QXmlStreamWriter writer(reply);
-        writer.setAutoFormatting(true);
-        writer.writeStartDocument();
-        writer.writeDTD("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"EstablishConnection.dtd\">");
-
-        writer.writeStartElement("ServicioTecnicoMoviles");
-
-        writer.writeStartElement("head");
-        writer.writeTextElement("action", "ESTABLISH_CONNECTION");
-        writer.writeEndElement(); // Cerrar etiqueta head
+        writeXmlStart(writer, "EstablishConnection", "ESTABLISH_CONNECTION");
 
         writer.writeStartElement("body");
         writer.writeTextElement("tienda", "Conectado con la base de datos.");
@@ -143,25 +139,17 @@ void Action::establishConnection(QString *reply, Client *client) {
         error(reply, QString("Tu tienda no está en nuestra base de datos"));
     }
 }
-
+/*
 void Action::listaOrdenes(QString *reply, Client *client) {
 
-}
+}*/
 
 void Action::marcasInfo(QString *reply) {
     QVector<QPair<int, QString> > marcas;
     DBController::getInstance()->getMarcas(&marcas);
 
     QXmlStreamWriter writer(reply);
-    writer.setAutoFormatting(true);
-    writer.writeStartDocument();
-    writer.writeDTD("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"MarcasInfoReply.dtd\">");
-
-    writer.writeStartElement("ServicioTecnicoMoviles");
-
-    writer.writeStartElement("head");
-    writer.writeTextElement("action", "MARCAS_INFO_REPLY");
-    writer.writeEndElement(); // Cerrar etiqueta head
+    writeXmlStart(writer, "MarcasInfoReply", "MARCAS_INFO_REPLY");
 
     writer.writeStartElement("body");
     writer.writeStartElement("marcas");
@@ -180,15 +168,7 @@ void Action::modelosInfo(QString *reply) {
     DBController::getInstance()->getModelos(marcaId, &modelos);
 
     QXmlStreamWriter writer(reply);
-    writer.setAutoFormatting(true);
-    writer.writeStartDocument();
-    writer.writeDTD("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"ModelosInfoReply.dtd\">");
-
-    writer.writeStartElement("ServicioTecnicoMoviles");
-
-    writer.writeStartElement("head");
-    writer.writeTextElement("action", "MODELOS_INFO_REPLY");
-    writer.writeEndElement(); // Cerrar etiqueta head
+    writeXmlStart(writer, "ModelosInfoReply", "MODELOS_INFO_REPLY");
 
     writer.writeStartElement("body");
     writer.writeTextElement("marca_id", QString::number(marcaId));
@@ -208,15 +188,7 @@ void Action::reparacionInfo(QString *reply) {
     DBController::getInstance()->getReparaciones(modeloId, &reparaciones);
 
     QXmlStreamWriter writer(reply);
-    writer.setAutoFormatting(true);
-    writer.writeStartDocument();
-    writer.writeDTD("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"ReparacionInfoReply.dtd\">");
-
-    writer.writeStartElement("ServicioTecnicoMoviles");
-
-    writer.writeStartElement("head");
-    writer.writeTextElement("action", "REPARACION_INFO_REPLY");
-    writer.writeEndElement(); // Cerrar etiqueta head
+    writeXmlStart(writer, "ReparacionInfoReply", "REPARACION_INFO_REPLY");
 
     writer.writeStartElement("body");
     writer.writeTextElement("modelo_id", QString::number(modeloId));
@@ -244,15 +216,7 @@ void Action::ordenRequest(QString *reply, Client *client) {
     DBController::getInstance()->insertOrden(&orden);
     if (orden.ordenId) {
         QXmlStreamWriter writer(reply);
-        writer.setAutoFormatting(true);
-        writer.writeStartDocument();
-        writer.writeDTD("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"OrdenRequestReply.dtd\">");
-
-        writer.writeStartElement("ServicioTecnicoMoviles");
-
-        writer.writeStartElement("head");
-        writer.writeTextElement("action", "ORDEN_REQUEST_REPLY");
-        writer.writeEndElement(); // Cerrar etiqueta head
+        writeXmlStart(writer, "OrdenRequestReply", "ORDEN_REQUEST_REPLY");
 
         writer.writeStartElement("body");
         writer.writeTextElement("orden_id", QString::number(orden.ordenId));
@@ -269,15 +233,7 @@ void Action::ordenStatus(QString *reply, Client *client) {
 
     if (client->getTiendaId() == ordenStatus.first) {
         QXmlStreamWriter writer(reply);
-        writer.setAutoFormatting(true);
-        writer.writeStartDocument();
-        writer.writeDTD("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"OrdenStatusReply.dtd\">");
-
-        writer.writeStartElement("ServicioTecnicoMoviles");
-
-        writer.writeStartElement("head");
-        writer.writeTextElement("action", "ORDEN_STATUS_REPLY");
-        writer.writeEndElement(); // Cerrar etiqueta head
+        writeXmlStart(writer, "OrdenStatusReply", "ORDEN_STATUS_REPLY");
 
         writer.writeStartElement("body");
         writer.writeTextElement("respuesta", ordenStatus.second);
