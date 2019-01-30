@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!DOCTYPE ServicioTecnicoMoviles SYSTEM "OrdenRequestReply.dtd">
+<!DOCTYPE ServicioTecnicoMoviles SYSTEM "MarcasInfoAsk.dtd">
 <ServicioTecnicoMoviles>
     <head>
-        <action>ORDEN_STATUS_ASK</action>
+        <action>MARCAS_INFO_ASK</action>
     </head>
-    <body>
-    	<order_id>1</order_id>
-    </body>
 </ServicioTecnicoMoviles>
 

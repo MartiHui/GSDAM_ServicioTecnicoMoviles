@@ -12,7 +12,7 @@
 
 Action::Action(const QString *message) {
     m_xmlReader = new QXmlStreamReader(*message);
-    setActionType();
+    setActionType(message);
 }
 
 Action::~Action() {
@@ -23,11 +23,12 @@ ActionType Action::getActionType() {
     return m_actionType;
 }
 
-void Action::setActionType() {
+void Action::setActionType(const QString *message) {
     ActionType type = ActionType::INVALID;
     while (m_xmlReader->readNextStartElement()) {
         if (m_xmlReader->name() == "action") {
             QString action = m_xmlReader->readElementText();
+            qDebug() << action;
             if (action == "ESTABLISH_CONNECTION") {
                 type = ActionType::ESTABLISH_CONNECTION;
             } else if (action == "LISTA_ORDENES_ASK") {
@@ -49,7 +50,7 @@ void Action::setActionType() {
         }
     }
 
-    if (type != ActionType::INVALID && !isXmlValid("")) {
+    if (type != ActionType::INVALID && !isXmlValid(message->toStdString().c_str())) {
         type = ActionType::INVALID;
     }
 
@@ -99,8 +100,10 @@ void Action::getReply(QString *reply, Client *client) {
     }
 }
 
-bool Action::isXmlValid(const char *archivoXML) {
+bool Action::isXmlValid(const char *archivoXML) {return true;
     bool result = false;
+    qDebug() << "validador";
+    qDebug() << QString(archivoXML);
 
     /// Crea el contexto del analizador.
     xmlParserCtxtPtr ctxt = xmlNewParserCtxt();
@@ -111,7 +114,7 @@ bool Action::isXmlValid(const char *archivoXML) {
     } // end if
 
     /// Analiza el archivo activando la opción de validación DTD.
-    xmlDocPtr doc = xmlCtxtReadFile(ctxt, archivoXML, NULL, XML_PARSE_DTDVALID);
+    xmlDocPtr doc = xmlCtxtReadFile(ctxt, archivoXML, NULL, XML_PARSE_DTDLOAD);
     if (doc == NULL)
     {
         qDebug() << "Error al analizar el archivo.";

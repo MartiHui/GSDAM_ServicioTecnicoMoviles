@@ -48,7 +48,7 @@ private:
     ActionType m_actionType{ActionType::INVALID};
     QXmlStreamReader *m_xmlReader;
 
-    void setActionType();
+    void setActionType(const QString *message);
     bool isXmlValid(const char *archivoXML); // Parsea el xml con el dtd indicado. Devuelve true si el xml es correcto
 
     // Métodos para crear los xml de respesta en el puntero a QString reply. Algunos métodos necesitarán información sobre el cliente que hace la solicitud.
