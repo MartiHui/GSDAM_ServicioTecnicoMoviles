@@ -3,6 +3,8 @@
 #include <QDebug>
 #include <QVector>
 #include <QPair>
+#include <libxml/parser.h>
+#include <libxml/tree.h>
 
 #include "action.h"
 #include "dbcontroller.h"
@@ -98,7 +100,38 @@ void Action::getReply(QString *reply, Client *client) {
 }
 
 bool Action::isXmlValid(const char *archivoXML) {
-    return true;
+    bool result = false;
+
+    /// Crea el contexto del analizador.
+    xmlParserCtxtPtr ctxt = xmlNewParserCtxt();
+    if (ctxt == NULL)
+    {
+        qDebug() << "Error al crear el contexto del analizador.";
+        return false;
+    } // end if
+
+    /// Analiza el archivo activando la opción de validación DTD.
+    xmlDocPtr doc = xmlCtxtReadFile(ctxt, archivoXML, NULL, XML_PARSE_DTDVALID);
+    if (doc == NULL)
+    {
+        qDebug() << "Error al analizar el archivo.";
+        return false;
+    } // end if
+
+    /// Comprueba la validez del XML.
+    if (ctxt->valid == 0)
+    {
+        qDebug() << "El archivo XML no es valido.";
+    } else {
+        qDebug() << "El archivo XML es valido.";
+        result = true;
+    } // end if
+
+    /// Libera memoria.
+    xmlFreeDoc(doc);
+    xmlFreeParserCtxt(ctxt);
+
+    return result;
 }
 
 void Action::writeXmlStart(QXmlStreamWriter &writer, const QString &dtdName, const QString &action) {
