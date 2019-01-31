@@ -19,7 +19,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void switchCentralWidgetEnabled();
+    void switchCentralWidgetEnabled(); // Alterna los elementos de la ui entre bloqueados y desbloqueados
 
 private:
     Ui::MainWindow *ui;
@@ -29,6 +29,7 @@ private:
     void fillModelosCmbBox(QVector<QPair<QString, int> > modelos);
     void fillReparacionesPosiblesList(QVector<QPair<QString, int> > reparaciones);
     void clearLists();
+    void resetLists();
 
 private slots:
     void replyReceived(QString message);

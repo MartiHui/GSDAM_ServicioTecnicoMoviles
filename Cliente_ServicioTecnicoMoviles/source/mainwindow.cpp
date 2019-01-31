@@ -104,11 +104,13 @@ void MainWindow::fillReparacionesPosiblesList(QVector<QPair<QString, int> > repa
 }
 
 void MainWindow::clearLists() {
-    for (int i = 0; i < ui->reparacionesPosibles->count(); i++) {
-        delete ui->reparacionesPosibles->takeItem(0);
-    }
-    for (int i = 0; i < ui->reparacionesElegidas->count(); i++) {
-        delete ui->reparacionesElegidas->takeItem(0);
+    ui->reparacionesPosibles->clear();
+    ui->reparacionesElegidas->clear();
+}
+
+void MainWindow::resetLists() {
+    for (int i = ui->reparacionesElegidas->count()-1; i >= 0; i--) {
+        ui->reparacionesPosibles->addItem(ui->reparacionesElegidas->takeItem(i));
     }
 }
 
@@ -147,7 +149,7 @@ void MainWindow::on_ordenRequest_clicked()
             reparacionesId.push_back(ui->reparacionesElegidas->item(i)->data(0x0100).toInt());
         }
         m_serverConnection->sendMessage(Action::askOrdenRequest(modeloId, &reparacionesId));
-        clearLists();
+        resetLists();
         switchCentralWidgetEnabled();
     }
 }
@@ -155,6 +157,7 @@ void MainWindow::on_ordenRequest_clicked()
 void MainWindow::on_ordenEstado_clicked()
 {
     QString ordenId = ui->numOrden->text();
+    ui->numOrden->setText("");
     m_serverConnection->sendMessage(Action::askOrdenStatus(ordenId));
     switchCentralWidgetEnabled();
 }

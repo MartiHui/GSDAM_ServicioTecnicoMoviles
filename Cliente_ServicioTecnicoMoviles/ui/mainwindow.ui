@@ -20,9 +20,9 @@
    <widget class="QComboBox" name="marcasCmbBox">
     <property name="geometry">
      <rect>
-      <x>120</x>
+      <x>90</x>
       <y>110</y>
-      <width>83</width>
+      <width>191</width>
       <height>32</height>
      </rect>
     </property>
@@ -33,9 +33,9 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>180</y>
-      <width>83</width>
+      <x>370</x>
+      <y>110</y>
+      <width>191</width>
       <height>32</height>
      </rect>
     </property>
@@ -43,10 +43,10 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>120</y>
+      <x>30</x>
+      <y>117</y>
       <width>58</width>
-      <height>18</height>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
@@ -56,8 +56,8 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>190</y>
+      <x>300</x>
+      <y>120</y>
       <width>58</width>
       <height>18</height>
      </rect>
@@ -167,8 +167,8 @@
    <widget class="QPushButton" name="ordenRequest">
     <property name="geometry">
      <rect>
-      <x>110</x>
-      <y>270</y>
+      <x>590</x>
+      <y>110</y>
       <width>88</width>
       <height>34</height>
      </rect>
@@ -180,8 +180,8 @@
    <widget class="QListWidget" name="reparacionesPosibles">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>150</y>
+      <x>120</x>
+      <y>180</y>
       <width>191</width>
       <height>192</height>
      </rect>
@@ -190,11 +190,37 @@
    <widget class="QListWidget" name="reparacionesElegidas">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>150</y>
+      <x>370</x>
+      <y>180</y>
       <width>191</width>
       <height>192</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>150</y>
+      <width>181</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Reparaciones posibles</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>150</y>
+      <width>181</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Reparaciones elegidas</string>
     </property>
    </widget>
   </widget>

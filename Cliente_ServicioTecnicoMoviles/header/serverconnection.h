@@ -5,6 +5,7 @@
 
 class QWebSocket;
 
+// Clase para gestionar la conexion con el programa servidor
 class ServerConnection : public QObject {
     Q_OBJECT
 public:

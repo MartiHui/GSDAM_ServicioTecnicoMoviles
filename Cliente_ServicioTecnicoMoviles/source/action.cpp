@@ -58,16 +58,7 @@ bool Action::isXmlValid(const char *archivoXml) {
 QString Action::establishConnection(QString nombreTienda) {
     QString message;
     QXmlStreamWriter writer(&message);
-
-    writer.setAutoFormatting(true);
-    writer.writeStartDocument();
-    writer.writeDTD("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"EstablishConnection.dtd\">");
-
-    writer.writeStartElement("ServicioTecnicoMoviles");
-
-    writer.writeStartElement("head");
-    writer.writeTextElement("action", "ESTABLISH_CONNECTION");
-    writer.writeEndElement(); // Cerrar etiqueta head
+    writeXmlStart(writer, "EstablishConnection", "ESTABLISH_CONNECTION");
 
     writer.writeStartElement("body");
     writer.writeTextElement("tienda", nombreTienda);
@@ -79,15 +70,8 @@ QString Action::establishConnection(QString nombreTienda) {
 QString Action::askMarcasInfo() {
     QString message;
     QXmlStreamWriter writer(&message);
+    writeXmlStart(writer, "MarcasInfoAsk", "MARCAS_INFO_ASK");
 
-    writer.setAutoFormatting(true);
-    writer.writeStartDocument();
-    writer.writeDTD("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"MarcasInfoAsk.dtd\">");
-
-    writer.writeStartElement("ServicioTecnicoMoviles");
-
-    writer.writeStartElement("head");
-    writer.writeTextElement("action", "MARCAS_INFO_ASK");
     writer.writeEndDocument(); // Se cierran todas las etiquetas hasta el final
 
     return message;
@@ -96,16 +80,7 @@ QString Action::askMarcasInfo() {
 QString Action::askModelosInfo(int marcaId) {
     QString message;
     QXmlStreamWriter writer(&message);
-
-    writer.setAutoFormatting(true);
-    writer.writeStartDocument();
-    writer.writeDTD("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"ModelosInfoAsk.dtd\">");
-
-    writer.writeStartElement("ServicioTecnicoMoviles");
-
-    writer.writeStartElement("head");
-    writer.writeTextElement("action", "MODELOS_INFO_ASK");
-    writer.writeEndElement(); // Cerrar etiqueta head
+    writeXmlStart(writer, "ModelosInfoAsk", "MODELOS_INFO_ASK");
 
     writer.writeStartElement("body");
     writer.writeTextElement("marca_id", QString::number(marcaId));
@@ -117,16 +92,7 @@ QString Action::askModelosInfo(int marcaId) {
 QString Action::askReparacionInfo(int modeloId) {
     QString message;
     QXmlStreamWriter writer(&message);
-
-    writer.setAutoFormatting(true);
-    writer.writeStartDocument();
-    writer.writeDTD("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"ReparacionInfoAsk.dtd\">");
-
-    writer.writeStartElement("ServicioTecnicoMoviles");
-
-    writer.writeStartElement("head");
-    writer.writeTextElement("action", "REPARACION_INFO_ASK");
-    writer.writeEndElement(); // Cerrar etiqueta head
+    writeXmlStart(writer, "ReparacionInfoAsk", "REPARACION_INFO_ASK");
 
     writer.writeStartElement("body");
     writer.writeTextElement("modelo_id", QString::number(modeloId));
@@ -138,15 +104,7 @@ QString Action::askReparacionInfo(int modeloId) {
 QString Action::error(QString errorMessage) {
     QString message;
     QXmlStreamWriter writer(&message);
-    writer.setAutoFormatting(true);
-    writer.writeStartDocument();
-    writer.writeDTD(QString("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"Error.dtd\">"));
-
-    writer.writeStartElement("ServicioTecnicoMoviles");
-
-    writer.writeStartElement("head");
-    writer.writeTextElement("action", "ERROR");
-    writer.writeEndElement(); // Cerrar etiqueta head
+    writeXmlStart(writer, "Error", "ERROR");
 
     writer.writeStartElement("body");
     writer.writeTextElement("message", errorMessage);
@@ -158,15 +116,7 @@ QString Action::error(QString errorMessage) {
 QString Action::askOrdenStatus(QString ordenId) {
     QString message;
     QXmlStreamWriter writer(&message);
-    writer.setAutoFormatting(true);
-    writer.writeStartDocument();
-    writer.writeDTD(QString("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"OrdenStatusAsk.dtd\">"));
-
-    writer.writeStartElement("ServicioTecnicoMoviles");
-
-    writer.writeStartElement("head");
-    writer.writeTextElement("action", "ORDEN_STATUS_ASK");
-    writer.writeEndElement(); // Cerrar etiqueta head
+    writeXmlStart(writer, "OrdenStatusAsk", "ORDEN_STATUS_ASK");
 
     writer.writeStartElement("body");
     writer.writeTextElement("order_id", ordenId);
@@ -178,15 +128,7 @@ QString Action::askOrdenStatus(QString ordenId) {
 QString Action::askOrdenRequest(int modeloId, QVector<int> *reparacionesId) {
     QString message;
     QXmlStreamWriter writer(&message);
-    writer.setAutoFormatting(true);
-    writer.writeStartDocument();
-    writer.writeDTD(QString("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"OrdenRequestAsk.dtd\">"));
-
-    writer.writeStartElement("ServicioTecnicoMoviles");
-
-    writer.writeStartElement("head");
-    writer.writeTextElement("action", "ORDEN_REQUEST_ASK");
-    writer.writeEndElement(); // Cerrar etiqueta head
+    writeXmlStart(writer, "OrdenRequestAsk", "ORDEN_REQUEST_ASK");
 
     writer.writeStartElement("body");
     writer.writeTextElement("modelo_id", QString::number(modeloId));
@@ -249,7 +191,7 @@ QVector<QPair<QString, int> > Action::getReparacionesInfo() {
     m_xmlReader->readNextStartElement(); // Entramos en <body>
     m_xmlReader->readNextStartElement(); // Entramose n modelo_id
     // TODO encontrar que causa que lea dos veces modelo_id
-    m_xmlReader->readNextStartElement(); // Por alguna razon lee dos veces marca_id
+    m_xmlReader->readNextStartElement(); // Por alguna razon lee dos veces modelo_id
     m_xmlReader->readNextStartElement(); // Entramos en <reparaciones>
     while (m_xmlReader->readNextStartElement()) { // recorremos todos los <reparacion>
         QPair<QString, int> reparacion;
@@ -260,4 +202,16 @@ QVector<QPair<QString, int> > Action::getReparacionesInfo() {
         m_xmlReader->skipCurrentElement(); // saltamos hasta el proximo <reparacion>
     }
     return reparaciones;
+}
+
+void Action::writeXmlStart(QXmlStreamWriter &writer, const QString &dtdName, const QString &action) {
+    writer.setAutoFormatting(true);
+    writer.writeStartDocument();
+    writer.writeDTD(QString("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"" + dtdName + ".dtd\">"));
+
+    writer.writeStartElement("ServicioTecnicoMoviles");
+
+    writer.writeStartElement("head");
+    writer.writeTextElement("action", action);
+    writer.writeEndElement(); // Cerrar etiqueta head
 }
