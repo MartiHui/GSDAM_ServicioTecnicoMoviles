@@ -27,11 +27,14 @@ public:
     ActionType getActionType();
     QString getElementText(QString tagName);
     QVector<QPair<QString, int> > getMarcasInfo();
+    QVector<QPair<QString, int> > getModelosInfo();
+    QVector<QPair<QString, int> > getReparacionesInfo();
 
     static QString establishConnection(QString nombreTienda);
     static QString askMarcasInfo();
     static QString askModelosInfo(int marcaId);
     static QString askReparacionInfo(int modeloId);
+    static QString askOrdenStatus(QString ordenId);
     static QString error(QString message);
 
 private:

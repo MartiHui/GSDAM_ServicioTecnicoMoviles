@@ -1,6 +1,7 @@
 #include <QXmlStreamWriter>
 #include <QString>
 #include <QXmlStreamReader>
+#include <QDebug>
 
 #include "action.h"
 
@@ -154,6 +155,26 @@ QString Action::error(QString errorMessage) {
     return message;
 }
 
+QString Action::askOrdenStatus(QString ordenId) {
+    QString message;
+    QXmlStreamWriter writer(&message);
+    writer.setAutoFormatting(true);
+    writer.writeStartDocument();
+    writer.writeDTD(QString("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"OrdenStatusAsk.dtd\">"));
+
+    writer.writeStartElement("ServicioTecnicoMoviles");
+
+    writer.writeStartElement("head");
+    writer.writeTextElement("action", "ORDEN_STATUS_ASK");
+    writer.writeEndElement(); // Cerrar etiqueta head
+
+    writer.writeStartElement("body");
+    writer.writeTextElement("order_id", ordenId);
+    writer.writeEndDocument(); // Se cierran todas las etiquetas hasta el final
+
+    return message;
+}
+
 QString Action::getElementText(QString tagName) {
     QString value{""};
     m_xmlReader->skipCurrentElement();
@@ -169,14 +190,50 @@ QString Action::getElementText(QString tagName) {
 
 QVector<QPair<QString, int> > Action::getMarcasInfo() {
     QVector<QPair<QString, int> > marcas;
-    m_xmlReader->skipCurrentElement();
-    m_xmlReader->readNextStartElement();
-    while (m_xmlReader->readNextStartElement()) {
+    m_xmlReader->skipCurrentElement(); // salimos de <head>
+    m_xmlReader->readNextStartElement(); // entramos en <body>
+    m_xmlReader->readNextStartElement(); // entramos en <marcas>
+    while (m_xmlReader->readNextStartElement()) { // leemos todos los elementos <marca>
         QPair<QString, int> marca;
+        marca.second = m_xmlReader->attributes().value("id").toInt(); // Debe leerse primero el atributo, ya que readElementText adelanta el puntero
         marca.first = m_xmlReader->readElementText();
-        marca.second = m_xmlReader->attributes().value("id").toInt();
         marcas.push_back(marca);
     }
     return marcas;
 }
 
+QVector<QPair<QString, int> > Action::getModelosInfo() {
+    QVector<QPair<QString, int> > modelos;
+    m_xmlReader->skipCurrentElement(); // Salimos de <head>
+    m_xmlReader->readNextStartElement(); // Entramos en <body>
+    m_xmlReader->readNextStartElement(); // Entramose n marca_id
+    // TODO encontrar que causa que lea dos veces marca_id
+    m_xmlReader->readNextStartElement(); // Por alguna razon lee dos veces marca_id
+    m_xmlReader->readNextStartElement(); // Entramos en <modelos>
+    while (m_xmlReader->readNextStartElement()) { // recorremos todos los <modelo>
+        QPair<QString, int> modelo;
+        modelo.second = m_xmlReader->attributes().value("id").toInt();
+        modelo.first = m_xmlReader->readElementText();
+        modelos.push_back(modelo);
+    }
+    return modelos;
+}
+
+QVector<QPair<QString, int> > Action::getReparacionesInfo() {
+    QVector<QPair<QString, int> > reparaciones;
+    m_xmlReader->skipCurrentElement(); // Salimos de <head>
+    m_xmlReader->readNextStartElement(); // Entramos en <body>
+    m_xmlReader->readNextStartElement(); // Entramose n modelo_id
+    // TODO encontrar que causa que lea dos veces modelo_id
+    m_xmlReader->readNextStartElement(); // Por alguna razon lee dos veces marca_id
+    m_xmlReader->readNextStartElement(); // Entramos en <reparaciones>
+    while (m_xmlReader->readNextStartElement()) { // recorremos todos los <reparacion>
+        QPair<QString, int> reparacion;
+        reparacion.second = m_xmlReader->attributes().value("id").toInt();
+        m_xmlReader->readNextStartElement(); // pasamos al hijo <nombre>
+        reparacion.first = m_xmlReader->readElementText();
+        reparaciones.push_back(reparacion);
+        m_xmlReader->skipCurrentElement(); // saltamos hasta el proximo <reparacion>
+    }
+    return reparaciones;
+}

@@ -28,7 +28,6 @@ void Action::setActionType(const QString *message) {
     while (m_xmlReader->readNextStartElement()) {
         if (m_xmlReader->name() == "action") {
             QString action = m_xmlReader->readElementText();
-            qDebug() << action;
             if (action == "ESTABLISH_CONNECTION") {
                 type = ActionType::ESTABLISH_CONNECTION;
             } else if (action == "LISTA_ORDENES_ASK") {
@@ -100,8 +99,9 @@ void Action::getReply(QString *reply, Client *client) {
     }
 }
 
-bool Action::isXmlValid(const char *archivoXML) {return true;
-    bool result = false;
+bool Action::isXmlValid(const char *archivoXML) {
+    return true;
+    /*bool result = false;
     qDebug() << "validador";
     qDebug() << QString(archivoXML);
 
@@ -134,7 +134,7 @@ bool Action::isXmlValid(const char *archivoXML) {return true;
     xmlFreeDoc(doc);
     xmlFreeParserCtxt(ctxt);
 
-    return result;
+    return result;*/
 }
 
 void Action::writeXmlStart(QXmlStreamWriter &writer, const QString &dtdName, const QString &action) {

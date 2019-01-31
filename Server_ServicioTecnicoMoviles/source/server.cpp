@@ -70,7 +70,7 @@ void Server::processTextMessage(const QString & message) {
         action->error(&reply, "No te has autentificado correctamente");
     }
 
-    client->getWebSocket()->sendTextMessage(message);
+    client->getWebSocket()->sendTextMessage(reply);
 
     delete action;
 }

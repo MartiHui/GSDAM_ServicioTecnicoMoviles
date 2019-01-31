@@ -2,6 +2,8 @@
 #include <QTimer>
 #include <QWebSocket>
 #include <QMessageBox>
+#include <QListWidget>
+#include <QListWidgetItem>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -13,14 +15,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    m_isWaitingReply = false;
     m_serverConnection = new ServerConnection("ws://localhost:1234");
     connect(m_serverConnection, SIGNAL(messageReceived(QString)), this, SLOT(replyReceived(QString)));
 }
 
 void MainWindow::replyReceived(QString message) {
-    qDebug() << "reply";
-    m_isWaitingReply = false;
+    switchCentralWidgetEnabled(); // Desbloqueamos el programa
     Action *action = new Action(&message);
     QMessageBox msgBox;
 
@@ -31,10 +31,9 @@ void MainWindow::replyReceived(QString message) {
         break;
 
     case ActionType::ESTABLISH_CONNECTION:
-        //m_isWaitingReply = true;
-        //m_serverConnection->sendMessage(Action::askMarcasInfo());
+        switchCentralWidgetEnabled(); // Bloqueamos el programa hasta recibir las marcas
+        m_serverConnection->sendMessage(Action::askMarcasInfo());
 
-        m_serverConnection->m_conectado = true;
         msgBox.setText(action->getElementText("tienda"));
         msgBox.exec();
         break;
@@ -47,9 +46,11 @@ void MainWindow::replyReceived(QString message) {
         break;
 
     case ActionType::MODELOS_INFO_REPLY:
+        fillModelosCmbBox(action->getModelosInfo());
         break;
 
     case ActionType::REPARACION_INFO_REPLY:
+        fillReparacionesPosiblesList(action->getReparacionesInfo());
         break;
 
     case ActionType::ORDEN_REQUEST_REPLY:
@@ -61,7 +62,6 @@ void MainWindow::replyReceived(QString message) {
         msgBox.setText(action->getElementText("respuesta"));
         msgBox.exec();
         break;
-
     }
 
     delete action;
@@ -72,74 +72,86 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::switchCentralWidgetEnabled() {
+    static bool isEnabled = true;
+    if (m_serverConnection->m_webSocket->isValid()) {
+        isEnabled = !isEnabled;
+        ui->centralWidget->setEnabled(isEnabled);
+    }
+}
+
 void MainWindow::fillMarcasCmbBox(QVector<QPair<QString, int> > marcas) {
+    ui->marcasCmbBox->clear();
     for (auto marca : marcas) {
         ui->marcasCmbBox->addItem(marca.first, marca.second);
     }
 }
 
+void MainWindow::fillModelosCmbBox(QVector<QPair<QString, int> > modelos) {
+    ui->modelosCmbBox->clear();
+    for (auto modelo : modelos) {
+        ui->modelosCmbBox->addItem(modelo.first, modelo.second);
+    }
+}
+
+void MainWindow::fillReparacionesPosiblesList(QVector<QPair<QString, int> > reparaciones) {
+    clearLists();
+    for (auto reparacion : reparaciones) {
+        QListWidgetItem *listItem = new QListWidgetItem(reparacion.first);
+        listItem->setData(0x0100, reparacion.second);
+        ui->reparacionesPosibles->addItem(listItem);
+    }
+}
+
+void MainWindow::clearLists() {
+    for (int i = 0; i < ui->reparacionesPosibles->count(); i++) {
+        delete ui->reparacionesPosibles->takeItem(0);
+    }
+    for (int i = 0; i < ui->reparacionesElegidas->count(); i++) {
+        delete ui->reparacionesElegidas->takeItem(0);
+    }
+}
+
 void MainWindow::on_conectarServidor_clicked()
 {
-    if (!m_isWaitingReply) {
-        m_isWaitingReply = true;
-        QString nombreTienda = ui->nombreTienda->text();
-        m_serverConnection->sendMessage(Action::establishConnection(nombreTienda));
-    }
+    QString nombreTienda = ui->nombreTienda->text();
+    m_serverConnection->sendMessage(Action::establishConnection(nombreTienda));
+    switchCentralWidgetEnabled();
 }
 
 void MainWindow::on_marcasCmbBox_currentIndexChanged(int index)
 {
-    if (!m_isWaitingReply) {
-        m_isWaitingReply = true;
-
-    }
     int marcaId = ui->marcasCmbBox->itemData(index).toInt();
-    // TODO rellenar combo box modelos
+    m_serverConnection->sendMessage(Action::askModelosInfo(marcaId));
+    switchCentralWidgetEnabled();
 }
 
 void MainWindow::on_modelosCmbBox_currentIndexChanged(int index)
 {
-    if (!m_isWaitingReply) {
-        m_isWaitingReply = true;
-
-    }
     int modeloId = ui->modelosCmbBox->itemData(index).toInt();
-    // TODO rellenar lista reparaciones posibles
-}
-
-void MainWindow::on_reparacionesPosibles_doubleClicked(const QModelIndex &index)
-{
-    if (!m_isWaitingReply) {
-        m_isWaitingReply = true;
-
-    }
-    // Quitar de esta lita y añadir a la otra
-}
-
-void MainWindow::on_reparacionesElegidas_doubleClicked(const QModelIndex &index)
-{
-    if (!m_isWaitingReply) {
-        m_isWaitingReply = true;
-
-    }
-    // Quitar de esta lita y aadir a la otra
+    m_serverConnection->sendMessage(Action::askReparacionInfo(modeloId));
+    switchCentralWidgetEnabled();
 }
 
 void MainWindow::on_ordenRequest_clicked()
 {
-    if (!m_isWaitingReply) {
-        m_isWaitingReply = true;
 
-    }
-    // Hacer pedido y obtener id de pedido
+    switchCentralWidgetEnabled();
 }
 
 void MainWindow::on_ordenEstado_clicked()
 {
-    if (!m_isWaitingReply) {
-        m_isWaitingReply = true;
-
-    }
     QString ordenId = ui->numOrden->text();
-    // Solicitar estado del pedido
+    m_serverConnection->sendMessage(Action::askOrdenStatus(ordenId));
+    switchCentralWidgetEnabled();
+}
+
+void MainWindow::on_reparacionesPosibles_itemDoubleClicked(QListWidgetItem *item)
+{
+    ui->reparacionesElegidas->addItem(ui->reparacionesPosibles->takeItem(ui->reparacionesPosibles->row(item)));
+}
+
+void MainWindow::on_reparacionesElegidas_itemDoubleClicked(QListWidgetItem *item)
+{
+    ui->reparacionesPosibles->addItem(ui->reparacionesElegidas->takeItem(ui->reparacionesElegidas->row(item)));
 }

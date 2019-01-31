@@ -9,14 +9,10 @@ class ServerConnection : public QObject {
     Q_OBJECT
 public:
     QWebSocket *m_webSocket;
-    bool m_conectado{false};
 
     explicit ServerConnection(QString url);
     ~ServerConnection();
-    bool sendMessage(QString xmlMessage); // Envia un mensaje al servidor. Devuelve true si lo ha podido mandar
-
-private:
-    bool m_waitingReply{false};
+    void sendMessage(QString xmlMessage);
 
 private slots:
     void onConnected();

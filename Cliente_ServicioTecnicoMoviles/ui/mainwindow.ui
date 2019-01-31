@@ -14,6 +14,9 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <widget class="QComboBox" name="marcasCmbBox">
     <property name="geometry">
      <rect>
@@ -25,6 +28,9 @@
     </property>
    </widget>
    <widget class="QComboBox" name="modelosCmbBox">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>120</x>
@@ -109,26 +115,6 @@
      <enum>Qt::Horizontal</enum>
     </property>
    </widget>
-   <widget class="QListView" name="reparacionesPosibles">
-    <property name="geometry">
-     <rect>
-      <x>230</x>
-      <y>110</y>
-      <width>201</width>
-      <height>241</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QListView" name="reparacionesElegidas">
-    <property name="geometry">
-     <rect>
-      <x>460</x>
-      <y>110</y>
-      <width>201</width>
-      <height>241</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="Line" name="line_2">
     <property name="geometry">
      <rect>
@@ -189,6 +175,26 @@
     </property>
     <property name="text">
      <string>Hacer orden</string>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="reparacionesPosibles">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>150</y>
+      <width>191</width>
+      <height>192</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="reparacionesElegidas">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>150</y>
+      <width>191</width>
+      <height>192</height>
+     </rect>
     </property>
    </widget>
   </widget>

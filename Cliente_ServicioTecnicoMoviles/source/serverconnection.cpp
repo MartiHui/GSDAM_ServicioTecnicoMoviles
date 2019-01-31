@@ -6,7 +6,7 @@
 
 ServerConnection::ServerConnection(QString url) {
     m_webSocket = new QWebSocket();
-    connect(m_webSocket, &QWebSocket::connected, this, &ServerConnection::onConnected);
+    connect(m_webSocket, SIGNAL(connected()), this, SLOT(onConnected()));
     m_webSocket->open(QUrl(url));
 }
 
@@ -19,15 +19,11 @@ void ServerConnection::onConnected() {
     connect(m_webSocket, &QWebSocket::textMessageReceived, this, &ServerConnection::onTextMessageReceived);
 }
 
-void ServerConnection::onTextMessageReceived(QString message) {
-    m_waitingReply = false;
-    qDebug() << message;
+void ServerConnection::onTextMessageReceived(QString message) { //qDebug() << "Recibido " <<  message;
     emit messageReceived(message);
 }
 
-bool ServerConnection::sendMessage(QString xmlMessage) {
-    qDebug() << "mensaje";
+void ServerConnection::sendMessage(QString xmlMessage) { //qDebug() << "Enviado " << xmlMessage;
     m_webSocket->sendTextMessage(xmlMessage);
-    m_waitingReply = true;
 }
 
