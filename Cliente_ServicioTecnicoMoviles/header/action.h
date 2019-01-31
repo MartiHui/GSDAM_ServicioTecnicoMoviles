@@ -35,6 +35,7 @@ public:
     static QString askModelosInfo(int marcaId);
     static QString askReparacionInfo(int modeloId);
     static QString askOrdenStatus(QString ordenId);
+    static QString askOrdenRequest(int modeloId, QVector<int> *reparacionesId);
     static QString error(QString message);
 
 private:

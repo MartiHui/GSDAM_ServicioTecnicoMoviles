@@ -54,12 +54,12 @@ void MainWindow::replyReceived(QString message) {
         break;
 
     case ActionType::ORDEN_REQUEST_REPLY:
-        msgBox.setText(action->getElementText("El código de tu pedido es " + action->getElementText("orden_id")));
+        msgBox.setText(QString("El código de tu pedido es: ") + action->getElementText("orden_id"));
         msgBox.exec();
         break;
 
     case ActionType::ORDEN_STATUS_REPLY:
-        msgBox.setText(action->getElementText("respuesta"));
+        msgBox.setText(QString("Estado del pedido: " + action->getElementText("respuesta")));
         msgBox.exec();
         break;
     }
@@ -135,8 +135,21 @@ void MainWindow::on_modelosCmbBox_currentIndexChanged(int index)
 
 void MainWindow::on_ordenRequest_clicked()
 {
-
-    switchCentralWidgetEnabled();
+    int modeloId = ui->modelosCmbBox->itemData(ui->modelosCmbBox->currentIndex()).toInt();
+    QVector<int> reparacionesId;
+    int numReparaciones = ui->reparacionesElegidas->count();
+    if (numReparaciones == 0) {
+        QMessageBox msgBox;
+        msgBox.setText("No has elegido ninguna reparación");
+        msgBox.exec();
+    } else {
+        for (int i = 0; i < numReparaciones; i++) {
+            reparacionesId.push_back(ui->reparacionesElegidas->item(i)->data(0x0100).toInt());
+        }
+        m_serverConnection->sendMessage(Action::askOrdenRequest(modeloId, &reparacionesId));
+        clearLists();
+        switchCentralWidgetEnabled();
+    }
 }
 
 void MainWindow::on_ordenEstado_clicked()

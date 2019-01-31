@@ -175,6 +175,30 @@ QString Action::askOrdenStatus(QString ordenId) {
     return message;
 }
 
+QString Action::askOrdenRequest(int modeloId, QVector<int> *reparacionesId) {
+    QString message;
+    QXmlStreamWriter writer(&message);
+    writer.setAutoFormatting(true);
+    writer.writeStartDocument();
+    writer.writeDTD(QString("<!DOCTYPE ServicioTecnicoMoviles SYSTEM \"OrdenRequestAsk.dtd\">"));
+
+    writer.writeStartElement("ServicioTecnicoMoviles");
+
+    writer.writeStartElement("head");
+    writer.writeTextElement("action", "ORDEN_REQUEST_ASK");
+    writer.writeEndElement(); // Cerrar etiqueta head
+
+    writer.writeStartElement("body");
+    writer.writeTextElement("modelo_id", QString::number(modeloId));
+    writer.writeStartElement("reparaciones");
+    for (auto reparacionId : *reparacionesId) {
+        writer.writeTextElement("reparacion_id", QString::number(reparacionId));
+    }
+    writer.writeEndDocument(); // Se cierran todas las etiquetas hasta el final
+
+    return message;
+}
+
 QString Action::getElementText(QString tagName) {
     QString value{""};
     m_xmlReader->skipCurrentElement();

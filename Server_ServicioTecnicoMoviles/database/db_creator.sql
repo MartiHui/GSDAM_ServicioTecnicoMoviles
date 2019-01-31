@@ -687,6 +687,14 @@ COPY public.orden_detalles (id_orden, id_reparacion_modelo) FROM stdin;
 1	1
 1	4
 2	5
+3	4
+3	6
+4	4
+4	3
+5	1
+5	2
+6	1
+6	2
 \.
 
 
@@ -697,6 +705,10 @@ COPY public.orden_detalles (id_orden, id_reparacion_modelo) FROM stdin;
 COPY public.ordenes (id_orden, id_modelo_telefono, id_tienda, fecha, id_estado, id_tecnico) FROM stdin;
 2	3	1	2019-01-27	1	1
 1	1	1	2019-01-27	3	1
+3	3	1	2019-01-31	1	1
+4	2	1	2019-01-31	1	1
+5	1	1	2019-01-31	1	1
+6	1	1	2019-01-31	1	1
 \.
 
 
@@ -814,7 +826,7 @@ SELECT pg_catalog.setval('public.ordenes_id_modelo_telefono_seq', 1, false);
 -- Name: ordenes_id_orden_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
 --
 
-SELECT pg_catalog.setval('public.ordenes_id_orden_seq', 2, true);
+SELECT pg_catalog.setval('public.ordenes_id_orden_seq', 6, true);
 
 
 --
