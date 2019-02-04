@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ServicioTecnicoMoviles>
+	<head>
+		<action callbackId="">EstablishConnectionAsk</action>
+	</head>
+	<body>
+		<!-- type puede ser TIENDA, TECNICO y ADMINISTRADOR -->
+		<info type="%1">
+			<user>%2</user>
+			<password>%3</password>
+		</info>
+	</body>
+</ServicioTecnicoMoviles>

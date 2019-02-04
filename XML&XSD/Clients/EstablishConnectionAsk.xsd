@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+
+<xs:element name="ServicioTecnicoMoviles">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="head" type="head"/>
+			<xs:element name="body" type="body"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:complexType name="head">
+	<xs:sequence>
+		<xs:element name="action" type="action"/>
+	</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="action">
+	<xs:simpleContent>
+		<xs:extension base="xs:string">
+			<xs:attribute name="callbackId" use="required" type="xs:integer"/>
+		</xs:extension>
+	</xs:simpleContent>
+</xs:complexType>
+
+<xs:complexType name="body">
+	<xs:sequence>
+		<xs:element name="info" type="info"/>
+	</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="info">
+	<xs:sequence>
+		<xs:element name="user" type="xs:string"/>
+		<xs:element name="password" type="xs:string"/>
+	</xs:sequence>
+	<xs:attribute name="type" use="required">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="TIENDA"/>
+				<xs:enumeration value="TECNICO"/>
+				<xs:enumeration value="ADMINISTRADOR"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:attribute>
+</xs:complexType>
+
+
+</xs:schema>
+
+

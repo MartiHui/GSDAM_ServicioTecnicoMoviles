@@ -4,6 +4,7 @@
 <ServicioTecnicoMoviles>
     <head>
         <action>REPARACION_INFO_REPLY</action>
+        <ask result="">
     </head>
     <body>
         <modelo_id></modelo_id>

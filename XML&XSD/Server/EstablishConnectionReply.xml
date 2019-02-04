@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ServicioTecnicoMoviles>
+	<head>
+		<!-- callbackId contendra el mismo id que el xml al que responde -->
+		<action callbackId="">EstablishConnectionReply</action>
+	</head>
+	<body>
+		<!-- reply contiene un mensaje de vuelta
+		result puede ser SUCCESS o FAILURE -->
+		<reply result="%1">%2</reply>
+	</body>
+</ServicioTecnicoMoviles>
