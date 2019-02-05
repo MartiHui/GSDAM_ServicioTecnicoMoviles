@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ServicioTecnicoMoviles>
+    <head>
+        <action callbackId="%1">ModelosInfoAsk</action>
+    </head>
+    <body>
+    	<marca_id>%2</marca_id>
+    </body>
+</ServicioTecnicoMoviles> 

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ServicioTecnicoMoviles>
+    <head>
+        <action callbackId="%1">ListaStatusReply</action>
+    </head>
+    <body>
+    	<statuses>
+    		<!-- statuses contendra tantos <status id=""></status> como sea necesario. El elemento contendra el nombre del status y el id sera el id que tenga el status en la base de datos -->
+    		%2
+    	</statuses>
+    </body>
+</ServicioTecnicoMoviles>
