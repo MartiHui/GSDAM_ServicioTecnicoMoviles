@@ -1,4 +1,3 @@
- 
 --
 -- PostgreSQL database dump
 --
@@ -17,184 +16,131 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+-- Data for Name: estados; Type: TABLE DATA; Schema: public; Owner: usuario
 --
 
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
-SET default_tablespace = '';
-
-SET default_with_oids = false;
-
---
--- Name: estados; Type: TABLE; Schema: public; Owner: usuario
---
-
-CREATE TABLE public.estados (
-    estado_id integer NOT NULL,
-    estado_nombre character varying NOT NULL,
-    estado_activo boolean DEFAULT true NOT NULL
-);
-
-
-ALTER TABLE public.estados OWNER TO usuario;
-
---
--- Name: estados_estado_id_seq; Type: SEQUENCE; Schema: public; Owner: usuario
---
-
-CREATE SEQUENCE public.estados_estado_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.estados_estado_id_seq OWNER TO usuario;
-
---
--- Name: estados_estado_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: usuario
---
-
-ALTER SEQUENCE public.estados_estado_id_seq OWNED BY public.estados.estado_id;
+COPY public.estados (estado_id, estado_nombre, estado_activo) FROM stdin;
+\.
 
 
 --
--- Name: tecnicos; Type: TABLE; Schema: public; Owner: usuario
+-- Data for Name: marcas; Type: TABLE DATA; Schema: public; Owner: usuario
 --
 
-CREATE TABLE public.tecnicos (
-    tecnico_id integer NOT NULL,
-    tecnico_nombre character varying NOT NULL,
-    tecnico_usuario character varying NOT NULL,
-    tecnico_password character varying NOT NULL,
-    tecnico_activo boolean DEFAULT true NOT NULL
-);
-
-
-ALTER TABLE public.tecnicos OWNER TO usuario;
-
---
--- Name: tecnicos_tecnico_id_seq; Type: SEQUENCE; Schema: public; Owner: usuario
---
-
-CREATE SEQUENCE public.tecnicos_tecnico_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.tecnicos_tecnico_id_seq OWNER TO usuario;
-
---
--- Name: tecnicos_tecnico_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: usuario
---
-
-ALTER SEQUENCE public.tecnicos_tecnico_id_seq OWNED BY public.tecnicos.tecnico_id;
+COPY public.marcas (marca_id, marca_nombre, marca_activo) FROM stdin;
+\.
 
 
 --
--- Name: tiendas; Type: TABLE; Schema: public; Owner: usuario
+-- Data for Name: modelos; Type: TABLE DATA; Schema: public; Owner: usuario
 --
 
-CREATE TABLE public.tiendas (
-    tienda_id integer NOT NULL,
-    tienda_nombre character varying NOT NULL,
-    tienda_user character varying NOT NULL,
-    tienda_password character varying NOT NULL,
-    tienda_direccion character varying NOT NULL,
-    tienda_activo boolean DEFAULT true NOT NULL
-);
-
-
-ALTER TABLE public.tiendas OWNER TO usuario;
-
---
--- Name: tiendas_tienda_id_seq; Type: SEQUENCE; Schema: public; Owner: usuario
---
-
-CREATE SEQUENCE public.tiendas_tienda_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.tiendas_tienda_id_seq OWNER TO usuario;
-
---
--- Name: tiendas_tienda_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: usuario
---
-
-ALTER SEQUENCE public.tiendas_tienda_id_seq OWNED BY public.tiendas.tienda_id;
+COPY public.modelos (modelo_id, modelo_nombre, marca_id, modelo_activo) FROM stdin;
+\.
 
 
 --
--- Name: estados estado_id; Type: DEFAULT; Schema: public; Owner: usuario
+-- Data for Name: reparaciones; Type: TABLE DATA; Schema: public; Owner: usuario
 --
 
-ALTER TABLE ONLY public.estados ALTER COLUMN estado_id SET DEFAULT nextval('public.estados_estado_id_seq'::regclass);
-
-
---
--- Name: tecnicos tecnico_id; Type: DEFAULT; Schema: public; Owner: usuario
---
-
-ALTER TABLE ONLY public.tecnicos ALTER COLUMN tecnico_id SET DEFAULT nextval('public.tecnicos_tecnico_id_seq'::regclass);
+COPY public.reparaciones (reparacion_id, reparacion_nombre) FROM stdin;
+\.
 
 
 --
--- Name: tiendas tienda_id; Type: DEFAULT; Schema: public; Owner: usuario
+-- Data for Name: modeloReparaciones; Type: TABLE DATA; Schema: public; Owner: usuario
 --
 
-ALTER TABLE ONLY public.tiendas ALTER COLUMN tienda_id SET DEFAULT nextval('public.tiendas_tienda_id_seq'::regclass);
-
-
---
--- Name: estados estados_pkey; Type: CONSTRAINT; Schema: public; Owner: usuario
---
-
-ALTER TABLE ONLY public.estados
-    ADD CONSTRAINT estados_pkey PRIMARY KEY (estado_id);
+COPY public."modeloReparaciones" ("modeloReparaciones_id", modelo_id, reparacion_id, "modeloReparaciones_activo") FROM stdin;
+\.
 
 
 --
--- Name: tecnicos tecnicos_tecnico_usuario_key; Type: CONSTRAINT; Schema: public; Owner: usuario
+-- Data for Name: tecnicos; Type: TABLE DATA; Schema: public; Owner: usuario
 --
 
-ALTER TABLE ONLY public.tecnicos
-    ADD CONSTRAINT tecnicos_tecnico_usuario_key UNIQUE (tecnico_usuario);
-
-
---
--- Name: tiendas tiendas_pkey; Type: CONSTRAINT; Schema: public; Owner: usuario
---
-
-ALTER TABLE ONLY public.tiendas
-    ADD CONSTRAINT tiendas_pkey PRIMARY KEY (tienda_id);
+COPY public.tecnicos (tecnico_id, tecnico_nombre, tecnico_usuario, tecnico_password, tecnico_activo) FROM stdin;
+\.
 
 
 --
--- Name: tiendas tiendas_tienda_user_key; Type: CONSTRAINT; Schema: public; Owner: usuario
+-- Data for Name: tiendas; Type: TABLE DATA; Schema: public; Owner: usuario
 --
 
-ALTER TABLE ONLY public.tiendas
-    ADD CONSTRAINT tiendas_tienda_user_key UNIQUE (tienda_user);
+COPY public.tiendas (tienda_id, tienda_nombre, tienda_user, tienda_password, tienda_direccion, tienda_activo) FROM stdin;
+\.
+
+
+--
+-- Data for Name: ordenes; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.ordenes (orden_id, modelo_id, tienda_id, estado_id, tecnico_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: ordenDetalles; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public."ordenDetalles" (orden_id, "modeloReparaciones_id") FROM stdin;
+\.
+
+
+--
+-- Name: estados_estado_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.estados_estado_id_seq', 1, false);
+
+
+--
+-- Name: marcas_marca_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.marcas_marca_id_seq', 1, false);
+
+
+--
+-- Name: modeloReparaciones_modeloReparaciones_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public."modeloReparaciones_modeloReparaciones_id_seq"', 1, false);
+
+
+--
+-- Name: modelos_modelo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.modelos_modelo_id_seq', 1, false);
+
+
+--
+-- Name: ordenes_orden_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.ordenes_orden_id_seq', 1, false);
+
+
+--
+-- Name: reparaciones_reparacion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.reparaciones_reparacion_id_seq', 1, false);
+
+
+--
+-- Name: tecnicos_tecnico_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.tecnicos_tecnico_id_seq', 1, false);
+
+
+--
+-- Name: tiendas_tienda_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.tiendas_tienda_id_seq', 1, false);
 
 
 --
