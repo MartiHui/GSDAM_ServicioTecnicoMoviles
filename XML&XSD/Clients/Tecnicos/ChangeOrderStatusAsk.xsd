@@ -27,14 +27,8 @@
 
 <xs:complexType name="body">
 	<xs:sequence>
-		<xs:element name="modelo_id" type="xs:integer"/>
-		<xs:element name="reparaciones" type="reparaciones"/>
-	</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="reparaciones">
-	<xs:sequence>
-		<xs:element name="reparacion_id" type="xs:integer" minOccurs="1" maxOccurs="unbounded"/>
+		<xs:element name="order_id" type="xs:integer"/>
+		<xs:element name="status_is" type="xs:integer"/>
 	</xs:sequence>
 </xs:complexType>
 

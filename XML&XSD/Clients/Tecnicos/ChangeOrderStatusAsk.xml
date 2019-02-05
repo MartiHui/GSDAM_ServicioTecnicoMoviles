@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ServicioTecnicoMoviles>
+    <head>
+        <action callbackId="%1">ChangeOrdenStatusAsk</action>
+    </head>
+    <body>
+    	<order_id>%2</order_id>
+    	<status_is>%3</status_is>
+    </body>
+</ServicioTecnicoMoviles>

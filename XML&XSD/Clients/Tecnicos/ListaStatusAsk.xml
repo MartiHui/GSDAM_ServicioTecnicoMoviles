@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ServicioTecnicoMoviles>
+	<head>
+		<!-- callbackId contendra el mismo id que el xml al que responde -->
+		<action callbackId="%1">ListaStatusAsk</action>
+	</head>
+</ServicioTecnicoMoviles>

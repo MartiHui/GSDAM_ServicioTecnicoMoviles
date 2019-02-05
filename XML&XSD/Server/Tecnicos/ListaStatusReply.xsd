@@ -27,15 +27,22 @@
 
 <xs:complexType name="body">
 	<xs:sequence>
-		<xs:element name="modelo_id" type="xs:integer"/>
-		<xs:element name="reparaciones" type="reparaciones"/>
+		<xs:element name="statuses" type="statuses"/>
 	</xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="reparaciones">
+<xs:complexType name="statuses">
 	<xs:sequence>
-		<xs:element name="reparacion_id" type="xs:integer" minOccurs="1" maxOccurs="unbounded"/>
+		<xs:element name="status" type="status" minOccurs="0" maxOccurs="unbounded"/>
 	</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="status">
+	<xs:simpleContent>
+		<xs:extension base="xs:string">
+			<xs:attribute name="id" use="required" type="xs:integer"/>
+		</xs:extension>
+	</xs:simpleContent>
 </xs:complexType>
 
 
