@@ -3,11 +3,11 @@
 <ServicioTecnicoMoviles>
 	<head>
 		<!-- callbackId contendra el mismo id que el xml al que responde -->
-		<action callbackId="">EstablishConnectionReply</action>
+		<action callbackId="%1">EstablishConnectionReply</action>
 	</head>
 	<body>
 		<!-- reply contiene un mensaje de vuelta
 		result puede ser SUCCESS o FAILURE -->
-		<reply result="%1">%2</reply>
+		<reply result="%2">%3</reply>
 	</body>
 </ServicioTecnicoMoviles>

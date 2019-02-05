@@ -3,13 +3,9 @@
 <ServicioTecnicoMoviles>
 	<head>
 		<!-- callbackId contendra el mismo id que el xml al que responde -->
-		<action callbackId="%1">EstablishConnectionAsk</action>
+		<action callbackId="%1">Error</action>
 	</head>
 	<body>
-		<!-- type puede ser TIENDA, TECNICO y ADMINISTRADOR -->
-		<info type="%2">
-			<user>%3</user>
-			<password>%4</password>
-		</info>
+		<message>%2</message>
 	</body>
 </ServicioTecnicoMoviles>

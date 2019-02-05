@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ServicioTecnicoMoviles>
+    <head>
+        <action callbackId="%1">ListaOrdenesReply</action>
+    </head>
+    <body>
+    	<ordenes>
+            <!-- ordenes contendra tantos <orden id=""></orden> como sea necesario. El elemento contendra el estado de la orden y el id sera el id que tenga la orden en la base de datos -->
+            %2
+    	</ordenes>
+    </body>
+</ServicioTecnicoMoviles>
