@@ -3,10 +3,8 @@
 
 #include "client.h"
 
-Client::Client(QWebSocket * webSocket) {
-    m_tiendaId = -1;
-    m_validated = false;
-    m_webSocket = webSocket;
+Client::Client(QWebSocket * webSocket) :
+        m_webSocket{webSocket} {
     connect(m_webSocket, SIGNAL(textMessageReceived(const QString &)), this, SLOT(onSocketMessageReceived(const QString &)));
     connect(m_webSocket, SIGNAL(disconnected()), this, SLOT(onSocketDisconnected()));
 }
@@ -19,17 +17,17 @@ QWebSocket* Client::getWebSocket() {
     return m_webSocket;
 }
 
-bool Client::isValidated() {
-    return m_validated;
+bool Client::hasIdentified() {
+    return m_type != ClientType::INVALID;
 }
 
-void Client::validate(int tiendaId) {
-    m_tiendaId = tiendaId;
-    m_validated = true;
+void Client::identify(int tiendaId, ClientType type) {
+    m_clientId = tiendaId;
+    m_type = type;
 }
 
-int Client::getTiendaId() {
-    return m_tiendaId;
+int Client::getClientId() {
+    return m_clientId;
 }
 
 void Client::onSocketMessageReceived(const QString & message) {

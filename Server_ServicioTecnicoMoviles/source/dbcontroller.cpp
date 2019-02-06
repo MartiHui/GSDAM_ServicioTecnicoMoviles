@@ -3,7 +3,6 @@
 #include <QPair>
 
 #include "dbcontroller.h"
-#include "action.h"
 
 DBController *DBController::m_pInstance = NULL;
 

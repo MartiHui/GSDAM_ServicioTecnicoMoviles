@@ -10,15 +10,34 @@
 #include "dbcontroller.h"
 #include "client.h"
 
-Action::Action(const QString *message) {
+Action::Action(const QString &message) :
+        m_requestXml{*message} {
     m_xmlReader = new QXmlStreamReader(*message);
-    setActionType(message);
+    setRequestType();
 }
 
 Action::~Action() {
     delete m_xmlReader;
 }
 
+void Action::setRequestInfo() {
+    readUntilElement("action");
+    m_callbackId = m_xmlReader->attributes().value("callbackId");
+    m_requestType = m_xmlReader->readElementText();
+}
+
+bool Action::readUntilElement(QString tagName) {
+    while (m_xmlReader->isEndDocument()) {
+        m_xmlReader->readNext();
+        if (m_xmlReader->isStartElement() && m_xmlReader->name() == tagName) {
+            return true;
+        }
+    }
+
+    return false; // Has llegado hasta el final del documento sin encontrar el elemento deseado
+}
+
+/*
 ActionType Action::getActionType() {
     return m_actionType;
 }
@@ -134,7 +153,7 @@ bool Action::isXmlValid(const char *archivoXML) {
     xmlFreeDoc(doc);
     xmlFreeParserCtxt(ctxt);
 
-    return result;*/
+    return result;
 }
 
 void Action::writeXmlStart(QXmlStreamWriter &writer, const QString &dtdName, const QString &action) {
@@ -163,7 +182,7 @@ void Action::establishConnection(QString *reply, Client *client) {
 
     int id = DBController::getInstance()->tiendaInDb(nombreTienda);
     if (id) {
-        client->validate(id); // Se marca el cliente como validado para que pueda hacer solicitudes
+        client->identify(id); // Se marca el cliente como validado para que pueda hacer solicitudes
 
         QXmlStreamWriter writer(reply);
         writeXmlStart(writer, "EstablishConnection", "ESTABLISH_CONNECTION");
@@ -175,10 +194,10 @@ void Action::establishConnection(QString *reply, Client *client) {
         error(reply, QString("Tu tienda no está en nuestra base de datos"));
     }
 }
-/*
+
 void Action::listaOrdenes(QString *reply, Client *client) {
 
-}*/
+}
 
 void Action::marcasInfo(QString *reply) {
     QVector<QPair<int, QString> > marcas;
@@ -243,7 +262,7 @@ void Action::reparacionInfo(QString *reply) {
 void Action::ordenRequest(QString *reply, Client *client) {
     Orden orden;
     orden.modeloId = getTextElement("modelo_id").toInt();
-    orden.tiendaId = client->getTiendaId();
+    orden.tiendaId = client->getClientId();
     m_xmlReader->readNextStartElement();
     while (m_xmlReader->readNextStartElement()) {
         orden.reparacionesId.push_back(m_xmlReader->readElementText().toInt());
@@ -267,7 +286,7 @@ void Action::ordenStatus(QString *reply, Client *client) {
     int ordenId = getTextElement("order_id").toInt();
     DBController::getInstance()->getOrdenStatus(ordenId, &ordenStatus);
 
-    if (client->getTiendaId() == ordenStatus.first) {
+    if (client->getClientId() == ordenStatus.first) {
         QXmlStreamWriter writer(reply);
         writeXmlStart(writer, "OrdenStatusReply", "ORDEN_STATUS_REPLY");
 
@@ -278,16 +297,5 @@ void Action::ordenStatus(QString *reply, Client *client) {
         error(reply, "No puedes acceder a este pedido.");
     }
 }
+*/
 
-QString Action::getTextElement(QString tagName) {
-    QString value{""};
-    m_xmlReader->skipCurrentElement();
-    while (m_xmlReader->readNextStartElement()) {
-        if (m_xmlReader->name() == tagName) {
-            value = m_xmlReader->readElementText();
-            break;
-        }
-    }
-
-    return value;
-}

@@ -7,7 +7,7 @@
 class QXmlStreamReader;
 class QXmlStreamWriter;
 class Client;
-
+/*
 // Define el tipo de XML que se ha recibido
 enum class ActionType {
     INVALID,
@@ -18,13 +18,13 @@ enum class ActionType {
     REPARACION_INFO_ASK,
     ORDEN_REQUEST_ASK,
     ORDEN_STATUS_ASK,
-};
+};*/
 
 // Clase para parsear los xml recibidos por el servidor y escribir los xml como respuesta correspondientes;
 class Action : public QObject {
     Q_OBJECT
 public:
-    struct Reparacion {
+    /*struct Reparacion {
         int reparacionId;
         QString nombre;
         int tiempoMinutos;
@@ -36,16 +36,24 @@ public:
         int modeloId;
         int tiendaId;
         QVector<int> reparacionesId;
-    };
+    };*/
 
-    explicit Action(const QString *message);
+    explicit Action(const QString &message);
     ~Action();
-    ActionType getActionType();
+    /*ActionType getActionType();
     void getReply(QString *reply, Client *client); // Crea un xml con la repsuesta segun el ActionType del xml
-    void error(QString *reply, QString message); // Crea un xml con un mensaje de error
+    void error(QString *reply, QString message); // Crea un xml con un mensaje de error*/
 
 private:
-    ActionType m_actionType{ActionType::INVALID};
+    QString *m_requestXml; // Todo el archivo xml recibido del cliente
+    QString m_requestType{""}; // El tipo de accion, que deberia estar en la etiqueta <action> del xml recibido
+    QString m_callbackId{""}; // El id que se tendra que poner en el atributo callback del xml respuesta
+    QString m_reply{""}; // La respuesta que se enviara al cliente
+    QXmlStreamReader *m_xmlReader;
+
+    void setRequestInfo();
+    bool readUntilElement(QString tagName); // Lee el XML hasta encontrar el elemento llamado tagName. Devuelve true si lo encuentra, false si llega hasta el final del documento
+    /*ActionType m_actionType{ActionType::INVALID};
     QXmlStreamReader *m_xmlReader;
 
     void setActionType(const QString *message);
@@ -61,7 +69,7 @@ private:
     void ordenStatus(QString *reply, Client *client);
 
     void writeXmlStart(QXmlStreamWriter &writer, const QString &dtdName, const QString &action); // Escribe el header, que coincide entre todos, a excepcion del nombre del dtd y la accion.
-    QString getTextElement(QString tagName); // Devuelve el texto que contenga la etiqueta tagName
+    QString getTextElement(QString tagName); // Devuelve el texto que contenga la etiqueta tagName*/
 };
 
 #endif // ACTION_H

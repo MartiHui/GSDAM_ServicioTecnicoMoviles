@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QList>
 
-
 class QWebSocketServer;
 class Client;
 

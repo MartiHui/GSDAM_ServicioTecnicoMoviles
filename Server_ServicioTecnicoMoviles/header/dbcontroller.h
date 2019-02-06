@@ -5,14 +5,16 @@
 #include <QtSql>
 
 #include "action.h"
+#include "client.h"
 
-// Clase que controla la conexion y las querys a la base de datos. Tiene estructura de singleton
+// Clase que controla la conexion y las querys a la base de datos.
 class DBController : QObject {
     Q_OBJECT
 
 public:
     static DBController* getInstance(); // devuelve la unica instancia posible de la clase, para evitar conexiones multiples
     static void deleteInstance();
+
     int tiendaInDb(QString nombreTienda);
     void getMarcas(QVector<QPair<int, QString> > *marcas);
     void getModelos(int marcaId, QVector<QPair<int, QString> > *modelos); // Introduce en el vector modelos la informacion de los modelos de la marca indicada

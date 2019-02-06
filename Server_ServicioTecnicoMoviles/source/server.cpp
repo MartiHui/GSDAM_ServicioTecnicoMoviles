@@ -7,8 +7,8 @@
 #include "client.h"
 #include "action.h"
 
-Server::Server(quint16 port) {
-    m_port = port;
+Server::Server(quint16 port) :
+        m_port{port}{
     QTimer::singleShot(0, this, SLOT(startServer()));
 }
 
@@ -36,14 +36,6 @@ void Server::socketConnected() {
     connect(client, SIGNAL(textMessageReceived(const QString &)), this, SLOT(processTextMessage(const QString &)));
     connect(client, SIGNAL(disconnected()), this, SLOT(socketDisconnected()));
 
-    // El SLOT no puede tener más argumentos que elSIGNAL
-    //connect(client->getWebSocket(), SIGNAL(textMessageReceived(const QString &)), this, SLOT(processTextMessage(const QString &)));
-    //connect(client->getWebSocket(), SIGNAL(disconnected()), this, SLOT(socketDisconnected(client)));
-
-    // No se puede psar argumentos
-    //connect(client->getWebSocket(), &QWebSocket::textMessageReceived, this, &Server::processTextMessage);
-    //connect(client->getWebSocket(), &QWebSocket::disconnected, this, &Server::socketDisconnected);
-
     m_clients << client;
 }
 
@@ -59,12 +51,11 @@ void Server::socketDisconnected() {
 
 void Server::processTextMessage(const QString & message) {
     Client *client = qobject_cast<Client *>(sender());
-    //qDebug() << "Mensaje recibido. Remitente: " << client->getWebSocket();
 
     Action *action = new Action(&message);
     QString reply;
 
-    if (action->getActionType() == ActionType::ESTABLISH_CONNECTION || client->isValidated()) {
+    if (action->getActionType() == ActionType::ESTABLISH_CONNECTION || client->hasIdentified()) {
         action->getReply(&reply, client);
     } else {
         action->error(&reply, "No te has autentificado correctamente");
