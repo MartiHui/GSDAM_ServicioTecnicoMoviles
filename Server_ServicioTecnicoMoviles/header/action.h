@@ -44,15 +44,19 @@ public:
     void getReply(QString *reply, Client *client); // Crea un xml con la repsuesta segun el ActionType del xml
     void error(QString *reply, QString message); // Crea un xml con un mensaje de error*/
 
-private:
+protected:
     QString *m_requestXml; // Todo el archivo xml recibido del cliente
     QString m_requestType{""}; // El tipo de accion, que deberia estar en la etiqueta <action> del xml recibido
     QString m_callbackId{""}; // El id que se tendra que poner en el atributo callback del xml respuesta
-    QString m_reply{""}; // La respuesta que se enviara al cliente
     QXmlStreamReader *m_xmlReader;
 
     void setRequestInfo();
     bool readUntilElement(QString tagName); // Lee el XML hasta encontrar el elemento llamado tagName. Devuelve true si lo encuentra, false si llega hasta el final del documento
+    bool isXmlValid(); // Parsea el xml con su xsd. Se da por hecho que el XSD tiene el mismo nombbre que el XML, que coincide con el campo action del xml.
+    static QString getXmlTemplate(QString filepath); //Busca el archivo en filepath y devuelve todo su contenido en forma de QString
+    static QString generateErrorXml(QString errorMessage); // Genera un XML con la plantilla de Error.xml
+    // Se conecta con la base de datos y comprueba si el usuario y contraseña existen. En caso afirmativo valida client y devuelve el xml de respuesta, de lo contrario, deuelve el xml de error.
+    QString establishConnection(Client &client);
     /*ActionType m_actionType{ActionType::INVALID};
     QXmlStreamReader *m_xmlReader;
 

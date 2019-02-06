@@ -5,6 +5,7 @@
 #include <QPair>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
+#include <QTextStream>
 
 #include "action.h"
 #include "dbcontroller.h"
@@ -36,6 +37,15 @@ bool Action::readUntilElement(QString tagName) {
 
     return false; // Has llegado hasta el final del documento sin encontrar el elemento deseado
 }
+
+QString Action::getXmlTemplate(QString filepath) {
+
+}
+
+QString Action::generateErrorXml(QString errorMessage) {
+
+}
+
 
 /*
 ActionType Action::getActionType() {
