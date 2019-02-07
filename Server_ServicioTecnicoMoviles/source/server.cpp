@@ -10,7 +10,7 @@
 #include "actiontecnico.h"
 
 Server::Server(quint16 port) :
-        m_port{port}{
+        m_port(port){
     QTimer::singleShot(0, this, SLOT(startServer()));
 }
 
@@ -56,17 +56,17 @@ void Server::processTextMessage(const QString & message) {
 
     QString reply{""};
     if (!client->hasIdentified()) {
-        Action action(&message);
+        Action action(message);
         if (action.isConnectionPetition()) {
-            reply = action.establishConnection(client);
+            reply = action.establishConnection(*client);
         } else {
-            reply = Action::generateErrorXml(action.m_callbackId, "Aún no te has identifiado");
+            reply = Action::generateErrorXml(action.getCallbackId(), "Aún no te has identifiado");
         }
     } else if (client->getClientType() == ClientType::TIENDA) {
-        ActionTienda action(&message);
+        ActionTienda action(message);
         reply = action.getReply();
     } else if (client->getClientType() == ClientType::TECNICO) {
-        ActionTecnico action(&message);
+        ActionTecnico action(message);
         reply = action.getReply();
     }
 

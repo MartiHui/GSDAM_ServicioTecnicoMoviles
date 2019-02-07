@@ -9,12 +9,17 @@ enum class ActionTiendaType {
     MODELOS_INFO_ASK,
     REPARACION_INFO_ASK,
     ORDEN_REQUEST_ASK,
+    INVALID
 };
 
 class ActionTienda : public Action {
 public:
     ActionTienda(const QString &message);
+    void setActionType();
     QString getReply();
+
+private:
+    ActionTiendaType m_actionType;
 };
 
 #endif // ACTIONTIENDA_H

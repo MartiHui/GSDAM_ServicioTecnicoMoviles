@@ -265,7 +265,7 @@ ALTER SEQUENCE public.reparaciones_reparacion_id_seq OWNED BY public.reparacione
 CREATE TABLE public.tecnicos (
     tecnico_id integer NOT NULL,
     tecnico_nombre character varying NOT NULL,
-    tecnico_usuario character varying NOT NULL,
+    tecnico_user character varying NOT NULL,
     tecnico_password character varying NOT NULL,
     tecnico_activo boolean DEFAULT true NOT NULL
 );
@@ -458,7 +458,7 @@ ALTER TABLE ONLY public.tecnicos
 --
 
 ALTER TABLE ONLY public.tecnicos
-    ADD CONSTRAINT tecnicos_tecnico_usuario_key UNIQUE (tecnico_usuario);
+    ADD CONSTRAINT tecnicos_tecnico_usuario_key UNIQUE (tecnico_user);
 
 
 --

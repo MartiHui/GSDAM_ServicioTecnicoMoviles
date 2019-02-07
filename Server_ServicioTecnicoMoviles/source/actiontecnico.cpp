@@ -1,6 +1,6 @@
 #include "actiontecnico.h"
 
-ActionTecnico::ActionTienda(const QString &message) : Action(message) {
+ActionTecnico::ActionTecnico(const QString &message) : Action(message) {
 
 }
 

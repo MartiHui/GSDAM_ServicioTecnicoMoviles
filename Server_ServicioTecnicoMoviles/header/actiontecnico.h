@@ -4,7 +4,7 @@
 
 class ActionTecnico : public Action {
 public:
-    ActionTienda(const QString &message);
+    ActionTecnico(const QString &message);
     QString getReply();
-}
+};
 #endif // ACTIONTECNICO_H

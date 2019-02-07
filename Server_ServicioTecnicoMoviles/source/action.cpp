@@ -16,8 +16,8 @@
 #include "client.h"
 
 Action::Action(const QString &message) :
-        m_requestXml{*message} {
-    m_xmlReader = new QXmlStreamReader(*message);
+        m_requestXml{message} {
+    m_xmlReader = new QXmlStreamReader(m_requestXml);
     setRequestInfo();
 }
 
@@ -27,8 +27,12 @@ Action::~Action() {
 
 void Action::setRequestInfo() {
     readUntilElement("action");
-    m_callbackId = m_xmlReader->attributes().value("callbackId");
+    m_callbackId = m_xmlReader->attributes().value("callbackId").toString();
     m_requestType = m_xmlReader->readElementText();
+}
+
+QString Action::getCallbackId() {
+    return m_callbackId;
 }
 
 bool Action::readUntilElement(QString tagName) {
@@ -45,18 +49,18 @@ bool Action::readUntilElement(QString tagName) {
 bool Action::isXmlValid() {
     bool valid = false;
 
-    QUrl schemaUrl(XML_FOLDER + m_requestType + ".xsd");
+    QUrl schemaUrl("XML/" + m_requestType + ".xsd");
 
     QXmlSchema schema;
     if (schema.load(schemaUrl)) {
         if (schema.isValid()) {
             QXmlSchemaValidator validator(schema);
-            if (validator.validate(m_requestXml->toUtf8())) {
+            if (validator.validate(m_requestXml.toUtf8())) {
                 valid = true;
             }
         }
     } else {
-        qDebug() << "No se ha encontrado el XSD " + QUrl.toString();
+        qDebug() << "No se ha encontrado el XSD " + schemaUrl.toString();
     }
 
     return valid;
@@ -65,13 +69,13 @@ bool Action::isXmlValid() {
 QString Action::getXmlTemplate(QString filename) {
     QString xmlTemplate{""};
 
-    QFile file(XML_FOLDER + filename + ".xml");
+    QFile file("XML/" + filename + ".xml");
     if (file.open(QFile::ReadOnly | QFile::Text)) {
         QTextStream in(&file);
         xmlTemplate = in.readAll();
         file.close();
     } else {
-        qDebug() << "No se ha encontrado la plantilla XML " + m_requestType + ".xml";
+        qDebug() << "No se ha encontrado la plantilla XML " + filename + ".xml";
     }
 
     return xmlTemplate;
@@ -86,7 +90,7 @@ QString Action::establishConnection(Client &client) {
 
     if (isXmlValid()) {
         readUntilElement("info");
-        QString tipo = m_xmlReader->attributes().value("type");
+        QString tipo = m_xmlReader->attributes().value("type").toString();
 
         readUntilElement("user");
         QString user = m_xmlReader->readElementText();
@@ -95,7 +99,7 @@ QString Action::establishConnection(Client &client) {
         QString password = m_xmlReader->readElementText();
 
         QPair<int, QString> result;
-        if (DBController::getInstance()->clientInDatabase(tipo, user, password, *result)) {
+        if (DBController::getInstance()->clientInDatabase(tipo, user, password, &result)) {
             client.identify(result.first, tipo);
             reply = QString(Action::getXmlTemplate("EstablishConnectionReply")).arg(m_callbackId).arg(result.second);
         } else {
