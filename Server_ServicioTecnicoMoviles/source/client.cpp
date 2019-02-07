@@ -21,9 +21,14 @@ bool Client::hasIdentified() {
     return m_type != ClientType::INVALID;
 }
 
-void Client::identify(int tiendaId, ClientType type) {
-    m_clientId = tiendaId;
-    m_type = type;
+void Client::identify(int clientId, QString type) {
+    m_clientId = clientId;
+
+    if (type == "TIENDA") {
+        m_type = ClientType::TIENDA;
+    } else if (type == "TECNICO") {
+        m_type = ClientType::TECNICO;
+    }
 }
 
 int Client::getClientId() {

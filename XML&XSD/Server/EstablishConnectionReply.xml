@@ -6,8 +6,8 @@
 		<action callbackId="%1">EstablishConnectionReply</action>
 	</head>
 	<body>
-		<!-- reply contiene un mensaje de vuelta
-		result puede ser SUCCESS o FAILURE -->
-		<reply result="%2">%3</reply>
+		<!-- reply contiene el nombre asignado al usuario/password
+        enviados, en caso de ser correctos -->
+		<reply>%2</reply>
 	</body>
 </ServicioTecnicoMoviles>

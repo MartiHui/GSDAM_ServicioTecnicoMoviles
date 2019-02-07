@@ -6,6 +6,10 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <QTextStream>
+#include <QFile>
+#include <QUrl>
+#include <QXmlSchema>
+#include <QXmlSchemaValidator>
 
 #include "action.h"
 #include "dbcontroller.h"
@@ -38,12 +42,68 @@ bool Action::readUntilElement(QString tagName) {
     return false; // Has llegado hasta el final del documento sin encontrar el elemento deseado
 }
 
-QString Action::getXmlTemplate(QString filepath) {
+bool Action::isXmlValid() {
+    bool valid = false;
 
+    QUrl schemaUrl(XML_FOLDER + m_requestType + ".xsd");
+
+    QXmlSchema schema;
+    schema.load(schemaUrl);
+
+    if (schema.isValid()) {
+        QXmlSchemaValidator validator(schema);
+        if (validator.validate(m_requestXml->toUtf8())) {
+            valid = true;
+        }
+    }
+
+    return valid;
 }
 
-QString Action::generateErrorXml(QString errorMessage) {
+QString Action::getXmlTemplate(QString filename) {
+    QString xmlTemplate{""};
 
+    QFile file(XML_FOLDER + filename + ".xml");
+    if (file.open(QFile::ReadOnly | QFile::Text)) {
+        QTextStream in(&file);
+        xmlTemplate = in.readAll();
+        file.close();
+    } else {
+        qDebug() << "No se ha encontrado la plantilla XML " + m_requestType + ".xml";
+    }
+
+    return xmlTemplate;
+}
+
+QString Action::generateErrorXml(QString callbackId, QString errorMessage) {
+    return QString(Action::getXmlTemplate("Error")).arg(callbackId).arg(errorMessage);
+}
+
+QString Action::establishConnection(Client &client) {
+    QString reply{""};
+
+    if (isXmlValid()) {
+        readUntilElement("info");
+        QString tipo = m_xmlReader->attributes().value("type");
+
+        readUntilElement("user");
+        QString user = m_xmlReader->readElementText();
+
+        readUntilElement("password");
+        QString password = m_xmlReader->readElementText();
+
+        QPair<int, QString> result;
+        if (DBController::getInstance()->clientInDatabase(tipo, user, password, *result)) {
+            client.identify(result.first, tipo);
+            reply = QString(Action::getXmlTemplate("EstablishConnectionReply")).arg(m_callbackId).arg(result.second);
+        } else {
+            reply = generateErrorXml(m_callbackId, "Usuario o contraseña incorrectos");
+        }
+    } else {
+        reply = generateErrorXml(m_callbackId, "XML no válido");
+    }
+
+    return reply;
 }
 
 

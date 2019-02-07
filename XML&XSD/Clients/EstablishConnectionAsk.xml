@@ -6,7 +6,7 @@
 		<action callbackId="%1">EstablishConnectionAsk</action>
 	</head>
 	<body>
-		<!-- type puede ser TIENDA, TECNICO y ADMINISTRADOR -->
+		<!-- type puede ser TIENDA o TECNICO -->
 		<info type="%2">
 			<user>%3</user>
 			<password>%4</password>

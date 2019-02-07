@@ -28,6 +28,39 @@ DBController::DBController() {
     database.open();
 }
 
+bool DBController::clientInDatabase(QString type, QString user, QString password, QPair<int, QString> *result) {
+    QSqlQuery query;
+    query.prepare(prepareClientInDatabaseQuery(type));
+    query.bindValue(0, user);
+    query.bindValue(1, password);
+
+    if (query.next()) {
+        result->first = query.value(0).toInt();
+        result->second = query.value(1).toString();
+        return true;
+    } else {
+        return false;
+    }
+}
+
+QString DBController::prepareClientInDatabaseQuery(const QString &type) {
+    QString tipo{""};
+    if (type == "TIENDA") {
+        tipo = "tienda";
+    } else if (type == "TECNICO") {
+        tipo = "tecnico";
+    }
+
+    QString tabla = tipo + "s";
+    QString id = tipo + "_id";
+    QString nombre = tipo + "_nombre";
+    QString user = tipo + "_user";
+    QString password = tipo + "_password";
+
+    return QString("SELECT %1, %2 FROM %3 WHERE %4 = ? AND %5 = ?").arg(id).arg(nombre).arg(tabla).arg(user).arg(password);
+}
+
+/*
 int DBController::tiendaInDb(QString nombreTienda) {
     QSqlQuery query;
     query.exec("SELECT * FROM tiendas WHERE \"nombre_tienda\" = \'" + nombreTienda + "\'");
@@ -103,4 +136,4 @@ void DBController::getOrdenStatus(int ordenId, QPair<int, QString> *ordenStatus)
         ordenStatus->first = query.value(0).toInt();
         ordenStatus->second = query.value(1).toString();
     }
-}
+}*/

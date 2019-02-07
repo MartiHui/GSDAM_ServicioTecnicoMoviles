@@ -20,7 +20,7 @@ public:
 
     QWebSocket* getWebSocket();
     bool hasIdentified(); // true si el cliente se ha identificado
-    void identify(int clientId, ClientType type); // marca el cliente como identificado y le asigna su id de la base de datos
+    void identify(int clientId, QString type); // marca el cliente como identificado y le asigna su id de la base de datos
     int getClientId();
 
 private:

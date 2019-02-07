@@ -18,6 +18,7 @@ LIBS += -lxml2
 
 QT += websockets
 QT += sql
+QT += xmlpatterns
 
 INCLUDEPATH += ./source \
                ./header

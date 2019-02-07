@@ -40,6 +40,8 @@ public:
 
     explicit Action(const QString &message);
     ~Action();
+
+    const QString XML_FOLDER{"XML/"};
     /*ActionType getActionType();
     void getReply(QString *reply, Client *client); // Crea un xml con la repsuesta segun el ActionType del xml
     void error(QString *reply, QString message); // Crea un xml con un mensaje de error*/
@@ -50,13 +52,19 @@ protected:
     QString m_callbackId{""}; // El id que se tendra que poner en el atributo callback del xml respuesta
     QXmlStreamReader *m_xmlReader;
 
+    // Obtiene el tipo de la solicitud y el id del callback
     void setRequestInfo();
-    bool readUntilElement(QString tagName); // Lee el XML hasta encontrar el elemento llamado tagName. Devuelve true si lo encuentra, false si llega hasta el final del documento
-    bool isXmlValid(); // Parsea el xml con su xsd. Se da por hecho que el XSD tiene el mismo nombbre que el XML, que coincide con el campo action del xml.
-    static QString getXmlTemplate(QString filepath); //Busca el archivo en filepath y devuelve todo su contenido en forma de QString
-    static QString generateErrorXml(QString errorMessage); // Genera un XML con la plantilla de Error.xml
+    // Lee el XML hasta encontrar el elemento llamado tagName. Devuelve true si lo encuentra, false si llega hasta el final del documento
+    bool readUntilElement(QString tagName);
+    // Parsea el xml con su xsd. Se da por hecho que el XSD tiene el mismo nombbre que el XML, que coincide con el campo action del xml.
+    bool isXmlValid();
+    // Obtiene el archivo xml con el nombre filename localizado en la ruta XML_FOLDER y con extension .xml
+    static QString getXmlTemplate(QString filename);
+    // Genera un XML con la plantilla de Error.xml
+    static QString generateErrorXml(QString callbackId, QString errorMessage);
     // Se conecta con la base de datos y comprueba si el usuario y contraseña existen. En caso afirmativo valida client y devuelve el xml de respuesta, de lo contrario, deuelve el xml de error.
     QString establishConnection(Client &client);
+
     /*ActionType m_actionType{ActionType::INVALID};
     QXmlStreamReader *m_xmlReader;
 

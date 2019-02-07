@@ -27,23 +27,8 @@
 
 <xs:complexType name="body">
 	<xs:sequence>
-		<xs:element name="reply" type="reply"/>
+		<xs:element name="reply" type="xs:string"/>
 	</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="reply">
-	<xs:simpleContent>
-		<xs:extension base="xs:string">
-			<xs:attribute name="result" use="required">
-				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:enumeration value="SUCCESS"/>
-						<xs:enumeration value="FAILURE"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:attribute>
-		</xs:extension>
-	</xs:simpleContent>
 </xs:complexType>
 
 
