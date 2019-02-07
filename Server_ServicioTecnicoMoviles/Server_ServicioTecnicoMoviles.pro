@@ -28,10 +28,14 @@ SOURCES += \
         source/server.cpp \
     source/client.cpp \
     source/action.cpp \
-    source/dbcontroller.cpp
+    source/dbcontroller.cpp \
+    source/actiontienda.cpp \
+    source/actiontecnico.cpp
 
 HEADERS += \
     header/server.h \
     header/client.h \
     header/action.h \
-    header/dbcontroller.h
+    header/dbcontroller.h \
+    header/actiontienda.h \
+    header/actiontecnico.h

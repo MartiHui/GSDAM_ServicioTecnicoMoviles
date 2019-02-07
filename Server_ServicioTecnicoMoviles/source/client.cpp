@@ -35,6 +35,10 @@ int Client::getClientId() {
     return m_clientId;
 }
 
+ClientType Client::getClientType() {
+    return m_type;
+}
+
 void Client::onSocketMessageReceived(const QString & message) {
     emit textMessageReceived(message);
 }

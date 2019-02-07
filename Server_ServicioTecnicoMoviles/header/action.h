@@ -64,6 +64,7 @@ protected:
     static QString generateErrorXml(QString callbackId, QString errorMessage);
     // Se conecta con la base de datos y comprueba si el usuario y contraseña existen. En caso afirmativo valida client y devuelve el xml de respuesta, de lo contrario, deuelve el xml de error.
     QString establishConnection(Client &client);
+    bool isConnectionPetition();
 
     /*ActionType m_actionType{ActionType::INVALID};
     QXmlStreamReader *m_xmlReader;

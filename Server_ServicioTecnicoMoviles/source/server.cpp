@@ -6,6 +6,8 @@
 #include "server.h"
 #include "client.h"
 #include "action.h"
+#include "actiontienda.h"
+#include "actiontecnico.h"
 
 Server::Server(quint16 port) :
         m_port{port}{
@@ -52,18 +54,24 @@ void Server::socketDisconnected() {
 void Server::processTextMessage(const QString & message) {
     Client *client = qobject_cast<Client *>(sender());
 
-    Action *action = new Action(&message);
-    QString reply;
-
-    if (action->getActionType() == ActionType::ESTABLISH_CONNECTION || client->hasIdentified()) {
-        action->getReply(&reply, client);
-    } else {
-        action->error(&reply, "No te has autentificado correctamente");
+    QString reply{""};
+    if (!client->hasIdentified()) {
+        Action action(&message);
+        if (action.isConnectionPetition()) {
+            reply = action.establishConnection(client);
+        } else {
+            reply = Action::generateErrorXml(action.m_callbackId, "Aún no te has identifiado");
+        }
+    } else if (client->getClientType() == ClientType::TIENDA) {
+        ActionTienda action(&message);
+        reply = action.getReply();
+    } else if (client->getClientType() == ClientType::TECNICO) {
+        ActionTecnico action(&message);
+        reply = action.getReply();
     }
 
     client->getWebSocket()->sendTextMessage(reply);
+
     //qDebug() << "Recibido: " << message;
     //qDebug() << "Enviado: " << reply;
-
-    delete action;
 }

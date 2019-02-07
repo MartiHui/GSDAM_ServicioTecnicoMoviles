@@ -18,7 +18,7 @@
 Action::Action(const QString &message) :
         m_requestXml{*message} {
     m_xmlReader = new QXmlStreamReader(*message);
-    setRequestType();
+    setRequestInfo();
 }
 
 Action::~Action() {
@@ -48,13 +48,15 @@ bool Action::isXmlValid() {
     QUrl schemaUrl(XML_FOLDER + m_requestType + ".xsd");
 
     QXmlSchema schema;
-    schema.load(schemaUrl);
-
-    if (schema.isValid()) {
-        QXmlSchemaValidator validator(schema);
-        if (validator.validate(m_requestXml->toUtf8())) {
-            valid = true;
+    if (schema.load(schemaUrl)) {
+        if (schema.isValid()) {
+            QXmlSchemaValidator validator(schema);
+            if (validator.validate(m_requestXml->toUtf8())) {
+                valid = true;
+            }
         }
+    } else {
+        qDebug() << "No se ha encontrado el XSD " + QUrl.toString();
     }
 
     return valid;
@@ -104,6 +106,10 @@ QString Action::establishConnection(Client &client) {
     }
 
     return reply;
+}
+
+bool Action::isConnectionPetition() {
+    return m_requestType == "EstablishConnectionAsk";
 }
 
 
