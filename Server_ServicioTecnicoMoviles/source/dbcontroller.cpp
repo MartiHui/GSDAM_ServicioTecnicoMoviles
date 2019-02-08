@@ -60,6 +60,67 @@ QString DBController::prepareClientInDatabaseQuery(const QString &type) {
     return QString("SELECT %1, %2 FROM %3 WHERE %4 = ? AND %5 = ?").arg(id).arg(nombre).arg(tabla).arg(user).arg(password);
 }
 
+void DBController::loadListaOrdenes(const Client &client, QVector<QPair<int, QString> > &ordenes) {
+    QSqlQuery query;
+    query.prepare("SELECT orden_id, estado_nombre FROM ordenes JOIN estados ON ordenes.estado_id = estados.estado_id "
+                  "WHERE tienda_id = ?");
+    query.bindValue(1, client.getClientId());
+
+    while (query.next()) {
+        QPair<int, QString> orden;
+        orden.first = query.value(0).toInt();
+        orden.second = query.value(1).toString();
+
+        ordenes.push_back(orden);
+    }
+}
+
+void DBController::loadInfo(QString infoField, QVector<QPair<int, QString> > &infoContainer, QString searchField, int searchId) {
+    QSqlQuery query;
+    query.prepare(prepareLoadInfoQuery(searchField, infoField));
+    if (!(searchField == "" || searchId == 0)) {
+        query.bindValue(0, searchId);
+    }
+
+    while (query.next()) {
+        QPair<int, QString> info;
+        info.first = query.value(0).toInt();
+        info.second = query.value(1).toString();
+
+        infoContainer.push_back(info);
+    }
+}
+
+QString DBController::prepareLoadInfoQuery(const QString &searchField, const QString &infoField) {
+    QString query{""};
+
+    QString infoId = infoField + "_id";
+    QString infoNombre = infoField + "_nombre";
+    QString tabla = infoField + "s";
+
+    query = QString("SELECT %1, %2 FROM %3 ").arg(infoId).arg(infoNombre).arg(tabla);
+    if (searchField != "") {
+        query += QString("WHERE %1 = ?").arg(searchField);
+    }
+
+    return query;
+}
+
+void DBController::loadReparaciones(QVector<QPair<int, QString> > &reparaciones, int modeloId) {
+    QSqlQuery query;
+    query.prepare("SELECT reparaciones.reparacion_id, reparacion_nombre FROM modelo_reparaciones JOIN reparaciones"
+                  " ON reparaciones.reparacion_id = modelo_reparaciones.reparacion_id WHERE modelo_id = ?");
+    query.bindValue(0, modeloId);
+
+    while (query.next()) {
+        QPair<int, QString> reparacion;
+        reparacion.first = query.value(0).toInt();
+        reparacion.second = query.value(1).toString();
+
+        reparaciones.push_back(reparacion);
+    }
+}
+
 /*
 int DBController::tiendaInDb(QString nombreTienda) {
     QSqlQuery query;

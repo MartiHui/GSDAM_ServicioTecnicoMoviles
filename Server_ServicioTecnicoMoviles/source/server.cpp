@@ -64,7 +64,7 @@ void Server::processTextMessage(const QString & message) {
         }
     } else if (client->getClientType() == ClientType::TIENDA) {
         ActionTienda action(message);
-        reply = action.getReply();
+        reply = action.getReply(*client);
     } else if (client->getClientType() == ClientType::TECNICO) {
         ActionTecnico action(message);
         reply = action.getReply();

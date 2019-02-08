@@ -15,20 +15,6 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET row_security = off;
 
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -104,18 +90,18 @@ ALTER SEQUENCE public.marcas_marca_id_seq OWNED BY public.marcas.marca_id;
 
 
 --
--- Name: modeloReparaciones; Type: TABLE; Schema: public; Owner: usuario
+-- Name: modelo_reparaciones; Type: TABLE; Schema: public; Owner: usuario
 --
 
-CREATE TABLE public."modeloReparaciones" (
-    "modeloReparaciones_id" integer NOT NULL,
+CREATE TABLE public.modelo_reparaciones (
+    modelo_reparaciones_id integer NOT NULL,
     modelo_id integer NOT NULL,
     reparacion_id integer NOT NULL,
-    "modeloReparaciones_activo" boolean DEFAULT true NOT NULL
+    modelo_reparaciones_activo boolean DEFAULT true NOT NULL
 );
 
 
-ALTER TABLE public."modeloReparaciones" OWNER TO usuario;
+ALTER TABLE public.modelo_reparaciones OWNER TO usuario;
 
 --
 -- Name: modeloReparaciones_modeloReparaciones_id_seq; Type: SEQUENCE; Schema: public; Owner: usuario
@@ -136,7 +122,7 @@ ALTER TABLE public."modeloReparaciones_modeloReparaciones_id_seq" OWNER TO usuar
 -- Name: modeloReparaciones_modeloReparaciones_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: usuario
 --
 
-ALTER SEQUENCE public."modeloReparaciones_modeloReparaciones_id_seq" OWNED BY public."modeloReparaciones"."modeloReparaciones_id";
+ALTER SEQUENCE public."modeloReparaciones_modeloReparaciones_id_seq" OWNED BY public.modelo_reparaciones.modelo_reparaciones_id;
 
 
 --
@@ -348,10 +334,10 @@ ALTER TABLE ONLY public.marcas ALTER COLUMN marca_id SET DEFAULT nextval('public
 
 
 --
--- Name: modeloReparaciones modeloReparaciones_id; Type: DEFAULT; Schema: public; Owner: usuario
+-- Name: modelo_reparaciones modelo_reparaciones_id; Type: DEFAULT; Schema: public; Owner: usuario
 --
 
-ALTER TABLE ONLY public."modeloReparaciones" ALTER COLUMN "modeloReparaciones_id" SET DEFAULT nextval('public."modeloReparaciones_modeloReparaciones_id_seq"'::regclass);
+ALTER TABLE ONLY public.modelo_reparaciones ALTER COLUMN modelo_reparaciones_id SET DEFAULT nextval('public."modeloReparaciones_modeloReparaciones_id_seq"'::regclass);
 
 
 --
@@ -406,11 +392,11 @@ ALTER TABLE ONLY public.marcas
 
 
 --
--- Name: modeloReparaciones modeloReparaciones_pkey; Type: CONSTRAINT; Schema: public; Owner: usuario
+-- Name: modelo_reparaciones modeloReparaciones_pkey; Type: CONSTRAINT; Schema: public; Owner: usuario
 --
 
-ALTER TABLE ONLY public."modeloReparaciones"
-    ADD CONSTRAINT "modeloReparaciones_pkey" PRIMARY KEY ("modeloReparaciones_id");
+ALTER TABLE ONLY public.modelo_reparaciones
+    ADD CONSTRAINT "modeloReparaciones_pkey" PRIMARY KEY (modelo_reparaciones_id);
 
 
 --
@@ -478,18 +464,18 @@ ALTER TABLE ONLY public.tiendas
 
 
 --
--- Name: modeloReparaciones modeloReparaciones_modelo_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: usuario
+-- Name: modelo_reparaciones modeloReparaciones_modelo_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: usuario
 --
 
-ALTER TABLE ONLY public."modeloReparaciones"
+ALTER TABLE ONLY public.modelo_reparaciones
     ADD CONSTRAINT "modeloReparaciones_modelo_id_fkey" FOREIGN KEY (modelo_id) REFERENCES public.modelos(modelo_id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
--- Name: modeloReparaciones modeloReparaciones_reparacion_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: usuario
+-- Name: modelo_reparaciones modeloReparaciones_reparacion_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: usuario
 --
 
-ALTER TABLE ONLY public."modeloReparaciones"
+ALTER TABLE ONLY public.modelo_reparaciones
     ADD CONSTRAINT "modeloReparaciones_reparacion_id_fkey" FOREIGN KEY (reparacion_id) REFERENCES public.reparaciones(reparacion_id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
@@ -506,7 +492,7 @@ ALTER TABLE ONLY public.modelos
 --
 
 ALTER TABLE ONLY public."ordenDetalles"
-    ADD CONSTRAINT "ordenDetalles_modeloReparaciones_id_fkey" FOREIGN KEY ("modeloReparaciones_id") REFERENCES public."modeloReparaciones"("modeloReparaciones_id") ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT "ordenDetalles_modeloReparaciones_id_fkey" FOREIGN KEY ("modeloReparaciones_id") REFERENCES public.modelo_reparaciones(modelo_reparaciones_id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --

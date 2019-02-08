@@ -27,7 +27,6 @@
 
 <xs:complexType name="body">
 	<xs:sequence>
-		<xs:element name="marca_id" type="xs:integer"/>
 		<xs:element name="modelos" type="modelos"/>
 	</xs:sequence>
 </xs:complexType>

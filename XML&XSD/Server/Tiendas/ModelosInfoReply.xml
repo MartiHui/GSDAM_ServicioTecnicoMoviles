@@ -5,10 +5,9 @@
         <action callbackId="%1">ModelosInfoReply</action>
     </head>
     <body>
-        <marca_id>%2</marca_id>
     	<modelos>
     		<!-- modelos contendra tantos <modelo id=""></modelo> como sea necesario. El elemento contendra el nombre del modelo y el id sera el id que tenga el modelo en la base de datos -->
-    		%3
+    		%2
     	</modelos>
     </body>
 </ServicioTecnicoMoviles>

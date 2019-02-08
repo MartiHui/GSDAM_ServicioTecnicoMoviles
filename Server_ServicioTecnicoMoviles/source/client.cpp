@@ -31,11 +31,11 @@ void Client::identify(int clientId, QString type) {
     }
 }
 
-int Client::getClientId() {
+int Client::getClientId() const{
     return m_clientId;
 }
 
-ClientType Client::getClientType() {
+ClientType Client::getClientType() const{
     return m_type;
 }
 

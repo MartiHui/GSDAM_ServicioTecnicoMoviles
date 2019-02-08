@@ -2,6 +2,7 @@
 #define ACTIONTIENDA_H
 
 #include "action.h"
+#include "client.h"
 
 enum class ActionTiendaType {
     LISTA_ORDENES_ASK,
@@ -16,10 +17,16 @@ class ActionTienda : public Action {
 public:
     ActionTienda(const QString &message);
     void setActionType();
-    QString getReply();
+    QString getReply(const Client &client);
+    static QString orderStatusChanged();
 
 private:
     ActionTiendaType m_actionType;
+
+    QString getListaOrdenes(const Client &client);
+    QString getMarcas();
+    QString getModelos();
+    QString getReparaciones();
 };
 
 #endif // ACTIONTIENDA_H
