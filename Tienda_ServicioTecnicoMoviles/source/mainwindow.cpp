@@ -17,6 +17,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     m_serverConnection = new ServerConnection("ws://localhost:1234");
     connect(m_serverConnection, SIGNAL(messageReceived(QString)), this, SLOT(replyReceived(QString)));
+    connect(m_serverConnection, SIGNAL(connectedToServer()), this, SLOT(connexionEstablished()));
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
 }
 
 void MainWindow::replyReceived(QString message) {
@@ -67,11 +73,11 @@ void MainWindow::replyReceived(QString message) {
     delete action;
 }
 
-MainWindow::~MainWindow()
-{
-    delete ui;
+void MainWindow::connexionEstablished() {
+    // TODO obtener listas de marcas, modelos y reparaciones
 }
 
+/*
 void MainWindow::switchCentralWidgetEnabled() {
     static bool isEnabled = true;
     if (m_serverConnection->m_webSocket->isValid()) {
@@ -170,4 +176,14 @@ void MainWindow::on_reparacionesPosibles_itemDoubleClicked(QListWidgetItem *item
 void MainWindow::on_reparacionesElegidas_itemDoubleClicked(QListWidgetItem *item)
 {
     ui->reparacionesPosibles->addItem(ui->reparacionesElegidas->takeItem(ui->reparacionesElegidas->row(item)));
+}*/
+
+void MainWindow::on_conectarServidor_clicked()
+{
+    QString user = ui->usuario->text();
+    ui->usuario->setText("");
+    QString password = ui->password->text();
+    ui->password->setText("");
+
+    m_serverConnection->connect();
 }

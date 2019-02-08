@@ -14,6 +14,11 @@ public:
     explicit ServerConnection(QString url);
     ~ServerConnection();
     void sendMessage(QString xmlMessage);
+    void connect();
+    void disconnect();
+
+private:
+    QUrl m_serverUrl;
 
 private slots:
     void onConnected();
@@ -21,6 +26,7 @@ private slots:
 
 signals:
     void messageReceived(QString message);
+    void connectedToServer();
 };
 
 #endif // SERVERCONNECTION_H

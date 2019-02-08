@@ -36,7 +36,8 @@ SOURCES += \
 HEADERS += \
         header/mainwindow.h \
     header/serverconnection.h \
-    header/action.h
+    header/action.h \
+    header/datainfo.h
 
 FORMS += \
         ui/mainwindow.ui

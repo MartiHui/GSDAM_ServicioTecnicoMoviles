@@ -68,7 +68,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="listOrders">
      <attribute name="title">
@@ -244,6 +244,9 @@ pedido</string>
       <width>241</width>
       <height>32</height>
      </rect>
+    </property>
+    <property name="echoMode">
+     <enum>QLineEdit::Password</enum>
     </property>
    </widget>
   </widget>
