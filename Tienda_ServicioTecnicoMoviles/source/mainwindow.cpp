@@ -10,6 +10,8 @@
 #include "serverconnection.h"
 #include "action.h"
 
+int MainWindow::s_callbackId = 0;
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -25,7 +27,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::replyReceived(QString message) {
+/*void MainWindow::replyReceived(QString message) {
     switchCentralWidgetEnabled(); // Desbloqueamos el programa
     Action *action = new Action(&message);
     QMessageBox msgBox;
@@ -71,10 +73,14 @@ void MainWindow::replyReceived(QString message) {
     }
 
     delete action;
-}
+}*/
 
 void MainWindow::connexionEstablished() {
     // TODO obtener listas de marcas, modelos y reparaciones
+}
+
+void MainWindow::establishConnectionReply(Action &action) {
+
 }
 
 /*
@@ -186,4 +192,7 @@ void MainWindow::on_conectarServidor_clicked()
     ui->password->setText("");
 
     m_serverConnection->connect();
+    m_serverConnection->sendMessage(Action::establishConnection(s_callbackId++, user, password));
+    QPair<int, std::function<void(Action &)> > callback(s_callbackId, establishConnectionReply) ;
+    m_callbacks.push_back(callback);
 }

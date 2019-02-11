@@ -4,11 +4,13 @@
 #include <QMainWindow>
 #include <QVector>
 #include <QPair>
+#include <functional>
 
 #include "datainfo.h"
 
 class ServerConnection;
 class QListWidgetItem;
+class Action;
 
 namespace Ui {
 class MainWindow;
@@ -26,6 +28,10 @@ public:
 private:
     Ui::MainWindow *ui;
     ServerConnection *m_serverConnection;
+    static int s_callbackId;
+    QVector<QPair<int, std::function<void(Action &)> > > m_callbacks;
+
+    void establishConnectionReply(Action &action);
 
     /*void fillMarcasCmbBox(QVector<QPair<QString, int> > marcas);
     void fillModelosCmbBox(QVector<QPair<QString, int> > modelos);
@@ -34,7 +40,7 @@ private:
     void resetLists();*/
 
 private slots:
-    void replyReceived(QString message);
+    //void replyReceived(QString message);
     void connexionEstablished();
     /*void on_marcasCmbBox_currentIndexChanged(int index);
     void on_conectarServidor_clicked();

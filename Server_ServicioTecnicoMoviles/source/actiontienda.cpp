@@ -74,7 +74,7 @@ QString ActionTienda::getMarcas() {
     QString xml = Action::getXmlTemplate("MarcasInfoReply");
 
     QVector<QPair<int, QString> > marcas;
-    DBController::getInstance()->loadInfo("marca", marcas);
+    DBController::getInstance()->loadMarcas(marcas);
 
     QString marcasXml{""};
     for (auto marca : marcas) {
@@ -88,12 +88,12 @@ QString ActionTienda::getMarcas() {
 QString ActionTienda::getModelos() {
     QString searchField = "marca_id";
     readUntilElement(searchField);
-    QString searchId = m_xmlReader->readElementText();
+    QString marcaId = m_xmlReader->readElementText();
 
     QString xml = Action::getXmlTemplate("ModelosInfoReply");
 
     QVector<QPair<int, QString> > modelos;
-    DBController::getInstance()->loadInfo("modelo", modelos, searchField, searchId.toInt());
+    DBController::getInstance()->loadModelos(modelos, marcaId.toInt());
 
     QString modelosXml{""};
     for (auto modelo : modelos) {
