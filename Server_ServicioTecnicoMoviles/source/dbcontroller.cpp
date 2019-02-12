@@ -65,7 +65,7 @@ void DBController::loadListaOrdenes(const Client &client, QVector<QPair<int, QSt
     QSqlQuery query;
     query.prepare("SELECT orden_id, estado_nombre FROM ordenes JOIN estados ON ordenes.estado_id = estados.estado_id "
                   "WHERE tienda_id = ?");
-    query.bindValue(1, client.getClientId());
+    query.bindValue(0, client.getClientId());
 
     while (query.next()) {
         QPair<int, QString> orden;
