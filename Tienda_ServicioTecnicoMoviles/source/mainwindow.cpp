@@ -15,6 +15,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->tabWidget->setEnabled(false);
+
     m_serverConnection = new ServerConnection("ws://localhost:1234");
     connect(m_serverConnection, SIGNAL(messageReceived(QString)), this, SLOT(replyReceived(QString)));
 }
@@ -25,7 +27,37 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::replyReceived(QString message) {
+    Action *action = new Action(message);
 
+    switch (action->getActionType()) {
+    case ActionType::ERROR:
+        break;
+
+    case ActionType::ESTABLISH_CONNECTION:
+        establishConnectionReply(action);
+        break;
+
+    case ActionType::LISTA_ORDENES_REPLY:
+        break;
+
+    case ActionType::MARCAS_INFO_REPLY:
+        break;
+
+    case ActionType::MODELOS_INFO_REPLY:
+        break;
+
+    case ActionType::REPARACION_INFO_REPLY:
+        break;
+
+    case ActionType::ORDEN_REQUEST_REPLY:
+        break;
+
+    case ActionType::ORDEN_STATUS_CHANGED:
+        break;
+
+    }
+
+    delete action;
 }
 
 /*void MainWindow::replyReceived(QString message) {
@@ -77,7 +109,7 @@ void MainWindow::replyReceived(QString message) {
 }*/
 
 void MainWindow::establishConnectionReply(Action &action) {
-
+    ui->conectarServidor->setEnabled(true);
 }
 
 /*
@@ -183,6 +215,8 @@ void MainWindow::on_reparacionesElegidas_itemDoubleClicked(QListWidgetItem *item
 
 void MainWindow::on_conectarServidor_clicked()
 {
+    ui->conectarServidor->setEnabled(false);
+
     QString user = ui->usuario->text();
     ui->usuario->setText("");
     QString password = ui->password->text();
