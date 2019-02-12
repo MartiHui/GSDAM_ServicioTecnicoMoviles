@@ -2,10 +2,10 @@
 
 <ServicioTecnicoMoviles>
     <head>
-        <action callbackId="%1">ChangeOrdenStatusAsk</action>
+        <action>ChangeOrdenStatusAsk</action>
     </head>
     <body>
-    	<order_id>%2</order_id>
-    	<status_is>%3</status_is>
+    	<order_id>%1</order_id>
+    	<status_is>%2</status_is>
     </body>
 </ServicioTecnicoMoviles>

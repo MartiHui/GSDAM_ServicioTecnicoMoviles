@@ -20,10 +20,17 @@
 <xs:complexType name="action">
 	<xs:simpleContent>
 		<xs:extension base="xs:string">
-			<xs:attribute name="callbackId" use="required" type="xs:integer"/>
+			<xs:attribute name="result" use="required" type="result"/>
 		</xs:extension>
 	</xs:simpleContent>
 </xs:complexType>
+
+<xs:simpleType name="result">
+    <xs:restriction base="xs:string">
+        <xs:enumeration value="SUCCESS"/>
+        <xs:enumeration value="FAILURE"/>
+    </xs:restriction>
+</xs:simpleType>
 
 <xs:complexType name="body">
 	<xs:sequence>

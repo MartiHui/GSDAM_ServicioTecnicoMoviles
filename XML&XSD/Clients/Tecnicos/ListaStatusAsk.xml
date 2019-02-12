@@ -3,6 +3,6 @@
 <ServicioTecnicoMoviles>
 	<head>
 		<!-- callbackId contendra el mismo id que el xml al que responde -->
-		<action callbackId="%1">ListaStatusAsk</action>
+		<action>ListaStatusAsk</action>
 	</head>
 </ServicioTecnicoMoviles>

@@ -2,7 +2,7 @@
 
 <ServicioTecnicoMoviles>
     <head>
-        <action callbackId="%1">NewOrderRequest</action>
+        <action result="%1">NewOrderRequest</action>
     </head>
     <body>
     	<order_id>%2</order_id>

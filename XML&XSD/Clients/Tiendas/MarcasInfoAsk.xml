@@ -2,6 +2,6 @@
 
 <ServicioTecnicoMoviles>
     <head>
-        <action callbackId="%1">MarcasInfoAsk</action>
+        <action>MarcasInfoAsk</action>
     </head>
 </ServicioTecnicoMoviles>

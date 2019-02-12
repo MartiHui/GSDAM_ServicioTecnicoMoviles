@@ -13,16 +13,8 @@
 
 <xs:complexType name="head">
 	<xs:sequence>
-		<xs:element name="action" type="action"/>
+		<xs:element name="action" type="xs:string"/>
 	</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="action">
-	<xs:simpleContent>
-		<xs:extension base="xs:string">
-			<xs:attribute name="callbackId" use="required" type="xs:integer"/>
-		</xs:extension>
-	</xs:simpleContent>
 </xs:complexType>
 
 <xs:complexType name="body">

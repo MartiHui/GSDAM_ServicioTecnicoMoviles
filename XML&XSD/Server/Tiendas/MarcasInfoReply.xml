@@ -2,7 +2,7 @@
 
 <ServicioTecnicoMoviles>
     <head>
-        <action callbackId="%1">MarcasInfoReply</action>
+        <action result="%1">MarcasInfoReply</action>
     </head>
     <body>
     	<marcas>

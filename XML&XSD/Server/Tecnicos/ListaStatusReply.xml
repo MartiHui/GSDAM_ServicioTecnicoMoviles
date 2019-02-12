@@ -2,7 +2,7 @@
 
 <ServicioTecnicoMoviles>
     <head>
-        <action callbackId="%1">ListaStatusReply</action>
+        <action result="%1">ListaStatusReply</action>
     </head>
     <body>
     	<statuses>

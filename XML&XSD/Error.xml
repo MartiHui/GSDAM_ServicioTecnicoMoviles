@@ -3,7 +3,7 @@
 <ServicioTecnicoMoviles>
 	<head>
 		<!-- callbackId contendra el mismo id que el xml al que responde -->
-		<action callbackId="%1">Error</action>
+		<action>Error</action>
 	</head>
 	<body>
 		<message>%2</message>

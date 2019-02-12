@@ -3,6 +3,6 @@
 <!-- Se enviara este xml si el pedido ha actualiazdo su estado correctamente. De lo contrario se enviara el xml Error.xml -->
 <ServicioTecnicoMoviles>
     <head>
-        <action callbackId="%1">ChangeOrdenStatusReply</action>
+        <action result="%1">ChangeOrdenStatusReply</action>
     </head>
 </ServicioTecnicoMoviles>

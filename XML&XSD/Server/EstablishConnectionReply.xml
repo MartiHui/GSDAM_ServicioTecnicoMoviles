@@ -2,8 +2,8 @@
 
 <ServicioTecnicoMoviles>
 	<head>
-		<!-- callbackId contendra el mismo id que el xml al que responde -->
-		<action callbackId="%1">EstablishConnectionReply</action>
+		<!-- result contendra SUCCESS o FAILURE -->
+		<action result="%1">EstablishConnectionReply</action>
 	</head>
 	<body>
 		<!-- reply contiene el nombre asignado al usuario/password
