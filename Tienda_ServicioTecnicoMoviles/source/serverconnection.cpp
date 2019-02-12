@@ -16,7 +16,7 @@ ServerConnection::~ServerConnection() {
 
 void ServerConnection::onConnected() {
     connect(m_webSocket, &QWebSocket::textMessageReceived, this, &ServerConnection::onTextMessageReceived);
-    emit connectedToServer();
+    sendMessage(Action::establishConnection(m_user, m_password));
 }
 
 void ServerConnection::onTextMessageReceived(QString message) { //qDebug() << "Recibido " <<  message;
@@ -27,9 +27,12 @@ void ServerConnection::sendMessage(QString xmlMessage) { //qDebug() << "Enviado 
     m_webSocket->sendTextMessage(xmlMessage);
 }
 
-void ServerConnection::connect() {
+void ServerConnection::connectToServer(QString user, QString password) {
+    m_user = user;
+    m_password = password;
+
     disconnect();
-    m_webSocket->open(QUrl(url));
+    m_webSocket->open(QUrl(m_serverUrl));
 }
 
 void ServerConnection::disconnect() {

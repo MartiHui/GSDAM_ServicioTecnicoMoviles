@@ -2,6 +2,7 @@
 #define SERVERCONNECTION_H
 
 #include <QObject>
+#include <QUrl>
 
 class QWebSocket;
 
@@ -14,11 +15,13 @@ public:
     explicit ServerConnection(QString url);
     ~ServerConnection();
     void sendMessage(QString xmlMessage);
-    void connect();
+    void connectToServer(QString user, QString password);
     void disconnect();
 
 private:
     QUrl m_serverUrl;
+    QString m_user;
+    QString m_password;
 
 private slots:
     void onConnected();
@@ -26,7 +29,6 @@ private slots:
 
 signals:
     void messageReceived(QString message);
-    void connectedToServer();
 };
 
 #endif // SERVERCONNECTION_H

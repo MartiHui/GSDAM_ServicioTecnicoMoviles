@@ -10,8 +10,6 @@
 #include "serverconnection.h"
 #include "action.h"
 
-int MainWindow::s_callbackId = 0;
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -19,12 +17,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     m_serverConnection = new ServerConnection("ws://localhost:1234");
     connect(m_serverConnection, SIGNAL(messageReceived(QString)), this, SLOT(replyReceived(QString)));
-    connect(m_serverConnection, SIGNAL(connectedToServer()), this, SLOT(connexionEstablished()));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::replyReceived(QString message) {
+
 }
 
 /*void MainWindow::replyReceived(QString message) {
@@ -74,10 +75,6 @@ MainWindow::~MainWindow()
 
     delete action;
 }*/
-
-void MainWindow::connexionEstablished() {
-    // TODO obtener listas de marcas, modelos y reparaciones
-}
 
 void MainWindow::establishConnectionReply(Action &action) {
 
@@ -191,8 +188,5 @@ void MainWindow::on_conectarServidor_clicked()
     QString password = ui->password->text();
     ui->password->setText("");
 
-    m_serverConnection->connect();
-    m_serverConnection->sendMessage(Action::establishConnection(s_callbackId++, user, password));
-    QPair<int, std::function<void(Action &)> > callback(s_callbackId, establishConnectionReply) ;
-    m_callbacks.push_back(callback);
+    m_serverConnection->connectToServer(user, password);
 }

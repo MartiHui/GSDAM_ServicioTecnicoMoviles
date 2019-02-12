@@ -27,25 +27,29 @@ public:
     explicit Action(const QString &message);
     ~Action();
     ActionType getActionType() const;
-    int getCallbackId() const;
+    bool getRequestSuccess() const;
+
+    // Metodos para obtener informacion de los XML recibidos
     QString getErrorMessage();
     QString getNombreCliente();
     QVector<QPair<int, QString> > getListaOrdenes();
-    QVector<QPair<QString, int> > getMarcasInfo();
-    QVector<QPair<QString, int> > getModelosInfo();
-    QVector<QPair<QString, int> > getReparacionesInfo();
-    static QString establishConnection(int callbackId, QString user, QString password);
-    static QString askListaOrdenes(int callbackId);
-    static QString askMarcasInfo(int callbackId);
-    static QString askModelosInfo(int callbackId, int marcaId);
-    static QString askReparacionInfo(int callbackId, int modeloId);
-    static QString askOrdenRequest(int callbackId, int modeloId, const QVector<int> &reparacionesId);
+    QVector<QPair<int, QString> > getMarcasInfo();
+    QVector<QPair<int, QString> > getModelosInfo();
+    QVector<QPair<int, QString> > getReparacionesInfo();
+
+    // Metodos para crear  XML que enviar al servidor
+    static QString establishConnection(QString user, QString password);
+    static QString askListaOrdenes();
+    static QString askMarcasInfo();
+    static QString askModelosInfo(int marcaId);
+    static QString askReparacionInfo(int modeloId);
+    static QString askOrdenRequest(int modeloId, const QVector<int> &reparacionesId);
 
 private:
     ActionType m_actionType;
     QString m_messageXml;
     QXmlStreamReader *m_xmlReader;
-    int m_callbackId;
+    bool m_isRequestSuccess; // Determina si el servidor ha considerado nuestra solicitud anterior como correcta
 
     // Lee el XML hasta encontrar el elemento llamado tagName. Devuelve true si lo encuentra, false si llega hasta el final del documento
     bool readUntilElement(QString tagName);
@@ -53,7 +57,6 @@ private:
     bool isXmlValid(QString filename);
     // Obtiene el archivo xml con el nombre filename localizado en la ruta XML_FOLDER y con extension .xml
     static QString getXmlTemplate(QString filename);
-
     void setActionInfo();
 };
 

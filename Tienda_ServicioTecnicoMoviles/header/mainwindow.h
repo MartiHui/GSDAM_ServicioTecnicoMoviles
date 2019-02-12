@@ -28,8 +28,6 @@ public:
 private:
     Ui::MainWindow *ui;
     ServerConnection *m_serverConnection;
-    static int s_callbackId;
-    QVector<QPair<int, std::function<void(Action &)> > > m_callbacks;
 
     void establishConnectionReply(Action &action);
 
@@ -40,8 +38,7 @@ private:
     void resetLists();*/
 
 private slots:
-    //void replyReceived(QString message);
-    void connexionEstablished();
+    void replyReceived(QString message);
     /*void on_marcasCmbBox_currentIndexChanged(int index);
     void on_conectarServidor_clicked();
     void on_modelosCmbBox_currentIndexChanged(int index);

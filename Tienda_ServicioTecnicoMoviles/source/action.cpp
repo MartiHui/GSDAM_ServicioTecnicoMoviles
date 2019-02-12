@@ -67,14 +67,14 @@ ActionType Action::getActionType() const {
     return m_actionType;
 }
 
-int Action::getCallbackId() const {
-    return m_callbackId;
+bool Action::getRequestSuccess() const {
+    return m_isRequestSuccess;
 }
 
 void Action::setActionInfo() {
     readUntilElement("action");
 
-    m_callbackId = m_xmlReader->attributes().value("callbackId").toInt();
+    m_isRequestSuccess = (m_xmlReader->attributes().value("result").toString() == "SUCCESS") ? true : false;
 
     QString action = m_xmlReader->readElementText();
     ActionType type;
@@ -134,7 +134,7 @@ QVector<QPair<int, QString> > Action::getListaOrdenes() {
     return ordenes;
 }
 
-QVector<QPair<QString, int> > Action::getMarcasInfo() {
+QVector<QPair<int, QString>> Action::getMarcasInfo() {
     QVector<QPair<int, QString> > marcas;
 
     readUntilElement("marcas");
@@ -150,7 +150,7 @@ QVector<QPair<QString, int> > Action::getMarcasInfo() {
     return marcas;
 }
 
-QVector<QPair<QString, int> > Action::getModelosInfo() {
+QVector<QPair<int, QString> > Action::getModelosInfo() {
     QVector<QPair<int, QString> > modelos;
 
     readUntilElement("modelos");
@@ -166,7 +166,7 @@ QVector<QPair<QString, int> > Action::getModelosInfo() {
     return modelos;
 }
 
-QVector<QPair<QString, int> > Action::getReparacionesInfo() {
+QVector<QPair<int, QString> > Action::getReparacionesInfo() {
     QVector<QPair<int, QString> > reparaciones;
 
     readUntilElement("reparaciones");
@@ -182,27 +182,27 @@ QVector<QPair<QString, int> > Action::getReparacionesInfo() {
     return reparaciones;
 }
 
-QString Action::establishConnection(int callbackId, QString user, QString password) {
-    return getXmlTemplate("EstablishConnectionAsk").arg(QString::number(callbackId)).arg("TIENDA").arg(user).arg(password);
+QString Action::establishConnection(QString user, QString password) {
+    return getXmlTemplate("EstablishConnectionAsk").arg("TIENDA").arg(user).arg(password);
 }
 
-QString Action::askListaOrdenes(int callbackId) {
-    return getXmlTemplate("ListaOrdenesAsk").arg(QString::number(callbackId));
+QString Action::askListaOrdenes() {
+    return getXmlTemplate("ListaOrdenesAsk");
 }
 
-QString Action::askMarcasInfo(int callbackId) {
-    return getXmlTemplate("MarcasInfoAsk").arg(QString::number(callbackId));
+QString Action::askMarcasInfo() {
+    return getXmlTemplate("MarcasInfoAsk");
 }
 
-QString Action::askModelosInfo(int callbackId, int marcaId) {
-    return getXmlTemplate("ModelosInfoAsk").arg(QString::number(callbackId)).arg(QString::number(marcaId));
+QString Action::askModelosInfo(int marcaId) {
+    return getXmlTemplate("ModelosInfoAsk").arg(QString::number(marcaId));
 }
 
-QString Action::askReparacionInfo(int callbackId, int modeloId) {
-    return getXmlTemplate("ReparacionInfoAsk").arg(QString::number(callbackId)).arg(QString::number(modeloId));
+QString Action::askReparacionInfo(int modeloId) {
+    return getXmlTemplate("ReparacionInfoAsk").arg(QString::number(modeloId));
 }
 
-QString Action::askOrdenRequest(int callbackId, int modeloId, const QVector<int> &reparacionesId) {
+QString Action::askOrdenRequest(int modeloId, const QVector<int> &reparacionesId) {
     QString xml = getXmlTemplate("OrdenRequestAsk");
 
     QString reparacionesXml{""};
@@ -210,5 +210,5 @@ QString Action::askOrdenRequest(int callbackId, int modeloId, const QVector<int>
         reparacionesXml += QString("<reparacion_id>%1</reparacion_id>").arg(QString::number(id));
     }
 
-    return QString(xml).arg(QString::number(callbackId)).arg(QString::number(modeloId)).arg(reparacionesXml);
+    return QString(xml).arg(QString::number(modeloId)).arg(reparacionesXml);
 }
