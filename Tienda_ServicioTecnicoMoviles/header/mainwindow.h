@@ -5,6 +5,7 @@
 #include <QVector>
 #include <QPair>
 #include <functional>
+#include <QMap>
 
 #include "datainfo.h"
 
@@ -28,6 +29,7 @@ public:
 private:
     Ui::MainWindow *ui;
     ServerConnection *m_serverConnection;
+    QMap<int, Marca> m_marcas;
 
     void establishConnectionReply(Action &action);
 
