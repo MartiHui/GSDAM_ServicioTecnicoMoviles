@@ -1,10 +1,7 @@
 #include <QXmlStreamReader>
-#include <QXmlStreamWriter>
 #include <QDebug>
 #include <QVector>
 #include <QPair>
-#include <libxml/parser.h>
-#include <libxml/tree.h>
 #include <QTextStream>
 #include <QFile>
 #include <QUrl>
@@ -27,12 +24,7 @@ Action::~Action() {
 
 void Action::setRequestInfo() {
     readUntilElement("action");
-    m_callbackId = m_xmlReader->attributes().value("callbackId").toString();
     m_requestType = m_xmlReader->readElementText();
-}
-
-QString Action::getCallbackId() {
-    return m_callbackId;
 }
 
 bool Action::readUntilElement(QString tagName) {
@@ -81,12 +73,13 @@ QString Action::getXmlTemplate(QString filename) {
     return xmlTemplate;
 }
 
-QString Action::generateErrorXml(QString callbackId, QString errorMessage) {
-    return QString(Action::getXmlTemplate("Error")).arg(callbackId).arg(errorMessage);
+QString Action::generateErrorXml(QString errorMessage) {
+    return QString(Action::getXmlTemplate("Error")).arg(errorMessage);
 }
 
 QString Action::establishConnection(Client &client) {
     QString reply{""};
+    QString xmlTemplate = Action::getXmlTemplate("EstablishConnectionReply");
 
     if (isXmlValid()) {
         readUntilElement("info");
@@ -101,12 +94,12 @@ QString Action::establishConnection(Client &client) {
         QPair<int, QString> result;
         if (DBController::getInstance()->clientInDatabase(tipo, user, password, &result)) {
             client.identify(result.first, tipo);
-            reply = QString(Action::getXmlTemplate("EstablishConnectionReply")).arg(m_callbackId).arg(result.second);
+            reply = QString(xmlTemplate).arg("SUCCESS").arg(result.second);
         } else {
-            reply = generateErrorXml(m_callbackId, "Usuario o contraseña incorrectos");
+            reply = QString(xmlTemplate).arg("FAILURE").arg("ERROR");
         }
     } else {
-        reply = generateErrorXml(m_callbackId, "XML no válido");
+        reply = QString(xmlTemplate).arg("FAILURE").arg("ERROR");
     }
 
     return reply;

@@ -22,6 +22,7 @@ public:
 
 private:
     ActionTiendaType m_actionType;
+    bool m_validXml;
 
     QString getListaOrdenes(const Client &client);
     QString getMarcas();

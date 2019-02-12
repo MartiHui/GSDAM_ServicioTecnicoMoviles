@@ -60,7 +60,7 @@ void Server::processTextMessage(const QString & message) {
         if (action.isConnectionPetition()) {
             reply = action.establishConnection(*client);
         } else {
-            reply = Action::generateErrorXml(action.getCallbackId(), "Aún no te has identifiado");
+            reply = Action::generateErrorXml("Aún no te has identifiado");
         }
     } else if (client->getClientType() == ClientType::TIENDA) {
         ActionTienda action(message);

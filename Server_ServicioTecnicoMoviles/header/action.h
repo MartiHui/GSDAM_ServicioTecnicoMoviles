@@ -20,6 +20,12 @@ enum class ActionType {
     ORDEN_STATUS_ASK,
 };*/
 
+enum class ReplyType {
+    SAME_CLIENT,
+    DIFF_CLIENT,
+    NO_REPLY,
+};
+
 // Clase para parsear los xml recibidos por el servidor y escribir los xml como respuesta correspondientes;
 class Action : public QObject {
     Q_OBJECT
@@ -42,10 +48,9 @@ public:
     ~Action();
     bool isConnectionPetition();
     // Genera un XML con la plantilla de Error.xml
-    static QString generateErrorXml(QString callbackId, QString errorMessage);
+    static QString generateErrorXml(QString errorMessage);
     // Se conecta con la base de datos y comprueba si el usuario y contraseña existen. En caso afirmativo valida client y devuelve el xml de respuesta, de lo contrario, deuelve el xml de error.
     QString establishConnection(Client &client);
-    QString getCallbackId();
 
     /*ActionType getActionType();
     void getReply(QString *reply, Client *client); // Crea un xml con la repsuesta segun el ActionType del xml
@@ -54,8 +59,8 @@ public:
 protected:
     QString m_requestXml; // Todo el archivo xml recibido del cliente
     QString m_requestType{""}; // El tipo de accion, que deberia estar en la etiqueta <action> del xml recibido
-    QString m_callbackId{""}; // El id que se tendra que poner en el atributo callback del xml respuesta
     QXmlStreamReader *m_xmlReader;
+    ReplyType m_replyType{ReplyType::SAME_CLIENT};
 
     // Obtiene el tipo de la solicitud y el id del callback
     void setRequestInfo();

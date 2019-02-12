@@ -6,30 +6,34 @@
 
 ActionTienda::ActionTienda(const QString &message) : Action(message) {
     setActionType();
+    m_validXml = isXmlValid();
 }
 
 void ActionTienda::setActionType() {
     if (m_requestType == "ListaOrdenesAsk") {
         m_actionType = ActionTiendaType::LISTA_ORDENES_ASK;
+        m_replyType = ReplyType::SAME_CLIENT;
     } else if (m_requestType == "MarcasInfoAsk") {
         m_actionType = ActionTiendaType::MARCAS_INFO_ASK;
+        m_replyType = ReplyType::SAME_CLIENT;
     } else if (m_requestType == "ModelosInfoAsk") {
         m_actionType = ActionTiendaType::MODELOS_INFO_ASK;
+        m_replyType = ReplyType::SAME_CLIENT;
     } else if (m_requestType == "ReparacionInfoAsk") {
         m_actionType = ActionTiendaType::REPARACION_INFO_ASK;
+        m_replyType = ReplyType::SAME_CLIENT;
     } else if (m_requestType == "OrdenRequestAsk") {
         m_actionType = ActionTiendaType::ORDEN_REQUEST_ASK;
+        m_replyType = ReplyType::SAME_CLIENT;
     } else {
         m_actionType = ActionTiendaType::INVALID;
+        m_replyType = ReplyType::SAME_CLIENT;
     }
 }
 
 QString ActionTienda::getReply(const Client &client) {
-    if (!isXmlValid() || m_actionType == ActionTiendaType::INVALID) {
-        return Action::generateErrorXml(m_callbackId, "XML no válido");
-    }
+    QString reply{""};
 
-    QString reply;
     switch (m_actionType) {
     case ActionTiendaType::LISTA_ORDENES_ASK:
         reply = getListaOrdenes(client);
@@ -50,6 +54,10 @@ QString ActionTienda::getReply(const Client &client) {
     case ActionTiendaType::ORDEN_REQUEST_ASK:
         // TODO
         break;
+
+    case ActionTiendaType::INVALID:
+        reply = Action::generateErrorXml("XML no válido");
+        break;
     }
 
     return reply;
@@ -57,6 +65,10 @@ QString ActionTienda::getReply(const Client &client) {
 
 QString ActionTienda::getListaOrdenes(const Client &client) {
     QString xml = Action::getXmlTemplate("ListaOrdenesReply");
+
+    if (!m_validXml) {
+        return QString(xml).arg("FAILURE").arg("");
+    }
 
     QVector<QPair<int, QString> > ordenes;
     DBController::getInstance()->loadListaOrdenes(client, ordenes);
@@ -67,11 +79,15 @@ QString ActionTienda::getListaOrdenes(const Client &client) {
                 .arg(QString::number(orden.first)).arg(orden.second);
     }
 
-    return QString(xml).arg(m_callbackId).arg(ordenesXml);
+    return QString(xml).arg("SUCCESS").arg(ordenesXml);
 }
 
 QString ActionTienda::getMarcas() {
     QString xml = Action::getXmlTemplate("MarcasInfoReply");
+
+    if (!m_validXml) {
+        return QString(xml).arg("FAILURE").arg("");
+    }
 
     QVector<QPair<int, QString> > marcas;
     DBController::getInstance()->loadMarcas(marcas);
@@ -82,15 +98,20 @@ QString ActionTienda::getMarcas() {
                 .arg(QString::number(marca.first)).arg(marca.second);
     }
 
-    return QString(xml).arg(m_callbackId).arg(marcasXml);
+    return QString(xml).arg("SUCCESS").arg(marcasXml);
 }
 
 QString ActionTienda::getModelos() {
+    QString xml = Action::getXmlTemplate("ModelosInfoReply");
+
+    if (!m_validXml) {
+        return QString(xml).arg("FAILURE").arg("");
+    }
+
     QString searchField = "marca_id";
     readUntilElement(searchField);
     QString marcaId = m_xmlReader->readElementText();
 
-    QString xml = Action::getXmlTemplate("ModelosInfoReply");
 
     QVector<QPair<int, QString> > modelos;
     DBController::getInstance()->loadModelos(modelos, marcaId.toInt());
@@ -101,15 +122,20 @@ QString ActionTienda::getModelos() {
                 .arg(QString::number(modelo.first)).arg(modelo.second);
     }
 
-    return QString(xml).arg(m_callbackId).arg(modelosXml);
+    return QString(xml).arg("SUCCESS").arg(modelosXml);
 }
 
 QString ActionTienda::getReparaciones() {
+    QString xml = Action::getXmlTemplate("ReparacionInfoReply");
+
+    if (!m_validXml) {
+        return QString(xml).arg("FAILURE").arg("");
+    }
+
     QString searchField = "modelo_id";
     readUntilElement(searchField);
     QString searchId = m_xmlReader->readElementText();
 
-    QString xml = Action::getXmlTemplate("ReparacionInfoReply");
 
     QVector<QPair<int, QString> > reparaciones;
     DBController::getInstance()->loadReparaciones(reparaciones, searchId.toInt());
@@ -120,7 +146,7 @@ QString ActionTienda::getReparaciones() {
                 .arg(QString::number(reparacion.first)).arg(reparacion.second);
     }
 
-    return QString(xml).arg(m_callbackId).arg(reparacionesXml);
+    return QString(xml).arg("SUCCESS").arg(reparacionesXml);
 }
 
 QString ActionTienda::orderStatusChanged() {
