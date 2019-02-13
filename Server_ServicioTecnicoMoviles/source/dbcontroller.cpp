@@ -28,13 +28,23 @@ DBController::DBController() {
     database.open();
 }
 
+void DBController::pruebas() {
+    QSqlQuery query("SELECT * FROM tiendas");
+    if (query.next()) {
+        qDebug() << "nice";
+    } else {
+        qDebug() << "fuk";
+    }
+}
+
 bool DBController::clientInDatabase(QString type, QString user, QString password, QPair<int, QString> *result) {
     QSqlQuery query;
     query.prepare(prepareClientInDatabaseQuery(type));
-    query.bindValue(0, user);
-    query.bindValue(1, password);
+    query.bindValue(":user", user);
+    query.bindValue(":password", password);
+    query.exec();
 
-    if (query.next()) {
+    if (query.next()) { qDebug() << "nice";
         result->first = query.value(0).toInt();
         result->second = query.value(1).toString();
         return true;
@@ -58,7 +68,7 @@ QString DBController::prepareClientInDatabaseQuery(const QString &type) {
     QString password = tipo + "_password";
     QString activo = tipo + "_activo";
 
-    return QString("SELECT %1, %2 FROM %3 WHERE %4 = ? AND %5 = ? AND %6 = TRUE").arg(id).arg(nombre).arg(tabla).arg(user).arg(password).arg(activo);
+    return QString("SELECT %1, %2 FROM %3 WHERE %4 = :user AND %5 = :password AND %6 = TRUE").arg(id).arg(nombre).arg(tabla).arg(user).arg(password).arg(activo);
 }
 
 void DBController::loadListaOrdenes(const Client &client, QVector<QPair<int, QString> > &ordenes) {
@@ -66,6 +76,7 @@ void DBController::loadListaOrdenes(const Client &client, QVector<QPair<int, QSt
     query.prepare("SELECT orden_id, estado_nombre FROM ordenes JOIN estados ON ordenes.estado_id = estados.estado_id "
                   "WHERE tienda_id = ?");
     query.bindValue(0, client.getClientId());
+    query.exec();
 
     while (query.next()) {
         QPair<int, QString> orden;
@@ -78,7 +89,8 @@ void DBController::loadListaOrdenes(const Client &client, QVector<QPair<int, QSt
 
 void DBController::loadMarcas(QVector<QPair<int, QString> > &marcas) {
     QSqlQuery query;
-    query.prepare("SELECT marca_id, marca_nombre FROM marcas WHERE marca_activo = TRUE ");
+    query.prepare("SELECT marca_id, marca_nombre FROM marcas WHERE marca_activo = TRUE "); 
+    query.exec();
 
     while (query.next()) {
         QPair<int, QString> marca;
@@ -93,6 +105,7 @@ void DBController::loadModelos(QVector<QPair<int, QString> > &modelos, int marca
     QSqlQuery query;
     query.prepare("SELECT modelo_id, modelo_nombre FROM modelos WHERE marca_id = ? AND modelo_activo = TRUE ");
     query.bindValue(0, marcaId);
+    query.exec();
 
     while (query.next()) {
         QPair<int, QString> modelo;
@@ -108,6 +121,7 @@ void DBController::loadReparaciones(QVector<QPair<int, QString> > &reparaciones,
     query.prepare("SELECT reparaciones.reparacion_id, reparacion_nombre FROM modelo_reparaciones JOIN reparaciones"
                   " ON reparaciones.reparacion_id = modelo_reparaciones.reparacion_id WHERE modelo_id = ? AND modelo_reparaciones_activo = TRUE ");
     query.bindValue(0, modeloId);
+    query.exec();
 
     while (query.next()) {
         QPair<int, QString> reparacion;

@@ -20,18 +20,24 @@ Action::~Action() {
 bool Action::isXmlValid(QString filename) {
     bool valid = false;
 
-    QUrl schemaUrl("./XML/" + filename + ".xsd");
-
-    QXmlSchema schema;
-    if (schema.load(schemaUrl)) {
-        if (schema.isValid()) {
-            QXmlSchemaValidator validator(schema);
-            if (validator.validate(m_messageXml.toUtf8())) {
-                valid = true;
-            }
-        }
+    QFile schemaFile("./XML/" + filename + ".xsd");
+    if (!schemaFile.open(QIODevice::ReadOnly)) {
+        qDebug() << "No se puede abrir el schema " + filename;
     } else {
-        qDebug() << "No se ha encontrado el XSD " + schemaUrl.toString();
+        QString schemaText(schemaFile.readAll());
+        schemaFile.close();
+
+        QXmlSchema schema;
+        if (schema.load(schemaText.toUtf8())) {
+            if (schema.isValid()) {
+                QXmlSchemaValidator validator(schema);
+                if (validator.validate(m_messageXml.toUtf8())) {
+                    valid = true;
+                }
+            }
+        } else {
+            qDebug() << "Problemas al cargar el xsd " + filename;
+        }
     }
 
     return valid;

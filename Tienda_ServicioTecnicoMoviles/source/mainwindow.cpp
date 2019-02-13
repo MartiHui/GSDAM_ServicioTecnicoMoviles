@@ -112,7 +112,7 @@ void MainWindow::replyReceived(QString message) {
     delete action;
 }*/
 
-void MainWindow::showErrorMsgBox() {
+void MainWindow::showErrorMsgBox() {return;
     QMessageBox msgBox;
     msgBox.setText("Ha habido un problema con la petición");
     msgBox.exec();

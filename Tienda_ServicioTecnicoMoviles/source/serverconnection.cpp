@@ -19,11 +19,11 @@ void ServerConnection::onConnected() {
     sendMessage(Action::establishConnection(m_user, m_password));
 }
 
-void ServerConnection::onTextMessageReceived(QString message) { //qDebug() << "Recibido " <<  message;
+void ServerConnection::onTextMessageReceived(QString message) { qDebug() << "Recibido " <<  message;
     emit messageReceived(message);
 }
 
-void ServerConnection::sendMessage(QString xmlMessage) { //qDebug() << "Enviado " << xmlMessage;
+void ServerConnection::sendMessage(QString xmlMessage) { qDebug() << "Enviado " << xmlMessage;
     m_webSocket->sendTextMessage(xmlMessage);
 }
 

@@ -16,7 +16,7 @@ class DBController : QObject {
 public:
     static DBController* getInstance(); // devuelve la unica instancia posible de la clase, para evitar conexiones multiples
     static void deleteInstance();
-
+    void pruebas();
     // Busca el cliente en la base de datos con la combinacion de user y password e introduce en
     // result el id y nombre obtenidos. Devuelve true si se ha encontrado el cliente
     bool clientInDatabase(QString type, QString user, QString password, QPair<int, QString> *result);
