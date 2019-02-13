@@ -22,29 +22,20 @@ DBController::DBController() {
     database = QSqlDatabase::addDatabase("QPSQL");
     database.setHostName("127.0.0.1");
     database.setPort(5432);
-    database.setDatabaseName("ServicioTecnicoMoviles");
+    database.setDatabaseName("ServicioTecnicoMoviles_v2");
     database.setUserName("usuario");
     database.setPassword("usuario");
     database.open();
 }
 
-void DBController::pruebas() {
-    QSqlQuery query("SELECT * FROM tiendas");
-    if (query.next()) {
-        qDebug() << "nice";
-    } else {
-        qDebug() << "fuk";
-    }
-}
-
 bool DBController::clientInDatabase(QString type, QString user, QString password, QPair<int, QString> *result) {
     QSqlQuery query;
     query.prepare(prepareClientInDatabaseQuery(type));
-    query.bindValue(":user", user);
-    query.bindValue(":password", password);
+    query.bindValue(0, user);
+    query.bindValue(1, password);
     query.exec();
 
-    if (query.next()) { qDebug() << "nice";
+    if (query.next()) {
         result->first = query.value(0).toInt();
         result->second = query.value(1).toString();
         return true;
