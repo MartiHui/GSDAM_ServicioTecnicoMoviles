@@ -217,7 +217,6 @@ void MainWindow::fillMarcasVector(InfoType infoType, Action *action) {
         }
         break;
     }
-    qDebug() << marcaIndex << " " << numMarcas << " " << modeloIndex << " " << numModelos;
 }
 
 void MainWindow::fillMarcasCmBox() {
@@ -227,7 +226,7 @@ void MainWindow::fillMarcasCmBox() {
         ui->marcasCmBox->addItem(m_marcas[idx].nombre, idx);
     }
 
-    ui->tabWidget->setEnabled(true);qDebug() << "wew";
+    ui->tabWidget->setEnabled(true);
 }
 
 void MainWindow::fillModelosCmBox(QVector<Modelo> &modelos) {

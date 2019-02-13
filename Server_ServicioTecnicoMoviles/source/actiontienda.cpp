@@ -118,7 +118,7 @@ QString ActionTienda::getModelos() {
 
     QString modelosXml{""};
     for (auto modelo : modelos) {
-        modelosXml += QString("<modelo id=\"%1\">%2</modelos>")
+        modelosXml += QString("<modelo id=\"%1\">%2</modelo>")
                 .arg(QString::number(modelo.first)).arg(modelo.second);
     }
 
@@ -142,7 +142,7 @@ QString ActionTienda::getReparaciones() {
 
     QString reparacionesXml{""};
     for (auto reparacion : reparaciones) {
-        reparacionesXml += QString("<modelo id=\"%1\">%2</modelos>")
+        reparacionesXml += QString("<reparacion id=\"%1\">%2</reparacion>")
                 .arg(QString::number(reparacion.first)).arg(reparacion.second);
     }
 
