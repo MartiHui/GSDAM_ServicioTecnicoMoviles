@@ -15,6 +15,20 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET row_security = off;
 
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -162,16 +176,16 @@ ALTER SEQUENCE public.modelos_modelo_id_seq OWNED BY public.modelos.modelo_id;
 
 
 --
--- Name: ordenDetalles; Type: TABLE; Schema: public; Owner: usuario
+-- Name: orden_detalles; Type: TABLE; Schema: public; Owner: usuario
 --
 
-CREATE TABLE public."ordenDetalles" (
+CREATE TABLE public.orden_detalles (
     orden_id integer NOT NULL,
-    "modeloReparaciones_id" integer NOT NULL
+    modelo_reparaciones_id integer NOT NULL
 );
 
 
-ALTER TABLE public."ordenDetalles" OWNER TO usuario;
+ALTER TABLE public.orden_detalles OWNER TO usuario;
 
 --
 -- Name: ordenes; Type: TABLE; Schema: public; Owner: usuario
@@ -182,7 +196,8 @@ CREATE TABLE public.ordenes (
     modelo_id integer NOT NULL,
     tienda_id integer NOT NULL,
     estado_id integer NOT NULL,
-    tecnico_id integer NOT NULL
+    tecnico_id integer NOT NULL,
+    orden_finalizada boolean DEFAULT false
 );
 
 
@@ -251,7 +266,7 @@ ALTER SEQUENCE public.reparaciones_reparacion_id_seq OWNED BY public.reparacione
 CREATE TABLE public.tecnicos (
     tecnico_id integer NOT NULL,
     tecnico_nombre character varying NOT NULL,
-    tecnico_user character varying NOT NULL,
+    tecnico_usuario character varying NOT NULL,
     tecnico_password character varying NOT NULL,
     tecnico_activo boolean DEFAULT true NOT NULL
 );
@@ -376,6 +391,177 @@ ALTER TABLE ONLY public.tiendas ALTER COLUMN tienda_id SET DEFAULT nextval('publ
 
 
 --
+-- Data for Name: estados; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.estados (estado_id, estado_nombre, estado_activo) FROM stdin;
+1	DE CAMINO AL TECNICO	t
+2	REPARANDO	t
+3	DE CAMINO A LA TIENDA	t
+\.
+
+
+--
+-- Data for Name: marcas; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.marcas (marca_id, marca_nombre, marca_activo) FROM stdin;
+1	Samsung	t
+2	Apple	t
+3	Motorola	t
+4	Nokia	t
+\.
+
+
+--
+-- Data for Name: modelo_reparaciones; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.modelo_reparaciones (modelo_reparaciones_id, modelo_id, reparacion_id, modelo_reparaciones_activo) FROM stdin;
+1	1	1	t
+2	1	2	t
+3	1	4	t
+4	2	1	t
+5	2	3	t
+6	3	1	t
+7	3	2	t
+8	4	4	t
+9	5	1	t
+10	5	2	t
+11	5	3	t
+12	6	1	t
+13	6	3	t
+14	6	2	t
+15	7	2	t
+16	7	1	t
+17	8	4	t
+18	8	2	t
+19	9	1	t
+20	9	3	t
+\.
+
+
+--
+-- Data for Name: modelos; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.modelos (modelo_id, modelo_nombre, marca_id, modelo_activo) FROM stdin;
+1	Samsung Modelo 1	1	t
+2	Samsung Modelo 2	1	t
+3	Samsung Modelo 3	1	t
+4	Apple Modelo 1	2	t
+5	Apple Modelo 2	2	t
+6	Apple Modelo 3	2	t
+7	Motorola Modelo 1	3	t
+8	Nokia Modelo 1	4	t
+9	Nokia Modelo 2	4	t
+\.
+
+
+--
+-- Data for Name: orden_detalles; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.orden_detalles (orden_id, modelo_reparaciones_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: ordenes; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.ordenes (orden_id, modelo_id, tienda_id, estado_id, tecnico_id, orden_finalizada) FROM stdin;
+\.
+
+
+--
+-- Data for Name: reparaciones; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.reparaciones (reparacion_id, reparacion_nombre) FROM stdin;
+1	Arreglar pantalla
+2	Cambiar bateria
+3	Arreglar wifi
+4	Limpieza interior
+\.
+
+
+--
+-- Data for Name: tecnicos; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.tecnicos (tecnico_id, tecnico_nombre, tecnico_usuario, tecnico_password, tecnico_activo) FROM stdin;
+1	Tecnico 1	tec1	tec1	t
+\.
+
+
+--
+-- Data for Name: tiendas; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.tiendas (tienda_id, tienda_nombre, tienda_user, tienda_password, tienda_direccion, tienda_activo) FROM stdin;
+1	EDIB	edib	edib	Calle inexistente fjldskfjañldsfs	t
+2	PRUEBA	prueba	prueba	Calle imaginaria	t
+\.
+
+
+--
+-- Name: estados_estado_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.estados_estado_id_seq', 3, true);
+
+
+--
+-- Name: marcas_marca_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.marcas_marca_id_seq', 4, true);
+
+
+--
+-- Name: modeloReparaciones_modeloReparaciones_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public."modeloReparaciones_modeloReparaciones_id_seq"', 20, true);
+
+
+--
+-- Name: modelos_modelo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.modelos_modelo_id_seq', 9, true);
+
+
+--
+-- Name: ordenes_orden_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.ordenes_orden_id_seq', 1, false);
+
+
+--
+-- Name: reparaciones_reparacion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.reparaciones_reparacion_id_seq', 4, true);
+
+
+--
+-- Name: tecnicos_tecnico_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.tecnicos_tecnico_id_seq', 1, true);
+
+
+--
+-- Name: tiendas_tienda_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.tiendas_tienda_id_seq', 2, true);
+
+
+--
 -- Name: estados estados_pkey; Type: CONSTRAINT; Schema: public; Owner: usuario
 --
 
@@ -392,11 +578,11 @@ ALTER TABLE ONLY public.marcas
 
 
 --
--- Name: modelo_reparaciones modeloReparaciones_pkey; Type: CONSTRAINT; Schema: public; Owner: usuario
+-- Name: modelo_reparaciones modelo_reparaciones_pkey; Type: CONSTRAINT; Schema: public; Owner: usuario
 --
 
 ALTER TABLE ONLY public.modelo_reparaciones
-    ADD CONSTRAINT "modeloReparaciones_pkey" PRIMARY KEY (modelo_reparaciones_id);
+    ADD CONSTRAINT modelo_reparaciones_pkey PRIMARY KEY (modelo_reparaciones_id);
 
 
 --
@@ -408,11 +594,11 @@ ALTER TABLE ONLY public.modelos
 
 
 --
--- Name: ordenDetalles ordenDetalles_pkey; Type: CONSTRAINT; Schema: public; Owner: usuario
+-- Name: orden_detalles ordenDetalles_pkey; Type: CONSTRAINT; Schema: public; Owner: usuario
 --
 
-ALTER TABLE ONLY public."ordenDetalles"
-    ADD CONSTRAINT "ordenDetalles_pkey" PRIMARY KEY (orden_id, "modeloReparaciones_id");
+ALTER TABLE ONLY public.orden_detalles
+    ADD CONSTRAINT "ordenDetalles_pkey" PRIMARY KEY (orden_id, modelo_reparaciones_id);
 
 
 --
@@ -444,7 +630,7 @@ ALTER TABLE ONLY public.tecnicos
 --
 
 ALTER TABLE ONLY public.tecnicos
-    ADD CONSTRAINT tecnicos_tecnico_usuario_key UNIQUE (tecnico_user);
+    ADD CONSTRAINT tecnicos_tecnico_usuario_key UNIQUE (tecnico_usuario);
 
 
 --
@@ -488,18 +674,18 @@ ALTER TABLE ONLY public.modelos
 
 
 --
--- Name: ordenDetalles ordenDetalles_modeloReparaciones_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: usuario
+-- Name: orden_detalles ordenDetalles_modelo_reparaciones_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: usuario
 --
 
-ALTER TABLE ONLY public."ordenDetalles"
-    ADD CONSTRAINT "ordenDetalles_modeloReparaciones_id_fkey" FOREIGN KEY ("modeloReparaciones_id") REFERENCES public.modelo_reparaciones(modelo_reparaciones_id) ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE ONLY public.orden_detalles
+    ADD CONSTRAINT "ordenDetalles_modelo_reparaciones_id_fkey" FOREIGN KEY (modelo_reparaciones_id) REFERENCES public.modelo_reparaciones(modelo_reparaciones_id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
--- Name: ordenDetalles ordenDetalles_orden_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: usuario
+-- Name: orden_detalles ordenDetalles_orden_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: usuario
 --
 
-ALTER TABLE ONLY public."ordenDetalles"
+ALTER TABLE ONLY public.orden_detalles
     ADD CONSTRAINT "ordenDetalles_orden_id_fkey" FOREIGN KEY (orden_id) REFERENCES public.ordenes(orden_id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
