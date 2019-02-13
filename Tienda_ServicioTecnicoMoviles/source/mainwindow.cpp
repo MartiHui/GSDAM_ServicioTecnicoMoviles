@@ -38,15 +38,19 @@ void MainWindow::replyReceived(QString message) {
         break;
 
     case ActionType::LISTA_ORDENES_REPLY:
+        fillListaOrdenes(action);
         break;
 
     case ActionType::MARCAS_INFO_REPLY:
+        fillMarcasVector(InfoType::MARCA, action);
         break;
 
     case ActionType::MODELOS_INFO_REPLY:
+        fillMarcasVector(InfoType::MODELO, action);
         break;
 
     case ActionType::REPARACION_INFO_REPLY:
+        fillMarcasVector(InfoType::REPARACION, action);
         break;
 
     case ActionType::ORDEN_REQUEST_REPLY:
@@ -108,8 +112,142 @@ void MainWindow::replyReceived(QString message) {
     delete action;
 }*/
 
-void MainWindow::establishConnectionReply(Action &action) {
+void MainWindow::showErrorMsgBox() {
+    QMessageBox msgBox;
+    msgBox.setText("Ha habido un problema con la petición");
+    msgBox.exec();
+}
+
+void MainWindow::establishConnectionReply(Action *action) {
     ui->conectarServidor->setEnabled(true);
+
+    if (action->getRequestSuccess()) {
+        ui->nombreTienda->setText(action->getNombreCliente());
+
+        m_serverConnection->sendMessage(Action::askListaOrdenes());
+    } else {
+        showErrorMsgBox();
+    }
+}
+
+void MainWindow::fillListaOrdenes(Action *action) {
+    ui->ordersTable->clearContents();
+
+    if (action->getRequestSuccess()) {
+        int idx = 0;
+        for (auto orden : action->getListaOrdenes()) {
+            ui->ordersTable->setItem(idx, 0, new QTableWidgetItem(QString::number(orden.first)));
+            ui->ordersTable->setItem(idx, 1, new QTableWidgetItem(orden.second));
+            idx++;
+        }
+
+        m_serverConnection->sendMessage(Action::askMarcasInfo());
+    } else {
+        showErrorMsgBox();
+    }
+}
+
+void MainWindow::fillMarcasVector(InfoType infoType, Action *action) {
+    if (!action->getRequestSuccess()) {
+        showErrorMsgBox();
+        return;
+    }
+
+    static int marcaIndex = 0;
+    static int numMarcas = 0;
+    static int modeloIndex = 0;
+    static int numModelos = 0;
+
+    switch (infoType) {
+    case InfoType::MARCA:
+        for (auto marcaXml : action->getMarcasInfo()) {
+            Marca marca{};
+            marca.id = marcaXml.first;
+            marca.nombre = marcaXml.second;
+
+            m_marcas.push_back(marca);
+        }
+
+        numMarcas = m_marcas.count();
+        if (numMarcas > 0) {
+            m_serverConnection->sendMessage(Action::askModelosInfo(m_marcas[0].id));
+        }
+        break;
+
+    case InfoType::MODELO:
+        for (auto modeloXml : action->getModelosInfo()) {
+            Modelo modelo{};
+            modelo.id = modeloXml.first;
+            modelo.nombre = modeloXml.second;
+
+            m_marcas[marcaIndex].modelos.push_back(modelo);
+        }
+
+        numModelos = m_marcas[marcaIndex].modelos.count();
+        if (numModelos > 0) {
+            m_serverConnection->sendMessage(Action::askReparacionInfo(m_marcas[marcaIndex].modelos[0].id));
+        } else {
+            modeloIndex = 0;
+            marcaIndex++;
+            if (marcaIndex < numMarcas) {
+                m_serverConnection->sendMessage(Action::askModelosInfo(m_marcas[marcaIndex].id));
+            }
+        }
+        break;
+
+    case InfoType::REPARACION:
+        for (auto reparacionXml : action->getReparacionesInfo()) {
+            Reparacion reparacion{reparacionXml.first, reparacionXml.second};
+            m_marcas[marcaIndex].modelos[modeloIndex].reparaciones.push_back(reparacion);
+        }
+
+        modeloIndex++;
+        if (modeloIndex < numModelos) {
+            m_serverConnection->sendMessage(Action::askReparacionInfo(m_marcas[marcaIndex].modelos[modeloIndex].id));
+        } else {
+            modeloIndex = 0; numModelos = 0;
+            marcaIndex++;
+            if (marcaIndex < numMarcas) {
+                m_serverConnection->sendMessage(Action::askModelosInfo(m_marcas[marcaIndex].id));
+            } else {
+                fillMarcasCmBox();
+            }
+        }
+        break;
+    }
+}
+
+void MainWindow::fillMarcasCmBox() {
+    ui->marcasCmBox->clear();
+
+    for (int idx = 0; idx < m_marcas.count(); idx++) {
+        ui->marcasCmBox->addItem(m_marcas[idx].nombre, idx);
+    }
+
+    ui->tabWidget->setEnabled(true);
+}
+
+void MainWindow::fillModelosCmBox(QVector<Modelo> &modelos) {
+    ui->modelosCmBox->clear();
+
+    for (int idx = 0; idx < modelos.count(); idx++) {
+        ui->modelosCmBox->addItem(modelos[idx].nombre, idx);
+    }
+}
+
+void MainWindow::clearReparacionesLists() {
+    ui->reparacionesElegidas->clear();
+    ui->reparacionesPosibles->clear();
+}
+
+void MainWindow::fillReparacionesPosiblesList(QVector<Reparacion> &reparaciones) {
+    clearReparacionesLists();
+
+    for (auto reparacion : reparaciones) {
+        QListWidgetItem *listItem = new QListWidgetItem(reparacion.nombre);
+        listItem->setData(QListWidgetItem::UserType, reparacion.id);
+        ui->reparacionesPosibles->addItem(listItem);
+    }
 }
 
 /*
@@ -223,4 +361,27 @@ void MainWindow::on_conectarServidor_clicked()
     ui->password->setText("");
 
     m_serverConnection->connectToServer(user, password);
+}
+
+void MainWindow::on_marcasCmBox_currentIndexChanged(int index)
+{
+    int idx = ui->marcasCmBox->itemData(index).toInt();
+    fillModelosCmBox(m_marcas[idx].modelos);
+}
+
+void MainWindow::on_modelosCmBox_currentIndexChanged(int index)
+{
+    int marcaIdx = ui->marcasCmBox->itemData(ui->marcasCmBox->currentIndex()).toInt();
+    int modeloIdx = ui->modelosCmBox->itemData(index).toInt();
+    fillReparacionesPosiblesList(m_marcas[marcaIdx].modelos[modeloIdx].reparaciones);
+}
+
+void MainWindow::on_reparacionesPosibles_itemDoubleClicked(QListWidgetItem *item)
+{
+    ui->reparacionesElegidas->addItem(ui->reparacionesPosibles->takeItem(ui->reparacionesPosibles->row(item)));
+}
+
+void MainWindow::on_reparacionesElegidas_itemDoubleClicked(QListWidgetItem *item)
+{
+    ui->reparacionesPosibles->addItem(ui->reparacionesElegidas->takeItem(ui->reparacionesElegidas->row(item)));
 }

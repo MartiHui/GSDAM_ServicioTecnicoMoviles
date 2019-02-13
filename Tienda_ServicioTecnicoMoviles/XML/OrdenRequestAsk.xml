@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ServicioTecnicoMoviles>
+    <head>
+        <action>OrdenRequestAsk</action>
+    </head>
+    <body>
+    	<modelo_id>%1</modelo_id>
+    	<reparaciones>
+    		<!-- reparaciones contendra tantos <reparacion_id></reparacion_id> como sea necesario. El elemento contendra el id de la reparacion. -->
+    		%2
+    	</reparaciones>
+    </body>
+</ServicioTecnicoMoviles>

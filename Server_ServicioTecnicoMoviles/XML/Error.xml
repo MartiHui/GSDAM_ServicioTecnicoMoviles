@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ServicioTecnicoMoviles>
+	<head>
+		<!-- callbackId contendra el mismo id que el xml al que responde -->
+		<action>Error</action>
+	</head>
+	<body>
+		<message>%2</message>
+	</body>
+</ServicioTecnicoMoviles>

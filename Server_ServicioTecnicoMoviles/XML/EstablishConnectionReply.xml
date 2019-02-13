@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ServicioTecnicoMoviles>
+	<head>
+		<!-- result contendra SUCCESS o FAILURE -->
+		<action result="%1">EstablishConnectionReply</action>
+	</head>
+	<body>
+		<!-- reply contiene el nombre asignado al usuario/password
+        enviados, en caso de ser correctos -->
+		<reply>%2</reply>
+	</body>
+</ServicioTecnicoMoviles>

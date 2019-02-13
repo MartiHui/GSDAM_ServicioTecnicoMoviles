@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ServicioTecnicoMoviles>
+    <head>
+        <action result="%1">ReparacionInfoReply</action>
+    </head>
+    <body>
+    	<reparaciones>
+            <!-- reparaciones contendra tantos <reparacion id=""></reparacion> como sea necesario. El elemento contendra el nombre de la reparacion y el id sera el id que tenga la reparacion en la base de datos -->
+            %2
+    	</reparaciones>
+    </body>
+</ServicioTecnicoMoviles>

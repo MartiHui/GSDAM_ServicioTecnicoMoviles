@@ -28,7 +28,7 @@ void Action::setRequestInfo() {
 }
 
 bool Action::readUntilElement(QString tagName) {
-    while (m_xmlReader->isEndDocument()) {
+    while (!m_xmlReader->isEndDocument()) {
         m_xmlReader->readNext();
         if (m_xmlReader->isStartElement() && m_xmlReader->name() == tagName) {
             return true;
@@ -41,9 +41,10 @@ bool Action::readUntilElement(QString tagName) {
 bool Action::isXmlValid() {
     bool valid = false;
 
-    QUrl schemaUrl("XML/" + m_requestType + ".xsd");
-
-    QXmlSchema schema;
+    QUrl schemaUrl("./XML/" + m_requestType + ".xsd");
+    QFileInfo info(schemaUrl.toString());
+    qDebug() << info.exists();
+    QXmlSchema schema; qDebug() << schema.load(schemaUrl);
     if (schema.load(schemaUrl)) {
         if (schema.isValid()) {
             QXmlSchemaValidator validator(schema);
@@ -61,7 +62,7 @@ bool Action::isXmlValid() {
 QString Action::getXmlTemplate(QString filename) {
     QString xmlTemplate{""};
 
-    QFile file("XML/" + filename + ".xml");
+    QFile file("./XML/" + filename + ".xml");
     if (file.open(QFile::ReadOnly | QFile::Text)) {
         QTextStream in(&file);
         xmlTemplate = in.readAll();

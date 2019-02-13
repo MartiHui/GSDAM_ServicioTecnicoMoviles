@@ -17,6 +17,12 @@ namespace Ui {
 class MainWindow;
 }
 
+enum class InfoType {
+    MARCA,
+    MODELO,
+    REPARACION,
+};
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -29,9 +35,16 @@ public:
 private:
     Ui::MainWindow *ui;
     ServerConnection *m_serverConnection;
-    QMap<int, Marca> m_marcas;
+    QVector<Marca> m_marcas;
 
-    void establishConnectionReply(Action &action);
+    void establishConnectionReply(Action *action);
+    void fillListaOrdenes(Action *action);
+    void fillMarcasVector(InfoType infoType, Action *action);
+    void fillMarcasCmBox();
+    void fillModelosCmBox(QVector<Modelo> &modelos);
+    void clearReparacionesLists();
+    void fillReparacionesPosiblesList(QVector<Reparacion> &reparaciones);
+    void showErrorMsgBox();
 
     /*void fillMarcasCmbBox(QVector<QPair<QString, int> > marcas);
     void fillModelosCmbBox(QVector<QPair<QString, int> > modelos);
@@ -49,6 +62,10 @@ private slots:
     void on_reparacionesPosibles_itemDoubleClicked(QListWidgetItem *item);
     void on_reparacionesElegidas_itemDoubleClicked(QListWidgetItem *item);*/
     void on_conectarServidor_clicked();
+    void on_marcasCmBox_currentIndexChanged(int index);
+    void on_modelosCmBox_currentIndexChanged(int index);
+    void on_reparacionesPosibles_itemDoubleClicked(QListWidgetItem *item);
+    void on_reparacionesElegidas_itemDoubleClicked(QListWidgetItem *item);
 };
 
 #endif // MAINWINDOW_H

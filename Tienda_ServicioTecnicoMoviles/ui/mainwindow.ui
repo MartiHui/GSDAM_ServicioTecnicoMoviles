@@ -21,9 +21,9 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>20</y>
-      <width>241</width>
-      <height>51</height>
+      <y>0</y>
+      <width>271</width>
+      <height>91</height>
      </rect>
     </property>
     <property name="font">
@@ -32,7 +32,10 @@
      </font>
     </property>
     <property name="text">
-     <string>&lt;NOMBRE&gt;</string>
+     <string>Servicio Técnico de Móviles</string>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QLineEdit" name="usuario">
@@ -68,13 +71,13 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
-    <widget class="QWidget" name="listOrders">
+    <widget class="QWidget" name="tabMyOrders">
      <attribute name="title">
       <string>Lista de pedidos</string>
      </attribute>
-     <widget class="QTableWidget" name="listaPedidos">
+     <widget class="QTableWidget" name="ordersTable">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -98,11 +101,11 @@
       </column>
      </widget>
     </widget>
-    <widget class="QWidget" name="newOrder">
+    <widget class="QWidget" name="tabNewOrder">
      <attribute name="title">
       <string>Nuevo pedido</string>
      </attribute>
-     <widget class="QComboBox" name="marcas">
+     <widget class="QComboBox" name="marcasCmBox">
       <property name="geometry">
        <rect>
         <x>90</x>
@@ -138,7 +141,7 @@
        <string>Modelo:</string>
       </property>
      </widget>
-     <widget class="QComboBox" name="modelos">
+     <widget class="QComboBox" name="modelosCmBox">
       <property name="geometry">
        <rect>
         <x>360</x>

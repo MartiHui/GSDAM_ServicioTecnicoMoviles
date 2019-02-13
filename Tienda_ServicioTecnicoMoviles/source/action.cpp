@@ -20,7 +20,7 @@ Action::~Action() {
 bool Action::isXmlValid(QString filename) {
     bool valid = false;
 
-    QUrl schemaUrl("XML/" + filename + ".xsd");
+    QUrl schemaUrl("./XML/" + filename + ".xsd");
 
     QXmlSchema schema;
     if (schema.load(schemaUrl)) {
@@ -40,7 +40,7 @@ bool Action::isXmlValid(QString filename) {
 QString Action::getXmlTemplate(QString filename) {
     QString xmlTemplate{""};
 
-    QFile file("XML/" + filename + ".xml");
+    QFile file("./XML/" + filename + ".xml");
     if (file.open(QFile::ReadOnly | QFile::Text)) {
         QTextStream in(&file);
         xmlTemplate = in.readAll();
@@ -53,7 +53,7 @@ QString Action::getXmlTemplate(QString filename) {
 }
 
 bool Action::readUntilElement(QString tagName) {
-    while (m_xmlReader->isEndDocument()) {
+    while (!m_xmlReader->isEndDocument()) {
         m_xmlReader->readNext();
         if (m_xmlReader->isStartElement() && m_xmlReader->name() == tagName) {
             return true;

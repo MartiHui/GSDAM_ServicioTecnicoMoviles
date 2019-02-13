@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ServicioTecnicoMoviles>
+    <head>
+        <action result="%1">ModelosInfoReply</action>
+    </head>
+    <body>
+    	<modelos>
+    		<!-- modelos contendra tantos <modelo id=""></modelo> como sea necesario. El elemento contendra el nombre del modelo y el id sera el id que tenga el modelo en la base de datos -->
+    		%2
+    	</modelos>
+    </body>
+</ServicioTecnicoMoviles>

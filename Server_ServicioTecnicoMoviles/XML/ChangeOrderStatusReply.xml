@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Se enviara este xml si el pedido ha actualiazdo su estado correctamente. De lo contrario se enviara el xml Error.xml -->
+<ServicioTecnicoMoviles>
+    <head>
+        <action result="%1">ChangeOrdenStatusReply</action>
+    </head>
+</ServicioTecnicoMoviles>
