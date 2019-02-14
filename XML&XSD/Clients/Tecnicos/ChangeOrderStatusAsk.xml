@@ -2,7 +2,7 @@
 
 <ServicioTecnicoMoviles>
     <head>
-        <action>ChangeOrdenStatusAsk</action>
+        <action>ChangeOrderStatusAsk</action>
     </head>
     <body>
     	<order_id>%1</order_id>

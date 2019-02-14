@@ -15,11 +15,12 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    ui->setupUi(this); pruebas();
-    //ui->tabWidget->setEnabled(false);
+    ui->setupUi(this);
+    ui->finishOrder->setEnabled(false);
+    ui->actualizarEstado->setEnabled(false);
 
-    //m_serverConnection = new ServerConnection("ws://localhost:1234");
-    //connect(m_serverConnection, SIGNAL(messageReceived(QString)), this, SLOT(replyReceived(QString)));
+    m_serverConnection = new ServerConnection("ws://localhost:1234");
+    connect(m_serverConnection, SIGNAL(messageReceived(QString)), this, SLOT(replyReceived(QString)));
 }
 
 MainWindow::~MainWindow()
@@ -27,7 +28,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-/*
+
 void MainWindow::replyReceived(QString message) {
     Action *action = new Action(message);
 
@@ -86,7 +87,7 @@ void MainWindow::establishConnectionReply(Action *action) {
         showErrorMsgBox("Error al identificarse al servidor");
     }
 }
-
+/*
 void MainWindow::fillListaOrdenes(Action *action) {
     ui->ordersTable->clearContents();
 

@@ -13,7 +13,6 @@ enum class ActionType {
     ERROR,
     ESTABLISH_CONNECTION,
     LISTA_ORDENES_REPLY,
-    CHANGE_ORDER_STATUS_REPLY,
     LISTA_STATUS_REPLY,
     NEW_ORDER_REQUEST,
 };
@@ -26,12 +25,20 @@ public:
     ~Action();
     ActionType getActionType() const;
     bool getRequestSuccess() const;
-/*
+
     // Metodos para obtener informacion de los XML recibidos
     QString getErrorMessage();
     QString getNombreCliente();
     QVector<QPair<int, QString> > getListaOrdenes();
-    QVector<QPair<int, QString> > getMarcasInfo();
+    QVector<QPair<int, QString> > getListaStatus();
+    QPair<int, QString> getNewOrderRequest();
+
+    // Metodos para crear XML que enviar al servidor
+    static QString askListaOrdenes();
+    static QString askListaStatus();
+    static QString changeOrderStatus(int orderId, int statusId);
+
+    /*QVector<QPair<int, QString> > getMarcasInfo();
     QVector<QPair<int, QString> > getModelosInfo();
     QVector<QPair<int, QString> > getReparacionesInfo();
     QPair<int, QString> getOrdenRequestInfo();

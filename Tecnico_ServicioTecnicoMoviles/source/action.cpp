@@ -80,7 +80,7 @@ bool Action::getRequestSuccess() const {
 void Action::setActionInfo() {
     readUntilElement("action");
 
-    m_isRequestSuccess = (m_xmlReader->attributes().value("result").toString() == "SUCCESS") ? true : false;
+    m_isRequestSuccess = m_xmlReader->attributes().value("result").toString() == "SUCCESS";
 
     QString action = m_xmlReader->readElementText();
     ActionType type;
@@ -90,16 +90,10 @@ void Action::setActionInfo() {
         type = ActionType::ESTABLISH_CONNECTION;
     } else if (action == "ListaOrdenesReply") {
         type = ActionType::LISTA_ORDENES_REPLY;
-    } else if (action == "MarcasInfoReply") {
-        type = ActionType::MARCAS_INFO_REPLY;
-    } else if (action == "ModelosInfoReply") {
-        type = ActionType::MODELOS_INFO_REPLY;
-    } else if (action == "ReparacionInfoReply") {
-        type = ActionType::REPARACION_INFO_REPLY;
-    } else if (action == "OrdenRequestReply") {
-        type = ActionType::ORDEN_REQUEST_REPLY;
-    } else if (action == "OrdenStatusChanged") {
-        type = ActionType::ORDEN_STATUS_CHANGED;
+    } else if (action == "ListaStatusReply") {
+        type = ActionType::LISTA_STATUS_REPLY;
+    } else if (action == "NewOrderRequest") {
+        type = ActionType::NEW_ORDER_REQUEST;
     }
 
     if (!isXmlValid(action)) {
@@ -108,7 +102,7 @@ void Action::setActionInfo() {
 
     m_actionType = type;
 }
-/*
+
 QString Action::getErrorMessage() {
     QString msg{"Ha habido un problema con la respuesta recibida"};
 
@@ -140,6 +134,46 @@ QVector<QPair<int, QString> > Action::getListaOrdenes() {
     return ordenes;
 }
 
+QVector<QPair<int, QString> > Action::getListaStatus() {
+    QVector<QPair<int, QString> > statuses;
+
+    readUntilElement("statuses");
+    while (m_xmlReader->readNextStartElement()) {
+        QPair<int, QString> status;
+
+        status.first = m_xmlReader->attributes().value("id").toInt();
+        status.second = m_xmlReader->readElementText();
+
+        statuses.push_back(status);
+    }
+
+    return statuses;
+}
+
+QPair<int, QString> Action::getNewOrderRequest() {
+    QPair<int, QString> order;
+
+    readUntilElement("order_id");
+    order.first = QString::number(m_xmlReader->readElementText());
+
+    readUntilElement("status");
+    order.second = m_xmlReader->readElementText();
+
+    return order;
+}
+
+QString Action::askListaOrdenes() {
+    return getXmlTemplate("ListaOrdenesAsk");
+}
+
+QString Action::askListaStatus() {
+    return getXmlTemplate("ListaStatusAsk");
+}
+
+QString Action::changeOrderStatus(int orderId, int statusId) {
+    return QString(getXmlTemplate("ChangeOrderStatusAsk")).arg(QString::number(orderId)).arg(QString::number(statusId));
+}
+/*
 QVector<QPair<int, QString>> Action::getMarcasInfo() {
     QVector<QPair<int, QString> > marcas;
 

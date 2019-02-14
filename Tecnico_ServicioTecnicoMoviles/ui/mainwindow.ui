@@ -17,7 +17,7 @@
    <property name="enabled">
     <bool>true</bool>
    </property>
-   <widget class="QLabel" name="nombreTienda">
+   <widget class="QLabel" name="nombreTecnico">
     <property name="geometry">
      <rect>
       <x>20</x>

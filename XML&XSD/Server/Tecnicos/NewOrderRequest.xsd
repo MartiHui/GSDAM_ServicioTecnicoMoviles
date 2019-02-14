@@ -35,8 +35,7 @@
 <xs:complexType name="body">
 	<xs:sequence>
 		<xs:element name="order_id" type="xs:integer"/>
-		<xs:element name="status_id" type="xs:integer"/>
-
+		<xs:element name="status" type="xs:string"/>
 	</xs:sequence>
 </xs:complexType>
 

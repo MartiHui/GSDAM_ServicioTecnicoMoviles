@@ -27,22 +27,21 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    /*ServerConnection *m_serverConnection;
-    QVector<Marca> m_marcas;
+    ServerConnection *m_serverConnection;
 
     void establishConnectionReply(Action *action);
-    void fillListaOrdenes(Action *action);
+    void showErrorMsgBox(QString msg);
+    /*void fillListaOrdenes(Action *action);
     void fillMarcasVector(InfoType infoType, Action *action);
     void fillMarcasCmBox();
     void fillModelosCmBox(QVector<Modelo> &modelos);
     void clearReparacionesLists();
     void fillReparacionesPosiblesList(QVector<Reparacion> &reparaciones);
-    void showErrorMsgBox(QString msg);
-    void addNewOrden(Action *action);
+    void addNewOrden(Action *action);*/
 
 private slots:
     void replyReceived(QString message);
-    void on_conectarServidor_clicked();
+    /*void on_conectarServidor_clicked();
     void on_marcasCmBox_currentIndexChanged(int index);
     void on_modelosCmBox_currentIndexChanged(int index);
     void on_reparacionesPosibles_itemDoubleClicked(QListWidgetItem *item);

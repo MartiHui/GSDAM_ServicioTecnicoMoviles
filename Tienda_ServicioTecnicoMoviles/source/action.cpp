@@ -80,7 +80,7 @@ bool Action::getRequestSuccess() const {
 void Action::setActionInfo() {
     readUntilElement("action");
 
-    m_isRequestSuccess = (m_xmlReader->attributes().value("result").toString() == "SUCCESS") ? true : false;
+    m_isRequestSuccess = m_xmlReader->attributes().value("result").toString() == "SUCCESS";
 
     QString action = m_xmlReader->readElementText();
     ActionType type;
