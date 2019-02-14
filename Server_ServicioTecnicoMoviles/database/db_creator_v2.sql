@@ -195,8 +195,8 @@ CREATE TABLE public.ordenes (
     orden_id integer NOT NULL,
     modelo_id integer NOT NULL,
     tienda_id integer NOT NULL,
-    estado_id integer NOT NULL,
-    tecnico_id integer NOT NULL,
+    estado_id integer DEFAULT 1,
+    tecnico_id integer DEFAULT 1,
     orden_finalizada boolean DEFAULT false
 );
 
@@ -410,6 +410,7 @@ COPY public.marcas (marca_id, marca_nombre, marca_activo) FROM stdin;
 2	Apple	t
 3	Motorola	t
 4	Nokia	t
+5	LG	t
 \.
 
 
@@ -463,6 +464,16 @@ COPY public.modelos (modelo_id, modelo_nombre, marca_id, modelo_activo) FROM std
 --
 
 COPY public.orden_detalles (orden_id, modelo_reparaciones_id) FROM stdin;
+1	2
+1	1
+2	1
+2	4
+3	2
+3	1
+4	1
+4	2
+5	2
+5	1
 \.
 
 
@@ -471,6 +482,11 @@ COPY public.orden_detalles (orden_id, modelo_reparaciones_id) FROM stdin;
 --
 
 COPY public.ordenes (orden_id, modelo_id, tienda_id, estado_id, tecnico_id, orden_finalizada) FROM stdin;
+1	7	1	1	1	f
+2	1	1	1	1	f
+3	7	1	1	1	f
+4	1	1	1	1	f
+5	7	1	1	1	f
 \.
 
 
@@ -516,7 +532,7 @@ SELECT pg_catalog.setval('public.estados_estado_id_seq', 3, true);
 -- Name: marcas_marca_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
 --
 
-SELECT pg_catalog.setval('public.marcas_marca_id_seq', 4, true);
+SELECT pg_catalog.setval('public.marcas_marca_id_seq', 5, true);
 
 
 --
@@ -537,7 +553,7 @@ SELECT pg_catalog.setval('public.modelos_modelo_id_seq', 9, true);
 -- Name: ordenes_orden_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
 --
 
-SELECT pg_catalog.setval('public.ordenes_orden_id_seq', 1, false);
+SELECT pg_catalog.setval('public.ordenes_orden_id_seq', 5, true);
 
 
 --
