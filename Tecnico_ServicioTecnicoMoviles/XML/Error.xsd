@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+
+<xs:element name="ServicioTecnicoMoviles">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="head" type="head"/>
+			<xs:element name="body" type="body"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:complexType name="head">
+	<xs:sequence>
+		<xs:element name="action" type="xs:string"/>
+	</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="body">
+	<xs:sequence>
+		<xs:element name="message" type="xs:string"/>
+	</xs:sequence>
+</xs:complexType>
+
+
+</xs:schema>
+
+
