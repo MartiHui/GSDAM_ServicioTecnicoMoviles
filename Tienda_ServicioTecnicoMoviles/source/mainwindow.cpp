@@ -31,6 +31,8 @@ void MainWindow::replyReceived(QString message) {
 
     switch (action->getActionType()) {
     case ActionType::ERROR:
+        showErrorMsgBox("No te has identificado al servidor");
+        ui->conectarServidor->setEnabled(true);
         break;
 
     case ActionType::ESTABLISH_CONNECTION:
@@ -54,6 +56,7 @@ void MainWindow::replyReceived(QString message) {
         break;
 
     case ActionType::ORDEN_REQUEST_REPLY:
+        addNewOrden(action);
         break;
 
     case ActionType::ORDEN_STATUS_CHANGED:
@@ -112,9 +115,9 @@ void MainWindow::replyReceived(QString message) {
     delete action;
 }*/
 
-void MainWindow::showErrorMsgBox() {return;
+void MainWindow::showErrorMsgBox(QString msg) {
     QMessageBox msgBox;
-    msgBox.setText("Ha habido un problema con la petición");
+    msgBox.setText(msg);
     msgBox.exec();
 }
 
@@ -126,7 +129,7 @@ void MainWindow::establishConnectionReply(Action *action) {
 
         m_serverConnection->sendMessage(Action::askListaOrdenes());
     } else {
-        showErrorMsgBox();
+        showErrorMsgBox("Error al identificarse al servidor");
     }
 }
 
@@ -134,8 +137,10 @@ void MainWindow::fillListaOrdenes(Action *action) {
     ui->ordersTable->clearContents();
 
     if (action->getRequestSuccess()) {
+        auto ordenes = action->getListaOrdenes();
+        ui->ordersTable->setRowCount(ordenes.count());
         int idx = 0;
-        for (auto orden : action->getListaOrdenes()) {
+        for (auto orden : ordenes) {
             ui->ordersTable->setItem(idx, 0, new QTableWidgetItem(QString::number(orden.first)));
             ui->ordersTable->setItem(idx, 1, new QTableWidgetItem(orden.second));
             idx++;
@@ -143,13 +148,13 @@ void MainWindow::fillListaOrdenes(Action *action) {
 
         m_serverConnection->sendMessage(Action::askMarcasInfo());
     } else {
-        showErrorMsgBox();
+        showErrorMsgBox("Error al recibir la lista de órdenes,");
     }
 }
 
 void MainWindow::fillMarcasVector(InfoType infoType, Action *action) {
     if (!action->getRequestSuccess()) {
-        showErrorMsgBox();
+        showErrorMsgBox("Error al recibir la información de marcas/modelos/reparaciones");
         return;
     }
 
@@ -193,6 +198,8 @@ void MainWindow::fillMarcasVector(InfoType infoType, Action *action) {
             marcaIndex++;
             if (marcaIndex < numMarcas) {
                 m_serverConnection->sendMessage(Action::askModelosInfo(m_marcas[marcaIndex].id));
+            } else {
+                fillMarcasCmBox();
             }
         }
         break;
@@ -208,7 +215,7 @@ void MainWindow::fillMarcasVector(InfoType infoType, Action *action) {
             m_serverConnection->sendMessage(Action::askReparacionInfo(m_marcas[marcaIndex].modelos[modeloIndex].id));
         } else {
             modeloIndex = 0; numModelos = 0;
-            marcaIndex++;qDebug() << "hola1";
+            marcaIndex++;
             if (marcaIndex < numMarcas) {
                 m_serverConnection->sendMessage(Action::askModelosInfo(m_marcas[marcaIndex].id));
             } else {
@@ -252,6 +259,23 @@ void MainWindow::fillReparacionesPosiblesList(QVector<Reparacion> &reparaciones)
     }
 }
 
+void MainWindow::addNewOrden(Action *action) {
+    ui->hacerPedido->setEnabled(true);
+
+    if (!action->getRequestSuccess()) {
+        showErrorMsgBox("Tu pedido no se ha podido realizar");
+    } else {
+        auto orden = action->getOrdenRequestInfo();
+
+        int numRows = ui->ordersTable->rowCount();
+        ui->ordersTable->setRowCount(numRows+1);
+
+        ui->ordersTable->setItem(numRows, 0, new QTableWidgetItem(QString::number(orden.first)));
+        ui->ordersTable->setItem(numRows, 1, new QTableWidgetItem(orden.second));
+
+        showErrorMsgBox("El id de tu nuevo pedido es: " + QString::number(orden.first));
+    }
+}
 /*
 void MainWindow::switchCentralWidgetEnabled() {
     static bool isEnabled = true;
@@ -362,7 +386,9 @@ void MainWindow::on_conectarServidor_clicked()
     QString password = ui->password->text();
     ui->password->setText("");
 
-    m_serverConnection->connectToServer(user, password);
+    if (!m_serverConnection->sendMessage(Action::establishConnection(user, password))) {
+        ui->conectarServidor->setEnabled(true);
+    }
 }
 
 void MainWindow::on_marcasCmBox_currentIndexChanged(int index)
@@ -374,8 +400,12 @@ void MainWindow::on_marcasCmBox_currentIndexChanged(int index)
 void MainWindow::on_modelosCmBox_currentIndexChanged(int index)
 {
     int marcaIdx = ui->marcasCmBox->itemData(ui->marcasCmBox->currentIndex()).toInt();
-    int modeloIdx = ui->modelosCmBox->itemData(index).toInt();
-    fillReparacionesPosiblesList(m_marcas[marcaIdx].modelos[modeloIdx].reparaciones);
+    if (m_marcas[marcaIdx].modelos.count()) {
+        int modeloIdx = ui->modelosCmBox->itemData(index).toInt();
+        fillReparacionesPosiblesList(m_marcas[marcaIdx].modelos[modeloIdx].reparaciones);
+    } else {
+        clearReparacionesLists();
+    }
 }
 
 void MainWindow::on_reparacionesPosibles_itemDoubleClicked(QListWidgetItem *item)
@@ -386,4 +416,29 @@ void MainWindow::on_reparacionesPosibles_itemDoubleClicked(QListWidgetItem *item
 void MainWindow::on_reparacionesElegidas_itemDoubleClicked(QListWidgetItem *item)
 {
     ui->reparacionesPosibles->addItem(ui->reparacionesElegidas->takeItem(ui->reparacionesElegidas->row(item)));
+}
+
+void MainWindow::on_hacerPedido_clicked()
+{
+    if (!ui->modelosCmBox->count()) {
+        showErrorMsgBox("No hay modelos");
+        return;
+    }
+
+    ui->hacerPedido->setEnabled(false);
+
+    int marcaIdx = ui->marcasCmBox->itemData(ui->marcasCmBox->currentIndex()).toInt();
+    int modeloIdx = ui->modelosCmBox->itemData(ui->modelosCmBox->currentIndex()).toInt();
+    int modeloId = m_marcas[marcaIdx].modelos[modeloIdx].id;
+    QVector<int> reparacionesId;
+    int numReparaciones = ui->reparacionesElegidas->count();
+    if (numReparaciones == 0) {
+        showErrorMsgBox("No has elegido ninguna reparación");
+    } else {
+        for (int i = 0; i < numReparaciones; i++) {
+            reparacionesId.push_back(ui->reparacionesElegidas->item(i)->data(QListWidgetItem::UserType).toInt());
+        }
+        m_serverConnection->sendMessage(Action::askOrdenRequest(modeloId, reparacionesId));
+        fillReparacionesPosiblesList(m_marcas[marcaIdx].modelos[modeloIdx].reparaciones);
+    }
 }

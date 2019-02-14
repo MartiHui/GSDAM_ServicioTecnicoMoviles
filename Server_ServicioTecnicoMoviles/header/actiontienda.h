@@ -1,6 +1,8 @@
 #ifndef ACTIONTIENDA_H
 #define ACTIONTIENDA_H
 
+#include <QPair>
+
 #include "action.h"
 #include "client.h"
 
@@ -28,6 +30,8 @@ private:
     QString getMarcas();
     QString getModelos();
     QString getReparaciones();
+    QString newOrderRequest(const Client &client);
+    QPair<int, QString> insertOrderDatabase(const Client &client);
 };
 
 #endif // ACTIONTIENDA_H

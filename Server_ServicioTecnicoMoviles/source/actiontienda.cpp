@@ -52,7 +52,7 @@ QString ActionTienda::getReply(const Client &client) {
         break;
 
     case ActionTiendaType::ORDEN_REQUEST_ASK:
-        // TODO
+        reply = newOrderRequest(client);
         break;
 
     case ActionTiendaType::INVALID:
@@ -147,6 +147,34 @@ QString ActionTienda::getReparaciones() {
     }
 
     return QString(xml).arg("SUCCESS").arg(reparacionesXml);
+}
+
+QString ActionTienda::newOrderRequest(const Client &client) {
+    auto orden = insertOrderDatabase(client);
+    QString xml = Action::getXmlTemplate("OrdenRequestReply");
+
+    if (orden.first == 0 || !m_validXml) {
+        return QString(xml).arg("FAILURE").arg("0").arg("ERROR");
+    } else {
+        return QString(xml).arg("SUCCESS").arg(QString::number(orden.first)).arg(orden.second);
+    }
+}
+
+QPair<int, QString> ActionTienda::insertOrderDatabase(const Client &client) {
+    int tiendaId = client.getClientId();
+
+    readUntilElement("modelo_id");
+    int modeloId = m_xmlReader->readElementText().toInt();
+
+    QVector<int> reparacionesId;
+    readUntilElement("reparaciones");
+    while (m_xmlReader->readNextStartElement()) {
+        if (m_xmlReader->name() == "reparacion_id") {
+            reparacionesId.push_back(m_xmlReader->readElementText().toInt());
+        }
+    }
+
+    return DBController::getInstance()->insertNewOrden(tiendaId, modeloId, reparacionesId);
 }
 
 QString ActionTienda::orderStatusChanged() {

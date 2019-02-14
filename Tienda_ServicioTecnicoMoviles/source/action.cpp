@@ -188,6 +188,16 @@ QVector<QPair<int, QString> > Action::getReparacionesInfo() {
     return reparaciones;
 }
 
+QPair<int, QString> Action::getOrdenRequestInfo() {
+    QPair<int, QString> orden;
+
+    readUntilElement("orden");
+    orden.first = m_xmlReader->attributes().value("id").toInt();
+    orden.second = m_xmlReader->readElementText();
+
+    return orden;
+}
+
 QString Action::establishConnection(QString user, QString password) {
     return getXmlTemplate("EstablishConnectionAsk").arg("TIENDA").arg(user).arg(password);
 }

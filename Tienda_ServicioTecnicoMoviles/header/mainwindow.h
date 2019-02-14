@@ -44,7 +44,8 @@ private:
     void fillModelosCmBox(QVector<Modelo> &modelos);
     void clearReparacionesLists();
     void fillReparacionesPosiblesList(QVector<Reparacion> &reparaciones);
-    void showErrorMsgBox();
+    void showErrorMsgBox(QString msg);
+    void addNewOrden(Action *action);
 
     /*void fillMarcasCmbBox(QVector<QPair<QString, int> > marcas);
     void fillModelosCmbBox(QVector<QPair<QString, int> > modelos);
@@ -66,6 +67,7 @@ private slots:
     void on_modelosCmBox_currentIndexChanged(int index);
     void on_reparacionesPosibles_itemDoubleClicked(QListWidgetItem *item);
     void on_reparacionesElegidas_itemDoubleClicked(QListWidgetItem *item);
+    void on_hacerPedido_clicked();
 };
 
 #endif // MAINWINDOW_H

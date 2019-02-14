@@ -5,6 +5,6 @@
         <action result="%1">OrdenRequestReply</action>
     </head>
     <body>
-    	<orden_id>%2</orden_id>
+    	<orden id="%2">%3</orden>
     </body>
 </ServicioTecnicoMoviles>

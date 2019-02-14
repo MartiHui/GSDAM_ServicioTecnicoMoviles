@@ -14,14 +14,7 @@ public:
 
     explicit ServerConnection(QString url);
     ~ServerConnection();
-    void sendMessage(QString xmlMessage);
-    void connectToServer(QString user, QString password);
-    void disconnect();
-
-private:
-    QUrl m_serverUrl;
-    QString m_user;
-    QString m_password;
+    bool sendMessage(QString xmlMessage);
 
 private slots:
     void onConnected();

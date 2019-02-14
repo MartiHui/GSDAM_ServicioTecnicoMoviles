@@ -123,6 +123,32 @@ void DBController::loadReparaciones(QVector<QPair<int, QString> > &reparaciones,
     }
 }
 
+QPair<int, QString> DBController::insertNewOrden(int tiendaId, int modeloId, QVector<int> &reparacionesId) {
+    QSqlQuery query;
+    query.prepare("INSERT INTO ordenes(modelo_id, tienda_id) VALUES (?, ?)");
+    query.bindValue(0, modeloId);
+    query.bindValue(1, tiendaId);
+    query.exec();
+
+    QPair<int, QString> orden;
+    if (query.lastInsertId().isValid()) {
+        orden.first = query.lastInsertId().toInt();
+        for (auto reparacion : reparacionesId) {
+            query.prepare("INSERT INTO orden_detalles(orden_id, modelo_reparaciones_id) VALUES (?, ?)");
+            query.bindValue(0, orden.first);
+            query.bindValue(1, reparacion);
+            query.exec();
+        }
+
+        query.exec("SELECT estado_nombre FROM estados JOIN ordenes ON estados.estado_id = ordenes.estado_id "
+                      "WHERE orden_id = " + QString::number(orden.first));
+        query.next();
+        orden.second = query.value(0).toString();
+    }
+
+    return orden;
+}
+
 /*
 int DBController::tiendaInDb(QString nombreTienda) {
     QSqlQuery query;

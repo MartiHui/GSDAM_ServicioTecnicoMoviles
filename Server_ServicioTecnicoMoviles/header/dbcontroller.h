@@ -25,7 +25,7 @@ public:
     void loadModelos(QVector<QPair<int, QString> > &modelos, int marcaId);
     // Rellena el QVector reparaciones con pares de id y nombre de las reparaciones del modelo identificado por modeloId
     void loadReparaciones(QVector<QPair<int, QString> > &reparaciones, int modeloId);
-
+    QPair<int, QString> insertNewOrden(int tienda_id, int modelo_id, QVector<int> &reparaciones_id);
 
     /*int tiendaInDb(QString nombreTienda);
     void getMarcas(QVector<QPair<int, QString> > *marcas);
