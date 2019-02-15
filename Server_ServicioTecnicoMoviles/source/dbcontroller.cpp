@@ -175,6 +175,26 @@ QPair<int, QString> DBController::insertNewOrden(int tiendaId, int modeloId, QVe
     return orden;
 }
 
+QPair<int, QString> DBController::updateOrderStatus(int orderId, int statusId) {
+    QSqlQuery query;
+    query.prepare("UPDATE ordenes SET estado_id = ? WHERE orden_id = ? ");
+    query.bindValue(0, statusId);
+    query.bindValue(1, orderId);
+    query.exec();
+
+    query.prepare("SELECT tienda_id, estado_nombre FROM estados JOIN ordenes ON estados.estado_id = ordenes.estado_id "
+                  "WHERE orden_id = ?");
+    query.bindValue(0, orderId);
+    query.exec();
+
+    QPair<int, QString> orderDetails;
+    query.next();
+    orderDetails.first = query.value(0).toInt();
+    orderDetails.second = query.value(1).toString();
+
+    return orderDetails;
+}
+
 /*
 int DBController::tiendaInDb(QString nombreTienda) {
     QSqlQuery query;

@@ -27,6 +27,9 @@ public:
     void loadReparaciones(QVector<QPair<int, QString> > &reparaciones, int modeloId);
     void loadStatuses(QVector<QPair<int, QString> > &statuses);
     QPair<int, QString> insertNewOrden(int tienda_id, int modelo_id, QVector<int> &reparaciones_id);
+    // Actualiza la orden con id orderId con el status statusId y devuelve un pair que tiene el de la tienda a la que pertenece la orden
+    // y un string con el nuevo estado
+    QPair<int, QString> updateOrderStatus(int orderId, int statusId);
 
     /*int tiendaInDb(QString nombreTienda);
     void getMarcas(QVector<QPair<int, QString> > *marcas);
