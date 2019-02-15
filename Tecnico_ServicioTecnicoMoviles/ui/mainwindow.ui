@@ -109,6 +109,9 @@
       <height>351</height>
      </rect>
     </property>
+    <property name="selectionMode">
+     <enum>QAbstractItemView::SingleSelection</enum>
+    </property>
     <property name="columnCount">
      <number>2</number>
     </property>
@@ -157,19 +160,6 @@
     </property>
     <property name="text">
      <string>Actualizar</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="finishOrder">
-    <property name="geometry">
-     <rect>
-      <x>550</x>
-      <y>400</y>
-      <width>141</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Pedido finalizado</string>
     </property>
    </widget>
   </widget>

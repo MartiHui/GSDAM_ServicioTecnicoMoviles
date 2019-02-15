@@ -31,8 +31,10 @@ private:
 
     void establishConnectionReply(Action *action);
     void showErrorMsgBox(QString msg);
-    /*void fillListaOrdenes(Action *action);
-    void fillMarcasVector(InfoType infoType, Action *action);
+    void fillListaOrdenes(Action *action);
+    void fillStatusCmBox(Action *action);
+    void newOrderReceived(Action *action);
+    /*void fillMarcasVector(InfoType infoType, Action *action);
     void fillMarcasCmBox();
     void fillModelosCmBox(QVector<Modelo> &modelos);
     void clearReparacionesLists();
@@ -41,12 +43,13 @@ private:
 
 private slots:
     void replyReceived(QString message);
-    /*void on_conectarServidor_clicked();
-    void on_marcasCmBox_currentIndexChanged(int index);
+    void on_conectarServidor_clicked();
+    /*void on_marcasCmBox_currentIndexChanged(int index);
     void on_modelosCmBox_currentIndexChanged(int index);
     void on_reparacionesPosibles_itemDoubleClicked(QListWidgetItem *item);
     void on_reparacionesElegidas_itemDoubleClicked(QListWidgetItem *item);
     void on_hacerPedido_clicked();*/
+    void on_actualizarEstado_clicked();
 };
 
 #endif // MAINWINDOW_H

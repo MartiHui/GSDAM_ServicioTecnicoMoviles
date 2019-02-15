@@ -63,9 +63,21 @@ QString DBController::prepareClientInDatabaseQuery(const QString &type) {
 }
 
 void DBController::loadListaOrdenes(const Client &client, QVector<QPair<int, QString> > &ordenes) {
+    QString queryStr = "SELECT orden_id, estado_nombre FROM ordenes JOIN estados ON ordenes.estado_id = estados.estado_id "
+                       "WHERE %1_id = ?";
+    QString tipoCliente = "";
+    switch (client.getClientType()) {
+    case ClientType::TIENDA:
+        tipoCliente = "tienda";
+        break;
+
+    case ClientType::TECNICO:
+        tipoCliente = "tecnico";
+        break;
+    }
+
     QSqlQuery query;
-    query.prepare("SELECT orden_id, estado_nombre FROM ordenes JOIN estados ON ordenes.estado_id = estados.estado_id "
-                  "WHERE tienda_id = ?");
+    query.prepare(QString(queryStr).arg(tipoCliente));
     query.bindValue(0, client.getClientId());
     query.exec();
 
@@ -120,6 +132,20 @@ void DBController::loadReparaciones(QVector<QPair<int, QString> > &reparaciones,
         reparacion.second = query.value(1).toString();
 
         reparaciones.push_back(reparacion);
+    }
+}
+
+void DBController::loadStatuses(QVector<QPair<int, QString> > &statuses) {
+    QSqlQuery query;
+    query.prepare("SELECT estado_id, estado_nombre FROM estados WHERE estado_activo = TRUE ");
+    query.exec();
+
+    while (query.next()) {
+        QPair<int, QString> status;
+        status.first = query.value(0).toInt();
+        status.second = query.value(1).toString();
+
+        statuses.push_back(status);
     }
 }
 

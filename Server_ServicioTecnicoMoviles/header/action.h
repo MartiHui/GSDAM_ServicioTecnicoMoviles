@@ -20,12 +20,6 @@ enum class ActionType {
     ORDEN_STATUS_ASK,
 };*/
 
-enum class ReplyType {
-    SAME_CLIENT,
-    DIFF_CLIENT,
-    NO_REPLY,
-};
-
 // Clase para parsear los xml recibidos por el servidor y escribir los xml como respuesta correspondientes;
 class Action : public QObject {
     Q_OBJECT
@@ -60,7 +54,6 @@ protected:
     QString m_requestXml; // Todo el archivo xml recibido del cliente
     QString m_requestType{""}; // El tipo de accion, que deberia estar en la etiqueta <action> del xml recibido
     QXmlStreamReader *m_xmlReader;
-    ReplyType m_replyType{ReplyType::SAME_CLIENT};
 
     // Obtiene el tipo de la solicitud y el id del callback
     void setRequestInfo();

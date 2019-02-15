@@ -34,6 +34,7 @@ public:
     QPair<int, QString> getNewOrderRequest();
 
     // Metodos para crear XML que enviar al servidor
+    static QString establishConnection(QString user, QString password);
     static QString askListaOrdenes();
     static QString askListaStatus();
     static QString changeOrderStatus(int orderId, int statusId);
@@ -44,7 +45,6 @@ public:
     QPair<int, QString> getOrdenRequestInfo();
 
     // Metodos para crear  XML que enviar al servidor
-    static QString establishConnection(QString user, QString password);
     static QString askListaOrdenes();
     static QString askMarcasInfo();
     static QString askModelosInfo(int marcaId);

@@ -16,7 +16,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->finishOrder->setEnabled(false);
     ui->actualizarEstado->setEnabled(false);
 
     m_serverConnection = new ServerConnection("ws://localhost:1234");
@@ -46,25 +45,13 @@ void MainWindow::replyReceived(QString message) {
         fillListaOrdenes(action);
         break;
 
-    case ActionType::MARCAS_INFO_REPLY:
-        fillMarcasVector(InfoType::MARCA, action);
+    case ActionType::LISTA_STATUS_REPLY:
+        fillStatusCmBox(action);
         break;
 
-    case ActionType::MODELOS_INFO_REPLY:
-        fillMarcasVector(InfoType::MODELO, action);
-        break;
+    case ActionType::NEW_ORDER_REQUEST:
 
-    case ActionType::REPARACION_INFO_REPLY:
-        fillMarcasVector(InfoType::REPARACION, action);
         break;
-
-    case ActionType::ORDEN_REQUEST_REPLY:
-        addNewOrden(action);
-        break;
-
-    case ActionType::ORDEN_STATUS_CHANGED:
-        break;
-
     }
 
     delete action;
@@ -78,16 +65,17 @@ void MainWindow::showErrorMsgBox(QString msg) {
 
 void MainWindow::establishConnectionReply(Action *action) {
     ui->conectarServidor->setEnabled(true);
+    ui->actualizarEstado->setEnabled(true);
 
     if (action->getRequestSuccess()) {
-        ui->nombreTienda->setText(action->getNombreCliente());
+        ui->nombreTecnico->setText(action->getNombreCliente());
 
         m_serverConnection->sendMessage(Action::askListaOrdenes());
     } else {
         showErrorMsgBox("Error al identificarse al servidor");
     }
 }
-/*
+
 void MainWindow::fillListaOrdenes(Action *action) {
     ui->ordersTable->clearContents();
 
@@ -101,12 +89,31 @@ void MainWindow::fillListaOrdenes(Action *action) {
             idx++;
         }
 
-        m_serverConnection->sendMessage(Action::askMarcasInfo());
+        m_serverConnection->sendMessage(Action::askListaStatus());
     } else {
         showErrorMsgBox("Error al recibir la lista de órdenes,");
     }
 }
 
+void MainWindow::fillStatusCmBox(Action *action) {
+    ui->estadosCmBox->clear();
+
+    for (auto status : action->getListaStatus()) {
+        ui->estadosCmBox->addItem(status.first, status.second);
+    }
+}
+
+void MainWindow::newOrderReceived(Action *action) {
+    int numRows = ui->ordersTable->rowCount();
+    auto newOrder = action->getNewOrderRequest();
+
+    ui->ordersTable->setRowCount(numRows + 1);
+    ui->ordersTable->setItem(numRows, 0, new QTableWidgetItem(QString::number(newOrder.first)));
+    ui->ordersTable->setItem(numRows, 1, new QTableWidgetItem(newOrder.second));
+
+    showErrorMsgBox("Has recibido una nueva órden de trabajo");
+}
+/*
 void MainWindow::fillMarcasVector(InfoType infoType, Action *action) {
     if (!action->getRequestSuccess()) {
         showErrorMsgBox("Error al recibir la información de marcas/modelos/reparaciones");
@@ -230,7 +237,7 @@ void MainWindow::addNewOrden(Action *action) {
 
         showErrorMsgBox("El id de tu nuevo pedido es: " + QString::number(orden.first));
     }
-}
+}*/
 
 void MainWindow::on_conectarServidor_clicked()
 {
@@ -245,7 +252,7 @@ void MainWindow::on_conectarServidor_clicked()
         ui->conectarServidor->setEnabled(true);
     }
 }
-
+/*
 void MainWindow::on_marcasCmBox_currentIndexChanged(int index)
 {
     int idx = ui->marcasCmBox->itemData(index).toInt();
@@ -298,3 +305,27 @@ void MainWindow::on_hacerPedido_clicked()
     }
 }
 */
+
+void MainWindow::on_actualizarEstado_clicked()
+{
+    auto order = ui->ordersTable->selectedItems();
+    if (!order.empty()) {
+        QPair<int, QString> orderDetails;
+        int tableRow = order.first()->row();
+
+        orderDetails.first = ui->ordersTable->item(tableRow, 0)->text().toInt();
+        orderDetails.second = ui->ordersTable->item(tableRow, 1)->text();
+
+        if (ui->estadosCmBox->currentData().isValid()) {
+            QPair<int, QString> statusDetails;
+            statusDetails.first = ui->estadosCmBox->currentData();
+            statusDetails.second = ui->estadosCmBox->currentText();
+
+            if (statusDetails.second != orderDetails.second) {
+                m_serverConnection->sendMessage(Action::changeOrderStatus(orderDetails.first, statusDetails.first));
+            }
+        }
+
+
+    }
+}

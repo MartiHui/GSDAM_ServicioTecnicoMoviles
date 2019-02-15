@@ -70,7 +70,9 @@ void Server::processTextMessage(const QString & message) {
         reply = action.getReply();
     }
 
-    client->getWebSocket()->sendTextMessage(reply);
+    if (reply != "") {
+        client->getWebSocket()->sendTextMessage(reply);
+    }
 
     //qDebug() << "Recibido: " << message;
     //qDebug() << "Enviado: " << reply;

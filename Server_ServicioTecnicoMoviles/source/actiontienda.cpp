@@ -12,22 +12,16 @@ ActionTienda::ActionTienda(const QString &message) : Action(message) {
 void ActionTienda::setActionType() {
     if (m_requestType == "ListaOrdenesAsk") {
         m_actionType = ActionTiendaType::LISTA_ORDENES_ASK;
-        m_replyType = ReplyType::SAME_CLIENT;
     } else if (m_requestType == "MarcasInfoAsk") {
         m_actionType = ActionTiendaType::MARCAS_INFO_ASK;
-        m_replyType = ReplyType::SAME_CLIENT;
     } else if (m_requestType == "ModelosInfoAsk") {
         m_actionType = ActionTiendaType::MODELOS_INFO_ASK;
-        m_replyType = ReplyType::SAME_CLIENT;
     } else if (m_requestType == "ReparacionInfoAsk") {
         m_actionType = ActionTiendaType::REPARACION_INFO_ASK;
-        m_replyType = ReplyType::SAME_CLIENT;
     } else if (m_requestType == "OrdenRequestAsk") {
         m_actionType = ActionTiendaType::ORDEN_REQUEST_ASK;
-        m_replyType = ReplyType::SAME_CLIENT;
     } else {
         m_actionType = ActionTiendaType::INVALID;
-        m_replyType = ReplyType::SAME_CLIENT;
     }
 }
 

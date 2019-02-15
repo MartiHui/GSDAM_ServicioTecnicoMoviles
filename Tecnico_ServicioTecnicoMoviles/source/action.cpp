@@ -231,11 +231,11 @@ QPair<int, QString> Action::getOrdenRequestInfo() {
 
     return orden;
 }
-
+*/
 QString Action::establishConnection(QString user, QString password) {
-    return getXmlTemplate("EstablishConnectionAsk").arg("TIENDA").arg(user).arg(password);
+    return getXmlTemplate("EstablishConnectionAsk").arg("TECNICO").arg(user).arg(password);
 }
-
+/*
 QString Action::askListaOrdenes() {
     return getXmlTemplate("ListaOrdenesAsk");
 }
