@@ -20,7 +20,7 @@ public:
     ActionTienda(const QString &message);
     void setActionType();
     QString getReply(const Client &client);
-    static QString orderStatusChanged();
+    static QString orderStatusChanged(int orderId, QString status);
 
 private:
     ActionTiendaType m_actionType;

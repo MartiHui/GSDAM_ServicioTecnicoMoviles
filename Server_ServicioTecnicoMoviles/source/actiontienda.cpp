@@ -171,6 +171,6 @@ QPair<int, QString> ActionTienda::insertOrderDatabase(const Client &client) {
     return DBController::getInstance()->insertNewOrden(tiendaId, modeloId, reparacionesId);
 }
 
-QString ActionTienda::orderStatusChanged() {
-    // TODO
+QString ActionTienda::orderStatusChanged(int orderId, QString status) {
+    return Action::getXmlTemplate("OrderStatusChanged").arg("SUCCESS").arg(QString::number(orderId)).arg(status);
 }

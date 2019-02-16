@@ -9,6 +9,31 @@
 #include "actiontienda.h"
 #include "actiontecnico.h"
 
+Server *Server::m_pInstance = NULL;
+
+Server* Server::getInstance(quint16 port) {
+    if (!m_pInstance) {
+        m_pInstance = new Server(port);
+    }
+
+    return m_pInstance;
+}
+
+void Server::deleteInstance() {
+    delete m_pInstance;
+    m_pInstance = nullptr;
+}
+
+Client* Server::searchClient(int clientId, ClientType type) {
+    for (Client* client : m_clients) {
+        if (client->getClientId() == clientId && client->getClientType() == type) {
+            return client;
+        }
+    }
+
+    return nullptr;
+}
+
 Server::Server(quint16 port) :
         m_port(port){
     QTimer::singleShot(0, this, SLOT(startServer()));
@@ -67,7 +92,7 @@ void Server::processTextMessage(const QString & message) {
         reply = action.getReply(*client);
     } else if (client->getClientType() == ClientType::TECNICO) {
         ActionTecnico action(message);
-        reply = action.getReply();
+        reply = action.getReply(*client);
     }
 
     if (reply != "") {

@@ -4,18 +4,24 @@
 #include <QObject>
 #include <QList>
 
+#include "client.h"
+
 class QWebSocketServer;
-class Client;
 
 // La clase principal que gestionará el servidor
 class Server : public QObject
 {
     Q_OBJECT
 public:
+    static Server* getInstance(quint16 port=0);
+    static void deleteInstance();
+    Client* searchClient(int clientId, ClientType type);
+
+private:
     explicit Server(quint16 port);
     ~Server();
 
-private:
+    static Server* m_pInstance;
     quint16 m_port; // El puerto al que se conecta
     QWebSocketServer *m_webSocketServer;
     QList<Client *> m_clients; // La lista de clientes conectados al servidor

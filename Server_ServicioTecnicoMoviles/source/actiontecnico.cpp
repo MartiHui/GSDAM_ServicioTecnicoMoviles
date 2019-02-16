@@ -1,5 +1,9 @@
+#include <QWebSocket>
+
 #include "actiontecnico.h"
 #include "dbcontroller.h"
+#include "server.h"
+#include "actiontienda.h"
 
 ActionTecnico::ActionTecnico(const QString &message) : Action(message) {
     setActionType();
@@ -18,7 +22,7 @@ void ActionTecnico::setActionType() {
     }
 }
 
-QString ActionTecnico::getReply() {
+QString ActionTecnico::getReply(const Client &client) {
     QString reply{""};
 
     switch (m_actionType) {
@@ -82,11 +86,15 @@ QString ActionTecnico::getListaStatus() {
 }
 
 void ActionTecnico::changeOrderStatus() {
-    QPair<int, int> newOrderStatus;
-
     readUntilElement("order_id");
-    newOrderStatus.first = m_xmlReader->readElementText().toInt();
+    int orderId = m_xmlReader->readElementText().toInt();
 
     readUntilElement("status_id");
-    newOrderStatus.second = m_xmlReader->readElementText().toInt();
+    int statusId= m_xmlReader->readElementText().toInt();
+
+    auto tiendaDetails = DBController::getInstance()->updateOrderStatus(orderId, statusId);
+    auto client = Server::getInstance()->searchClient(tiendaDetails.first, ClientType::TIENDA);
+    if (client) {
+        client->getWebSocket()->sendTextMessage(ActionTienda::orderStatusChanged(orderId, tiendaDetails.second));
+    }
 }

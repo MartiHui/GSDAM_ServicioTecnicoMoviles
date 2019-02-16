@@ -14,7 +14,7 @@ class ActionTecnico : public Action {
 public:
     ActionTecnico(const QString &message);
     void setActionType();
-    QString getReply();
+    QString getReply(const Client &client);
 
 private:
     ActionTecnicoType m_actionType;

@@ -15,6 +15,7 @@ DBController* DBController::getInstance() {
 }
 
 void DBController::deleteInstance() {
+    delete m_pInstance;
     m_pInstance = nullptr;
 }
 
