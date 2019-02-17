@@ -39,18 +39,6 @@ public:
     static QString askListaStatus();
     static QString changeOrderStatus(int orderId, int statusId);
 
-    /*QVector<QPair<int, QString> > getMarcasInfo();
-    QVector<QPair<int, QString> > getModelosInfo();
-    QVector<QPair<int, QString> > getReparacionesInfo();
-    QPair<int, QString> getOrdenRequestInfo();
-
-    // Metodos para crear  XML que enviar al servidor
-    static QString askListaOrdenes();
-    static QString askMarcasInfo();
-    static QString askModelosInfo(int marcaId);
-    static QString askReparacionInfo(int modeloId);
-    static QString askOrdenRequest(int modeloId, const QVector<int> &reparacionesId);*/
-
 private:
     ActionType m_actionType;
     QString m_messageXml;

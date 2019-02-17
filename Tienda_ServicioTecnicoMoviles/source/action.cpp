@@ -1,4 +1,3 @@
-#include <QXmlStreamWriter>
 #include <QString>
 #include <QXmlStreamReader>
 #include <QDebug>
