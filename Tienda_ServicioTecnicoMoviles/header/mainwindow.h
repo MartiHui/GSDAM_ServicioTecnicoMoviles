@@ -46,6 +46,7 @@ private:
     void fillReparacionesPosiblesList(QVector<Reparacion> &reparaciones);
     void showErrorMsgBox(QString msg);
     void addNewOrden(Action *action);
+    void updateOrderStatus(Action *action);
 
     /*void fillMarcasCmbBox(QVector<QPair<QString, int> > marcas);
     void fillModelosCmbBox(QVector<QPair<QString, int> > modelos);

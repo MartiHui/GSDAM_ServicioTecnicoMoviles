@@ -16,6 +16,8 @@ public:
     void setActionType();
     QString getReply(const Client &client);
 
+    static QString newOrder(int orderId, QString status);
+
 private:
     ActionTecnicoType m_actionType;
     bool m_validXml;

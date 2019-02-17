@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!DOCTYPE ServicioTecnicoMoviles SYSTEM "MarcasInfoAsk.dtd">
-<ServicioTecnicoMoviles>
-    <head>
-        <action>MARCAS_INFO_ASK</action>
-    </head>
-</ServicioTecnicoMoviles>

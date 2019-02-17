@@ -1,3 +1,0 @@
-<!ELEMENT ServicioTecnicoMoviles (head)>
-	<!ELEMENT head (action)>
-		<!ELEMENT action (#PCDATA)>

@@ -49,12 +49,12 @@ bool Action::isXmlValid() {
         schemaFile.close();
 
         QXmlSchema schema;
-        if (schema.load(schemaText.toUtf8())) {
-            if (schema.isValid()) {
-                QXmlSchemaValidator validator(schema);
-                if (validator.validate(m_requestXml.toUtf8())) {
-                    valid = true;
-                }
+        if (schema.load(schemaText.toUtf8()) && schema.isValid()) {
+            QXmlSchemaValidator validator(schema);
+            if (validator.validate(m_requestXml.toUtf8())) {
+                valid = true;
+            } else {
+                qDebug() << "El XML " + m_requestType + " es incorrecto.";
             }
         } else {
             qDebug() << "Problemas al cargar el xsd " + m_requestType;

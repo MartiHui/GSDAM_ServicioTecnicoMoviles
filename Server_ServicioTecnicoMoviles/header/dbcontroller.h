@@ -30,6 +30,7 @@ public:
     // Actualiza la orden con id orderId con el status statusId y devuelve un pair que tiene el de la tienda a la que pertenece la orden
     // y un string con el nuevo estado
     QPair<int, QString> updateOrderStatus(int orderId, int statusId);
+    int getOrderTecnico(int orderId);
 
     /*int tiendaInDb(QString nombreTienda);
     void getMarcas(QVector<QPair<int, QString> > *marcas);

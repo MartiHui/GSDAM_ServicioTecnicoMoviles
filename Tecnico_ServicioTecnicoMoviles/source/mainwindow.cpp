@@ -50,7 +50,7 @@ void MainWindow::replyReceived(QString message) {
         break;
 
     case ActionType::NEW_ORDER_REQUEST:
-
+        newOrderReceived(action);
         break;
     }
 
@@ -65,9 +65,9 @@ void MainWindow::showErrorMsgBox(QString msg) {
 
 void MainWindow::establishConnectionReply(Action *action) {
     ui->conectarServidor->setEnabled(true);
-    ui->actualizarEstado->setEnabled(true);
 
     if (action->getRequestSuccess()) {
+        ui->actualizarEstado->setEnabled(true);
         ui->nombreTecnico->setText(action->getNombreCliente());
 
         m_serverConnection->sendMessage(Action::askListaOrdenes());
@@ -99,7 +99,7 @@ void MainWindow::fillStatusCmBox(Action *action) {
     ui->estadosCmBox->clear();
 
     for (auto status : action->getListaStatus()) {
-        ui->estadosCmBox->addItem(status.first, status.second);
+        ui->estadosCmBox->addItem(status.second, status.first);
     }
 }
 
@@ -318,7 +318,7 @@ void MainWindow::on_actualizarEstado_clicked()
 
         if (ui->estadosCmBox->currentData().isValid()) {
             QPair<int, QString> statusDetails;
-            statusDetails.first = ui->estadosCmBox->currentData();
+            statusDetails.first = ui->estadosCmBox->currentData().toInt();
             statusDetails.second = ui->estadosCmBox->currentText();
 
             if (statusDetails.second != orderDetails.second) {

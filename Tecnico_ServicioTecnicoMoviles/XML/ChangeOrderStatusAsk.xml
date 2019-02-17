@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!DOCTYPE ServicioTecnicoMoviles SYSTEM "OrdenStatusAsk.dtd">
 <ServicioTecnicoMoviles>
     <head>
-        <action>ORDEN_STATUS_ASK</action>
+        <action>ChangeOrderStatusAsk</action>
     </head>
     <body>
-    	<order_id></order_id>
+    	<order_id>%1</order_id>
+    	<status_id>%2</status_id>
     </body>
 </ServicioTecnicoMoviles>

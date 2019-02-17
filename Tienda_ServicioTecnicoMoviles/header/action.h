@@ -37,6 +37,7 @@ public:
     QVector<QPair<int, QString> > getModelosInfo();
     QVector<QPair<int, QString> > getReparacionesInfo();
     QPair<int, QString> getOrdenRequestInfo();
+    QPair<int, QString> getOrderNewStatus();
 
     // Metodos para crear  XML que enviar al servidor
     static QString establishConnection(QString user, QString password);

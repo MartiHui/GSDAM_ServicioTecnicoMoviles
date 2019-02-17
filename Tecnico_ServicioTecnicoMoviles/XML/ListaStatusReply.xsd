@@ -34,11 +34,17 @@
 
 <xs:complexType name="body">
 	<xs:sequence>
-		<xs:element name="orden" type="orden"/>
+		<xs:element name="statuses" type="statuses"/>
 	</xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="orden">
+<xs:complexType name="statuses">
+	<xs:sequence>
+		<xs:element name="status" type="status" minOccurs="0" maxOccurs="unbounded"/>
+	</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="status">
 	<xs:simpleContent>
 		<xs:extension base="xs:string">
 			<xs:attribute name="id" use="required" type="xs:integer"/>

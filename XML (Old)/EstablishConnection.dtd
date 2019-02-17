@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!ELEMENT ServicioTecnicoMoviles (head, body)>
-	<!ELEMENT head (action)>
-		<!ELEMENT action (#PCDATA)>
-	<!ELEMENT body (tienda)>
-		<!ELEMENT tienda (#PCDATA)>

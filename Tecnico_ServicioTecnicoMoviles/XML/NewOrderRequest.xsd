@@ -34,22 +34,9 @@
 
 <xs:complexType name="body">
 	<xs:sequence>
-		<xs:element name="marcas" type="marcas"/>
+		<xs:element name="order_id" type="xs:integer"/>
+		<xs:element name="status" type="xs:string"/>
 	</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="marcas">
-	<xs:sequence>
-		<xs:element name="marca" type="marca" minOccurs="0" maxOccurs="unbounded"/>
-	</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="marca">
-	<xs:simpleContent>
-		<xs:extension base="xs:string">
-			<xs:attribute name="id" use="required" type="xs:integer"/>
-		</xs:extension>
-	</xs:simpleContent>
 </xs:complexType>
 
 

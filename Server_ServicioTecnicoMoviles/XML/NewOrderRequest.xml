@@ -6,6 +6,6 @@
     </head>
     <body>
     	<order_id>%2</order_id>
-    	<status_id>%3</status_id>
+    	<status>%3</status>
     </body>
 </ServicioTecnicoMoviles>

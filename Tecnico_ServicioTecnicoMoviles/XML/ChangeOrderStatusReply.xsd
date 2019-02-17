@@ -6,7 +6,6 @@
 	<xs:complexType>
 		<xs:sequence>
 			<xs:element name="head" type="head"/>
-			<xs:element name="body" type="body"/>
 		</xs:sequence>
 	</xs:complexType>
 </xs:element>
@@ -31,26 +30,6 @@
         <xs:enumeration value="FAILURE"/>
     </xs:restriction>
 </xs:simpleType>
-
-<xs:complexType name="body">
-	<xs:sequence>
-		<xs:element name="reparaciones" type="reparaciones"/>
-	</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="reparaciones">
-	<xs:sequence>
-		<xs:element name="reparacion" type="reparacion" minOccurs="0" maxOccurs="unbounded"/>
-	</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="reparacion">
-	<xs:simpleContent>
-		<xs:extension base="xs:string">
-			<xs:attribute name="id" use="required" type="xs:integer"/>
-		</xs:extension>
-	</xs:simpleContent>
-</xs:complexType>
 
 
 </xs:schema>

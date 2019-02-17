@@ -86,6 +86,10 @@ QString ActionTecnico::getListaStatus() {
 }
 
 void ActionTecnico::changeOrderStatus() {
+    if (!m_validXml) {
+        return;
+    }
+
     readUntilElement("order_id");
     int orderId = m_xmlReader->readElementText().toInt();
 
@@ -97,4 +101,8 @@ void ActionTecnico::changeOrderStatus() {
     if (client) {
         client->getWebSocket()->sendTextMessage(ActionTienda::orderStatusChanged(orderId, tiendaDetails.second));
     }
+}
+
+QString ActionTecnico::newOrder(int orderId, QString status) {
+    return QString(Action::getXmlTemplate("NewOrderRequest")).arg("SUCCESS").arg(QString::number(orderId)).arg(status);
 }

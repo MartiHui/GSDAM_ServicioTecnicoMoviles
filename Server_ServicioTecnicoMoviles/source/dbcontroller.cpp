@@ -196,6 +196,16 @@ QPair<int, QString> DBController::updateOrderStatus(int orderId, int statusId) {
     return orderDetails;
 }
 
+int DBController::getOrderTecnico(int orderId) {
+    QSqlQuery query;
+    query.prepare("SELECT tecnico_id FROM ordenes WHERE orden_id = ?");
+    query.bindValue(0, orderId);
+    query.exec();
+
+    query.next();
+    return query.value(0).toInt();
+}
+
 /*
 int DBController::tiendaInDb(QString nombreTienda) {
     QSqlQuery query;

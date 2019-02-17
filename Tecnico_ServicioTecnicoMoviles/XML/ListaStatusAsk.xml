@@ -2,9 +2,7 @@
 
 <ServicioTecnicoMoviles>
 	<head>
-		<action>ReparacionInfoAsk</action>
+		<!-- callbackId contendra el mismo id que el xml al que responde -->
+		<action>ListaStatusAsk</action>
 	</head>
-	<body>
-		<modelo_id>%1</modelo_id>
-	</body>
 </ServicioTecnicoMoviles>

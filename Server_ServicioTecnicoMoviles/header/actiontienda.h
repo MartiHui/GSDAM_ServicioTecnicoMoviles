@@ -32,6 +32,7 @@ private:
     QString getReparaciones();
     QString newOrderRequest(const Client &client);
     QPair<int, QString> insertOrderDatabase(const Client &client);
+    void notifyTecnico(QPair<int, QString> order);
 };
 
 #endif // ACTIONTIENDA_H

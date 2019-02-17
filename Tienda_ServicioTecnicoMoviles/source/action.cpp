@@ -28,12 +28,12 @@ bool Action::isXmlValid(QString filename) {
         schemaFile.close();
 
         QXmlSchema schema;
-        if (schema.load(schemaText.toUtf8())) {
-            if (schema.isValid()) {
-                QXmlSchemaValidator validator(schema);
-                if (validator.validate(m_messageXml.toUtf8())) {
-                    valid = true;
-                }
+        if (schema.load(schemaText.toUtf8()) && schema.isValid()) {
+            QXmlSchemaValidator validator(schema);
+            if (validator.validate(m_messageXml.toUtf8())) {
+                valid = true;
+            } else {
+                qDebug() << "El XML " + filename + " es incorrecto.";
             }
         } else {
             qDebug() << "Problemas al cargar el xsd " + filename;
@@ -98,7 +98,7 @@ void Action::setActionInfo() {
         type = ActionType::REPARACION_INFO_REPLY;
     } else if (action == "OrdenRequestReply") {
         type = ActionType::ORDEN_REQUEST_REPLY;
-    } else if (action == "OrdenStatusChanged") {
+    } else if (action == "OrderStatusChanged") {
         type = ActionType::ORDEN_STATUS_CHANGED;
     }
 
@@ -196,6 +196,17 @@ QPair<int, QString> Action::getOrdenRequestInfo() {
     orden.second = m_xmlReader->readElementText();
 
     return orden;
+}
+
+QPair<int, QString> Action::getOrderNewStatus() {
+    QPair<int, QString> order;
+
+    readUntilElement("order_id");
+    order.first = m_xmlReader->readElementText().toInt();
+    readUntilElement("status");
+    order.second = m_xmlReader->readElementText();
+
+    return order;
 }
 
 QString Action::establishConnection(QString user, QString password) {

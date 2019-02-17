@@ -28,12 +28,12 @@ bool Action::isXmlValid(QString filename) {
         schemaFile.close();
 
         QXmlSchema schema;
-        if (schema.load(schemaText.toUtf8())) {
-            if (schema.isValid()) {
-                QXmlSchemaValidator validator(schema);
-                if (validator.validate(m_messageXml.toUtf8())) {
-                    valid = true;
-                }
+        if (schema.load(schemaText.toUtf8()) && schema.isValid()) {
+            QXmlSchemaValidator validator(schema);
+            if (validator.validate(m_messageXml.toUtf8())) {
+                valid = true;
+            } else {
+                qDebug() << "El XML " + filename + " es incorrecto.";
             }
         } else {
             qDebug() << "Problemas al cargar el xsd " + filename;
@@ -154,7 +154,7 @@ QPair<int, QString> Action::getNewOrderRequest() {
     QPair<int, QString> order;
 
     readUntilElement("order_id");
-    order.first = QString::number(m_xmlReader->readElementText());
+    order.first = m_xmlReader->readElementText().toInt();
 
     readUntilElement("status");
     order.second = m_xmlReader->readElementText();

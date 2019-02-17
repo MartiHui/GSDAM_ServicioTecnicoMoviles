@@ -60,6 +60,7 @@ void MainWindow::replyReceived(QString message) {
         break;
 
     case ActionType::ORDEN_STATUS_CHANGED:
+        updateOrderStatus(action);
         break;
 
     }
@@ -276,6 +277,18 @@ void MainWindow::addNewOrden(Action *action) {
         showErrorMsgBox("El id de tu nuevo pedido es: " + QString::number(orden.first));
     }
 }
+
+void MainWindow::updateOrderStatus(Action *action) {
+    auto order = action->getOrderNewStatus();
+
+    for (int i = 0; i < ui->ordersTable->rowCount(); i++) {
+        if (ui->ordersTable->item(i, 0)->text().toInt() == order.first) {
+            ui->ordersTable->setItem(i, 1, new QTableWidgetItem(order.second));
+            showErrorMsgBox(QString("El pedido %1 se ha actualizado").arg(QString::number(order.first)));
+            break;
+        }
+    }
+}
 /*
 void MainWindow::switchCentralWidgetEnabled() {
     static bool isEnabled = true;
@@ -434,6 +447,7 @@ void MainWindow::on_hacerPedido_clicked()
     int numReparaciones = ui->reparacionesElegidas->count();
     if (numReparaciones == 0) {
         showErrorMsgBox("No has elegido ninguna reparación");
+        ui->hacerPedido->setEnabled(true);
     } else {
         for (int i = 0; i < numReparaciones; i++) {
             reparacionesId.push_back(ui->reparacionesElegidas->item(i)->data(QListWidgetItem::UserType).toInt());

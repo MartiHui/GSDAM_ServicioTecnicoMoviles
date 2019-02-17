@@ -1,8 +1,11 @@
 #include <QVector>
 #include <QPair>
+#include <QWebSocket>
 
 #include "actiontienda.h"
 #include "dbcontroller.h"
+#include "server.h"
+#include "actiontecnico.h"
 
 ActionTienda::ActionTienda(const QString &message) : Action(message) {
     setActionType();
@@ -150,8 +153,18 @@ QString ActionTienda::newOrderRequest(const Client &client) {
     if (orden.first == 0 || !m_validXml) {
         return QString(xml).arg("FAILURE").arg("0").arg("ERROR");
     } else {
+        notifyTecnico(orden);
         return QString(xml).arg("SUCCESS").arg(QString::number(orden.first)).arg(orden.second);
     }
+}
+
+void ActionTienda::notifyTecnico(QPair<int, QString> order) {
+    int tecnicoId = DBController::getInstance()->getOrderTecnico(order.first);
+    auto tecnicoConnection = Server::getInstance()->searchClient(tecnicoId, ClientType::TECNICO);
+    if (tecnicoConnection) {
+        tecnicoConnection->getWebSocket()->sendTextMessage(ActionTecnico::newOrder(order.first, order.second));
+    }
+
 }
 
 QPair<int, QString> ActionTienda::insertOrderDatabase(const Client &client) {
