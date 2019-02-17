@@ -28,6 +28,8 @@ void Client::identify(int clientId, QString type) {
         m_type = ClientType::TIENDA;
     } else if (type == "TECNICO") {
         m_type = ClientType::TECNICO;
+    } else if (type == "ADMIN") {
+        m_type = ClientType::ADMIN;
     }
 }
 

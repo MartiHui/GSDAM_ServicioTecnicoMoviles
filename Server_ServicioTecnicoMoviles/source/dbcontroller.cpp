@@ -51,6 +51,8 @@ QString DBController::prepareClientInDatabaseQuery(const QString &type) {
         tipo = "tienda";
     } else if (type == "TECNICO") {
         tipo = "tecnico";
+    } else if (type == "ADMIN") {
+        tipo = "admin";
     }
 
     QString tabla = tipo + "s";

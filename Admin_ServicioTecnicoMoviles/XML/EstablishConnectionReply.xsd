@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+
+<xs:element name="ServicioTecnicoMoviles">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="head" type="head"/>
+			<xs:element name="body" type="body"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:complexType name="head">
+	<xs:sequence>
+		<xs:element name="action" type="action"/>
+	</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="action">
+	<xs:simpleContent>
+		<xs:extension base="xs:string">
+			<xs:attribute name="result" use="required" type="result"/>
+		</xs:extension>
+	</xs:simpleContent>
+</xs:complexType>
+
+<xs:simpleType name="result">
+    <xs:restriction base="xs:string">
+        <xs:enumeration value="SUCCESS"/>
+        <xs:enumeration value="FAILURE"/>
+    </xs:restriction>
+</xs:simpleType>
+
+<xs:complexType name="body">
+	<xs:sequence>
+		<xs:element name="reply" type="xs:string"/>
+	</xs:sequence>
+</xs:complexType>
+
+
+</xs:schema>
+
+

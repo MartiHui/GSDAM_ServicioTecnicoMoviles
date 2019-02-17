@@ -8,6 +8,7 @@ class QWebSocket;
 enum class ClientType {
     TIENDA,
     TECNICO,
+    ADMIN,
     INVALID,
 };
 
