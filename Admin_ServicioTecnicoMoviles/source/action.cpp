@@ -209,7 +209,7 @@ QPair<int, QString> Action::getOrderNewStatus() {
 }
 
 QString Action::establishConnection(QString user, QString password) {
-    return getXmlTemplate("EstablishConnectionAsk").arg("TIENDA").arg(user).arg(password);
+    return getXmlTemplate("EstablishConnectionAsk").arg("ADMIN").arg(user).arg(password);
 }
 
 QString Action::askListaOrdenes() {

@@ -19,24 +19,8 @@
 
 <xs:complexType name="body">
 	<xs:sequence>
-		<xs:element name="info" type="info"/>
+		<xs:element name="marca_id" type="xs:integer"/>
 	</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="info">
-	<xs:sequence>
-		<xs:element name="user" type="xs:string"/>
-		<xs:element name="password" type="xs:string"/>
-	</xs:sequence>
-	<xs:attribute name="type" use="required">
-		<xs:simpleType>
-			<xs:restriction base="xs:string">
-				<xs:enumeration value="TIENDA"/>
-				<xs:enumeration value="TECNICO"/>
-				<xs:enumeration value="ADMIN"/>
-			</xs:restriction>
-		</xs:simpleType>
-	</xs:attribute>
 </xs:complexType>
 
 

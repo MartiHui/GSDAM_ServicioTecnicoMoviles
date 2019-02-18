@@ -33,6 +33,7 @@
 			<xs:restriction base="xs:string">
 				<xs:enumeration value="TIENDA"/>
 				<xs:enumeration value="TECNICO"/>
+				<xs:enumeration value="ADMIN"/>
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:attribute>
