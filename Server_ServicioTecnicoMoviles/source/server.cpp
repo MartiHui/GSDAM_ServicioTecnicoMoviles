@@ -8,6 +8,7 @@
 #include "action.h"
 #include "actiontienda.h"
 #include "actiontecnico.h"
+#include "actionadmin.h"
 
 Server *Server::m_pInstance = NULL;
 
@@ -92,6 +93,9 @@ void Server::processTextMessage(const QString & message) {
         reply = action.getReply(*client);
     } else if (client->getClientType() == ClientType::TECNICO) {
         ActionTecnico action(message);
+        reply = action.getReply(*client);
+    } else if (client->getClientType() == ClientType::ADMIN) {
+        ActionAdmin action(message);
         reply = action.getReply(*client);
     }
 

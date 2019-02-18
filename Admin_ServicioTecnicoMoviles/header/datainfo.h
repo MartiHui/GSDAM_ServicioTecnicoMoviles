@@ -21,4 +21,12 @@ struct Marca {
     QVector<Modelo> modelos;
 };
 
+struct Tienda {
+    int id;
+    QString nombre;
+    QString user;
+    QString password;
+    QString direccion;
+}
+
 #endif // DATAINFO_H

@@ -1,12 +1,19 @@
 #ifndef ACTIONADMIN_H
 #define ACTIONADMIN_H
 
-/*enum class ActionTecnicoType {
-    LISTA_ORDENES_ASK,
-    LISTA_STATUS_ASK,
-    CHANGE_ORDER_STATUS_ASK,
+#include <QString>
+
+#include "action.h"
+#include "client.h"
+
+enum class ActionAdminType {
+    MARCAS_INFO_ASK,
+    MODELOS_INFO_ASK,
+    REPARACION_INFO_ASK,
+    TIENDAS_INFO_ASK,
+    MODIFY_TIENDA_ASK,
     INVALID
-};*/
+};
 
 class ActionAdmin : public Action {
 public:
@@ -17,12 +24,13 @@ public:
     static QString newOrder(int orderId, QString status);
 
 private:
-    ActionTecnicoType m_actionType;
+    ActionAdminType m_actionType;
     bool m_validXml;
 
-    QString getListaOrdenes(const Client &client);
-    QString getListaStatus();
-    void changeOrderStatus();
+    QString getMarcas();
+    QString getModelos();
+    QString getReparaciones();
+    QString getTiendas();
 };
 
 #endif // ACTIONADMIN_H

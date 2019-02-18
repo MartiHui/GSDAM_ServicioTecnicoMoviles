@@ -87,18 +87,16 @@ void Action::setActionInfo() {
         type = ActionType::ERROR;
     } else if (action == "EstablishConnectionReply") {
         type = ActionType::ESTABLISH_CONNECTION;
-    } else if (action == "ListaOrdenesReply") {
-        type = ActionType::LISTA_ORDENES_REPLY;
     } else if (action == "MarcasInfoReply") {
         type = ActionType::MARCAS_INFO_REPLY;
     } else if (action == "ModelosInfoReply") {
         type = ActionType::MODELOS_INFO_REPLY;
     } else if (action == "ReparacionInfoReply") {
         type = ActionType::REPARACION_INFO_REPLY;
-    } else if (action == "OrdenRequestReply") {
-        type = ActionType::ORDEN_REQUEST_REPLY;
-    } else if (action == "OrderStatusChanged") {
-        type = ActionType::ORDEN_STATUS_CHANGED;
+    } else if (action == "TiendasInfoReply") {
+        type = ActionType::TIENDAS_INFO_REPLY;
+    } else if (action == "ModifyTiendaReply") {
+        type = ActionType::MODIFY_TIENDA_REPLY;
     }
 
     if (!isXmlValid(action)) {
@@ -121,22 +119,6 @@ QString Action::getErrorMessage() {
 QString Action::getNombreCliente() {
     readUntilElement("reply");
     return m_xmlReader->readElementText();
-}
-
-QVector<QPair<int, QString> > Action::getListaOrdenes() {
-    QVector<QPair<int, QString> > ordenes;
-
-    readUntilElement("ordenes");
-    while (m_xmlReader->readNextStartElement()) {
-        QPair<int, QString> orden;
-
-        orden.first = m_xmlReader->attributes().value("id").toInt();
-        orden.second = m_xmlReader->readElementText();
-
-        ordenes.push_back(orden);
-    }
-
-    return ordenes;
 }
 
 QVector<QPair<int, QString>> Action::getMarcasInfo() {
@@ -187,33 +169,36 @@ QVector<QPair<int, QString> > Action::getReparacionesInfo() {
     return reparaciones;
 }
 
-QPair<int, QString> Action::getOrdenRequestInfo() {
-    QPair<int, QString> orden;
+QVector<Tienda> Action::getTiendasInfo() {
+    QVector<Tienda> tiendas;
 
-    readUntilElement("orden");
-    orden.first = m_xmlReader->attributes().value("id").toInt();
-    orden.second = m_xmlReader->readElementText();
+    readUntilElement("tiendas");
+    while (m_xmlReader->readNextStartElement()) {
+        Tienda tienda;
 
-    return orden;
-}
+        readUntilElement("tienda_id");
+        tienda.id = m_xmlReader->readElementText().toInt();
 
-QPair<int, QString> Action::getOrderNewStatus() {
-    QPair<int, QString> order;
+        readUntilElement("tienda_nombre");
+        tienda.nombre = m_xmlReader->readElementText();
 
-    readUntilElement("order_id");
-    order.first = m_xmlReader->readElementText().toInt();
-    readUntilElement("status");
-    order.second = m_xmlReader->readElementText();
+        readUntilElement("tienda_user");
+        tienda.user = m_xmlReader->readElementText();
 
-    return order;
+        readUntilElement("tienda_password");
+        tienda.password = m_xmlReader->readElementText();
+
+        readUntilElement("tienda_direccion");
+        tienda.direccion = m_xmlReader->readElementText();
+
+        tiendas.push_back(tienda);
+    }
+
+    return tiendas;
 }
 
 QString Action::establishConnection(QString user, QString password) {
     return getXmlTemplate("EstablishConnectionAsk").arg("ADMIN").arg(user).arg(password);
-}
-
-QString Action::askListaOrdenes() {
-    return getXmlTemplate("ListaOrdenesAsk");
 }
 
 QString Action::askMarcasInfo() {
@@ -228,13 +213,6 @@ QString Action::askReparacionInfo(int modeloId) {
     return getXmlTemplate("ReparacionInfoAsk").arg(QString::number(modeloId));
 }
 
-QString Action::askOrdenRequest(int modeloId, const QVector<int> &reparacionesId) {
-    QString xml = getXmlTemplate("OrdenRequestAsk");
-
-    QString reparacionesXml{""};
-    for (auto id : reparacionesId) {
-        reparacionesXml += QString("<reparacion_id>%1</reparacion_id>").arg(QString::number(id));
-    }
-
-    return QString(xml).arg(QString::number(modeloId)).arg(reparacionesXml);
+QString Action::askTiendasInfo() {
+    return getXmlTemplate("TiendasInfoAsk");
 }
