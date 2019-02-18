@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ServicioTecnicoMoviles>
+	<head>
+		<action result="%1">ModifyTiendaReply</action>
+	</head>
+	<body>
+		<!-- tipo puede ser INSERT, DELETE y UPDATE -->
+		<modificacion>
+			<tienda_id>%2</tienda_id>
+			<tienda_nombre>%3</tienda_nombre>
+			<tienda_user>%4</tienda_user>
+			<tienda_password>%5</tienda_password>
+			<tienda_direccion>%6</tienda_direccion>
+		</modificacion>
+	</body>
+</ServicioTecnicoMoviles>

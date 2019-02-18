@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ServicioTecnicoMoviles>
+    <head>
+        <action result="%1">TiendasInfoReply</action>
+    </head>
+    <body>
+    	<tiendas>
+    		<!-- tiendas tendra tantos elemento <tienda> como sea necesario
+    		Plantilla <tienda>:
+    		<tienda>
+    			<tienda_id></tienda_id>
+    			<tienda_nombre></tienda_nombre>
+    			<tienda_user></tienda_user>
+    			<tienda_password></tienda_password>
+    			<tienda_direccion></tienda_direccion>
+    		</tienda> -->
+    		%2
+    	</tiendas>
+    </body>
+</ServicioTecnicoMoviles>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+
+<xs:element name="ServicioTecnicoMoviles">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="head" type="head"/>
+			<xs:element name="body" type="body"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:complexType name="head">
+	<xs:sequence>
+		<xs:element name="action" type="xs:string"/>
+	</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="body">
+	<xs:sequence>
+		<xs:element name="modificacion" type="modificacion"/>
+	</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="modificacion">
+	<xs:sequence>
+		<xs:element name="tienda_id" type="xs:integer"/>
+		<xs:element name="tienda_nombre" type="xs:string"/>
+		<xs:element name="tienda_user" type="xs:string"/>
+		<xs:element name="tienda_password" type="xs:string"/>
+		<xs:element name="tienda_direccion" type="xs:string"/>
+	</xs:sequence>
+	<xs:attribute name="tipo" type="tipo" use="required"/>
+</xs:complexType>
+
+<xs:simpleType name="tipo">
+    <xs:restriction base="xs:string">
+        <xs:enumeration value="INSERT"/>
+        <xs:enumeration value="DELETE"/>
+        <xs:enumeration value="UPDATE"/>
+    </xs:restriction>
+</xs:simpleType>
+
+
+</xs:schema>
+
+
